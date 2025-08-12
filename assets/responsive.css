@@ -1,0 +1,12 @@
+.fallback {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    pre {
+      display: none;
+    }
+    .fallback {
+        display: block;
+    }
+}
