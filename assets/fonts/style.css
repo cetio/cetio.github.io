@@ -1,18 +1,50 @@
 @font-face {
-  font-family: "MxPlus IBM VGA 9x16";
-  src: url("/assets/fonts/MxPlus-IBM-VGA-9x16.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'IBM';
+    src: url('MxPlus_IBM_VGA_9x16.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 
-/* utility class */
-.vga {
-  font-family: "MxPlus IBM VGA 9x16", "Courier New", monospace;
-  font-size: 13px;        /* start here and tweak (9x16 glyphs often look good ~12-16px) */
-  line-height: 1.1;
-  /* try to avoid subpixel smoothing for crisp bitmap look */
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: geometricPrecision;
+/* Set the font so everything uses IBM VGA */
+body {
+    font-family: 'IBM', monospace;
+}
+
+/* Default font sizing */
+html {
+  font-size: 16px;
+}
+
+/* Force all text elements to use multiples of 16px */
+body, body * {
+  font-size: inherit;
+  line-height: 1;
+}
+
+/* Explicitly override headers and common text elements */
+h1 {
+  font-size: 32px;   /* 3 * 16 */
+  line-height: 32px;
+}
+
+h2 {
+  font-size: 24px;   /* 2 * 16 */
+  line-height: 24px;
+}
+
+h3 {
+  font-size: 24px;   /* 1.5 * 16, closest multiple is 24 (or use 32) */
+  line-height: 24px;
+}
+
+h4, h5, h6, p, span, a, button, input, label {
+  font-size: 16px;   /* base size */
+  line-height: 16px;
+}
+
+/* Not really necessary I don't think, but it keeps sizing consistent */
+input, button {
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 16px;
 }

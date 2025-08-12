@@ -1,0 +1,96 @@
+html, body {
+  background-color: #1d2021;
+  color: #fbf1c7;
+  user-select: text;
+}
+
+a {
+  color: #52a4aa;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+  color: #cc241d;
+}
+
+h1 {
+  margin: 0 0 16px 0;
+}
+
+h2 {
+  margin: 0 0 12px 0;
+}
+
+button, input {
+  background-color: #1d2021;
+  color: #d4be98;
+  border: 1px solid #d4be98;
+  padding: 8px 12px;
+  font-family: inherit;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover,
+input:focus {
+  background-color: #fbf1c7;
+  color: #1d2021;
+  border-color: #d4be98;
+  outline: none;
+}
+
+details {
+    margin-bottom: 8px;
+    background-color: #1d2021;
+    color: #fbf1c7;
+    border: 1px solid #fbf1c7;
+}
+
+.divdet {
+    padding-left: 4px;
+}
+
+summary {
+    padding-left: 4px;
+    cursor: pointer;
+    background-color: #d4be98;
+    color: #1d2021;
+}
+
+
+details[open] > summary {
+    cursor: pointer;
+    background-color: #fbf1c7;
+    color: #1d2021;
+}
+
+/* Scrollbar styling for modern browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1d2021;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #d4be98;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+tr:nth-child(odd) {
+    color: #d4be98;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #fbf1c7;
+}
