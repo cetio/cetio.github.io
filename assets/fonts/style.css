@@ -15,6 +15,7 @@
 .fraktur-fb {
   font-size: 128px;
   line-height: 128px;
+  margin: 32px;
   font-family: 'Heraldic', serif;
   display: none;
 }
