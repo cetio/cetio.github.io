@@ -12,11 +12,7 @@
   font-style: normal;
 }
 
-.fraktur-fb {
-  font-size: 128px;
-  line-height: 128px;
-  margin: 32px;
-  font-family: 'Heraldic', serif;
+.fallback {
   display: none;
 }
 
@@ -25,7 +21,7 @@
     display: none;
   }
 
-  .fraktur-fb {
+  .fallback {
     display: block;
   }
 }
@@ -48,8 +44,8 @@ body, body * {
 
 /* Explicitly override headers and common text elements */
 h1 {
-  font-size: 64x;
-  line-height: 64px;
+  font-size: 128x;
+  line-height: 128px;
 }
 
 h2 {
