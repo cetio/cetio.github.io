@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: 'Heraldic';
-  src: url('Heraldic\ Shadows.otf') format('opentype');
+  src: url('HeraldicShadows-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -61,9 +61,15 @@ h3 {
   line-height: 24px;
 }
 
-h4, h5, h6, p, span, a, button, input, label {
+h4, h5, p, span, a, button, input, label {
   font-size: 16px;
   line-height: 16px;
+}
+
+h6 {
+  font-size: 12px;
+  line-height: 12px;
+  margin: 0;
 }
 
 /* Not really necessary I don't think, but it keeps sizing consistent */
