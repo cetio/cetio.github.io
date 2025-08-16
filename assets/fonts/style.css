@@ -1,77 +1,82 @@
 @font-face {
-  font-family: 'IBM';
-  src: url('MxPlus_IBM_VGA_9x16.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'IBM';
+    src: url('MxPlus_IBM_VGA_9x16.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Heraldic';
-  src: url('HeraldicShadows-Regular.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'Heraldic';
+    src: url('HeraldicShadows-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 
 .fallback {
-  display: none;
+    display: none;
+    font-size: 128px; 
+    line-height: 128px; 
+    margin: 16px; 
+    font-family: 'Heraldic', serif; 
+    text-align: center;
 }
 
 @media (max-width: 600px) {
-  pre {
-    display: none;
-  }
+    pre {
+        display: none;
+    }
 
-  .fallback {
-    display: block;
-  }
+    .fallback {
+        display: block;
+    }
 }
 
 /* Set the font so everything uses IBM VGA */
-body {
-  font-family: 'IBM', monospace;
+body, pre, code {
+    font-family: 'IBM', monospace;
 }
 
 /* Default font sizing */
 html {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 /* Force all text elements to use multiples of 16px */
 body, body * {
-  font-size: inherit;
-  line-height: 1;
+    font-size: inherit;
+    line-height: 1;
 }
 
 /* Explicitly override headers and common text elements */
 h1 {
-  font-size: 128x;
-  line-height: 128px;
+    font-size: 64x;
+    line-height: 64px;
 }
 
 h2 {
-  font-size: 32px;
-  line-height: 32px;
+    font-size: 32px;
+    line-height: 32px;
 }
 
 h3 {
-  font-size: 24px;
-  line-height: 24px;
+    font-size: 24px;
+    line-height: 24px;
 }
 
-h4, h5, p, span, a, button, input, label {
-  font-size: 16px;
-  line-height: 16px;
+h4, h5, p, span, a, button, input, label, code, time {
+    font-size: 16px;
+    line-height: 16px;
 }
 
 h6 {
-  font-size: 12px;
-  line-height: 12px;
-  margin: 0;
+    font-size: 12px;
+    line-height: 12px;
+    margin: 0;
 }
 
 /* Not really necessary I don't think, but it keeps sizing consistent */
 input, button {
-  font-family: inherit;
-  font-size: 16px;
-  line-height: 16px;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 16px;
 }
