@@ -180,11 +180,11 @@ th, td {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: #000;
     border: 1px solid #fbf1c7;
 }
 
 .color-swatch span {
+    color: #1d2021;
     opacity: 0;
     white-space: nowrap;
     transition: opacity .2s ease;
