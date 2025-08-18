@@ -197,3 +197,9 @@ th, td {
 .color-swatch:hover span {
     opacity: 1;
 }
+
+.badge {
+    border: 1px solid #fbf1c7; 
+    color: #1d2021; 
+    padding: 6px 12px;
+}
