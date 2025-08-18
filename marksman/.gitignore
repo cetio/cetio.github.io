@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/marksman
+marksman.so
+marksman.dylib
+marksman.dll
+marksman.a
+marksman.lib
+marksman-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst

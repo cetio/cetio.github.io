@@ -22,8 +22,12 @@
 }
 
 @media (max-width: 600px) {
-    pre {
+    header pre {
         display: none;
+    }
+
+    pre code {
+        display: block;
     }
 
     .fallback {
