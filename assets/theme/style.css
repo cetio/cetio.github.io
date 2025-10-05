@@ -147,6 +147,10 @@ table {
     border-collapse: collapse;
 }
 
+tr:nth-child(even) {
+    color: #fbf1c7;
+}
+
 tr:nth-child(odd) {
     color: #d4be98;
 }
@@ -202,4 +206,28 @@ th, td {
     border: 1px solid #fbf1c7; 
     color: #1d2021; 
     padding: 6px 12px;
+}
+
+svg {
+    background: none;
+}
+
+.grid-line { 
+    stroke:#d4be98; 
+    stroke-width: 1; 
+}
+
+.grid-line-axis { 
+    stroke:#fbf1c7; 
+    stroke-width: 2; 
+}
+
+.grid { 
+    stroke:#fbf1c7; 
+    stroke-width: 2;
+    fill:none; 
+}
+
+text {
+    fill: #fbf1c7;
 }
