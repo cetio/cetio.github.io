@@ -176,6 +176,7 @@ th, td {
 
 .color-swatch {
     position: relative;
+    margin-top: 24px;
     width: 24px;
     height: 24px;
     cursor: pointer;
