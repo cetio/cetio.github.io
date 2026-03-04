@@ -178,6 +178,41 @@
       "github": "https://github.com/cetio/Depcat"
     },
     {
+      "title": "Swaypaper",
+      "languages": ["d"],
+      "badges": ["Daemon", "Desktop Appearance", "Sway"],
+      "description": "Minimal SWWW wrapper for slideshow wallpapers from multiple directories.",
+      "github": "https://github.com/cetio/swaypaper"
+    },
+    {
+      "title": "Challenge02",
+      "languages": ["d"],
+      "badges": ["Challenge", "Encryption"],
+      "description": "Challenge library for SIMD high entropy encryption algorithms, CAHS 2024.",
+      "github": "https://github.com/cetio/challenge02"
+    },
+    {
+      "title": "GarbageCorruptor",
+      "languages": ["csharp"],
+      "badges": ["CoreCLR", "Experimental"],
+      "description": "Corrupts the GC heap as optimally as possible. Experiment on CoreCLR exposure.",
+      "github": "https://github.com/cetio/GarbageCorruptor"
+    },
+    {
+      "title": "UndeadInterop",
+      "languages": ["csharp"],
+      "badges": ["Windows NTAPI", "Interoperability", "Code Generation"],
+      "description": "Syscall library for C#, using shellcode and exports to resolve and execute syscalls as well as detect hooks on functions.",
+      "github": "https://github.com/cetio/UndeadInterop"
+    },
+    {
+      "title": "Rio",
+      "languages": ["csharp"],
+      "badges": ["Virtual Assembly", "Obfuscation", "Dynamic Scripting"],
+      "description": "Assembly-like dynamic scripting language, with C# object wrappers, designed for code virtualization.",
+      "github": "https://github.com/cetio/Rio"
+    },
+    {
       "title": "MhyprotExp",
       "languages": ["csharp"],
       "badges": ["Kernel R/W", "AoB Scanning", "Driver Exploit"],
