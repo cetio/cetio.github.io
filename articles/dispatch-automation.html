@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispatch-oriented browser automation &middot; cetio</title>
+    <link rel="stylesheet" href="../assets/fonts/style.css">
+    <link rel="stylesheet" href="../assets/theme/style.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <pre style="margin-bottom: 0px;">
+                          s       .                
+                         :8      @88>              
+                        .88      %8P          u.   
+      .        .u      :888ooo    .     ...ue888b  
+ .udR88N    ud8888.  -*8888888  .@88u   888R Y888r 
+&lt;888'888k :888'8888.   8888    ''888E`  888R I888&gt; 
+9888 'Y"  d888 '88%"   8888      888E   888R I888&gt; 
+9888      8888.+"      8888      888E   888R I888&gt; 
+9888      8888L       .8888Lu=   888E  u8888cJ888  
+?8888u../ '8888c. .+  ^%888*     888&amp;   "*888*P"   
+ "8888P'   "88888%      'Y"      R888"    'Y"      
+   "P'       "YP'                 ""               
+        </pre>
+        <h2 class="fallback" style="font-size: 128px; line-height: 128px; margin: 16px; margin-bottom: 0px; font-family: 'Heraldic', serif;">cetio</h2>
+
+        <div class="left-align">
+            <h2 style="margin-bottom: 0"><a href="/index.html" title="Back to index">&larr;</a></h2>
+            <h3>Dispatch-oriented browser automation: treating Selenium like a runtime</h3>
+        </div>
+
+        <div class="left-align">
+            <span>&middot;</span>
+            <time style="padding-left: 8px;">December 9, 2025</time>
+            <a href="https://www.linkedin.com/pulse/how-i-automated-my-workflow-ruby-selenium-ii-benjamin-johnston-e09cc" target="_blank" rel="noopener noreferrer" class="inline-linkedin" style="padding-left: 12px;">
+                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                original on LinkedIn
+            </a>
+        </div>
+    </header>
+
+    <main>
+      <article>
+        <i>
+            Linear Selenium scripts fight the browser. Every stale element, every blind <code>sleep</code>, every &ldquo;why did this refresh again&rdquo; is a symptom of the same problem: trying to force determinism on an environment that is fundamentally reactive. This is a write-up of the architecture I moved to after a month of iterating on a Ruby + Selenium workflow against a site whose DOM changes under me.
+        </i>
+
+        <hr>
+
+        <h3>The failure mode of linear scripts</h3>
+        <p>
+            A linear automation script looks like a recipe: click, wait 2 seconds, click, wait 3 seconds, fill form, submit. It breaks the first time the page does literally anything you didn&rsquo;t expect. A background fetch delays a control by 500ms and a step fails. An A/B test injects an extra confirmation dialog and the next selector is stale. A refresh is required because state didn&rsquo;t settle and now you have to unwind whatever was mid-flight.
+        </p>
+        <p>
+            Each individual fix is a one-line patch. The cumulative effect is a fragile script nobody wants to touch.
+        </p>
+
+        <h3>The page as a state machine</h3>
+        <p>
+            The reframe is to model each page as a small state machine with explicit, <em>observable</em> states: <code>idle</code>, <code>pending</code>, <code>actionable</code>, <code>completed</code>, <code>error</code>. These states are <em>derived from the DOM</em> (a spinner being present, a submit button being enabled, a specific data attribute appearing), not from a clock.
+        </p>
+
+        <div class="callout">
+            A state that is observable in the DOM is a state you can wait for. A state that is only implicit in the timing of your script is a state you can only guess at.
+        </div>
+
+        <h3>Events on a dispatch queue, not steps in a script</h3>
+        <p>
+            Once the page has observable states, actions become small composable events (<code>click</code>, <code>wait-for</code>, <code>verify</code>, <code>screenshot</code>, <code>reconcile</code>) placed on a dispatch queue. A lightweight event loop pulls the next event, checks the current page state, and decides whether to execute, re-route, cancel, or retry.
+        </p>
+
+        <pre><code>loop do
+  event = queue.next
+  state = Page.observe           # read current DOM state
+
+  next queue.defer(event)  if event.precondition_unmet?(state)
+  next queue.drop(event)   if event.superseded_by?(state)
+
+  result = event.execute(driver)
+
+  queue.enqueue(event.followups(result))
+  raise event.error_for(result) unless event.postcondition_met?(driver)
+end</code></pre>
+
+        <p>
+            Every event carries three things: a predicate on the current state saying whether it should run right now, the action itself, and a postcondition check that confirms the action actually had the effect the caller expected. Events are idempotent by design: retrying is safe because the precondition check will either fire or skip.
+        </p>
+
+        <h3>Concrete patterns</h3>
+        <ul>
+            <li><strong>Observable waits beat blind sleeps.</strong> Wait on visibility, attribute changes, network idleness, or a timestamped DOM marker, not on a wall-clock duration.</li>
+            <li><strong>Layered selectors.</strong> Prefer stable <code>data-*</code> attributes or ARIA roles, fall back to semantic paths, and only resort to positional lookup when there is no other option.</li>
+            <li><strong>Precondition / postcondition on every event.</strong> If the precondition fails, defer. If the postcondition fails, raise. No action completes silently.</li>
+            <li><strong>Throttle by queue, not by sleeping.</strong> A queue-level rate limiter adds natural variability and prevents bursts from outrunning the DOM.</li>
+            <li><strong>Instrument heavily.</strong> Attempt counts per event, median completion times, and a rolling log of the last N events make debugging timing issues much cheaper than stepping through headful sessions.</li>
+            <li><strong>Use CDP where the DOM isn&rsquo;t enough.</strong> Early script injection or network inspection sidesteps whole classes of race conditions that Selenium alone can&rsquo;t handle.</li>
+        </ul>
+
+        <h3>What changed in practice</h3>
+        <p>
+            Stale-element errors dropped from &ldquo;constant&rdquo; to &ldquo;almost never&rdquo; because the dispatch layer re-reads the DOM before every action. Page refreshes disappeared because refresh was a band-aid for racing against state that was never actually observed. Adding a new task variation became a one-line enqueue or a small handler beside existing code, instead of a rewrite of the central flow.
+        </p>
+        <p>
+            Most importantly, debugging got interactive. When an event fails, its log line carries the state it observed, the precondition it checked, and the postcondition that failed. You can replay recent queue activity locally without re-running the whole session.
+        </p>
+
+        <h3>Takeaways</h3>
+        <ul>
+            <li>Make state observable. If you can&rsquo;t query it from the DOM, you can&rsquo;t reliably wait for it.</li>
+            <li>Treat each action as a verifiable event with explicit preconditions and postconditions.</li>
+            <li>Keep events small, composable, and idempotent.</li>
+            <li>Put throttling and retries in the queue, not in each handler.</li>
+            <li>The script stops being a recipe and starts being a tiny runtime. That&rsquo;s the point.</li>
+        </ul>
+      </article>
+    </main>
+
+    <footer>
+        <div class="right-align">
+            <p style="text-align: right; margin-top: 1em; font-size: 0.9em; color: #d4be98;">
+                &copy; 2026 cet
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

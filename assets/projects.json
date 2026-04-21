@@ -49,6 +49,16 @@
         "viewBox": "0 0 24 24",
         "path": "M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z"
       }
+    },
+    {
+      "id": "cpp",
+      "label": "C++",
+      "url": "https://isocpp.org/",
+      "icon": {
+        "title": "C++",
+        "viewBox": "0 0 24 24",
+        "path": "M22.394 6c-.167-.29-.398-.543-.652-.69L12.926.22c-.509-.294-1.34-.294-1.848 0L2.26 5.31c-.508.293-.923 1.013-.923 1.6v10.18c0 .294.104.62.271.91.167.29.398.543.652.69l8.816 5.09c.508.293 1.34.293 1.848 0l8.816-5.09c.254-.147.485-.4.652-.69.167-.29.27-.616.27-.91V6.91c.003-.294-.1-.62-.268-.91zM12 19.11c-3.92 0-7.109-3.19-7.109-7.11 0-3.92 3.19-7.11 7.11-7.11a7.133 7.133 0 0 1 6.156 3.553l-3.076 1.78a3.567 3.567 0 0 0-3.08-1.78A3.56 3.56 0 0 0 8.444 12 3.56 3.56 0 0 0 12 15.555a3.57 3.57 0 0 0 3.08-1.778l3.078 1.78A7.135 7.135 0 0 1 12 19.11zm7.11-6.715h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79zm2.962 0h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79z"
+      }
     }
   ],
   "projects": [
@@ -56,21 +66,36 @@
       "title": "Intuit",
       "languages": ["d"],
       "badges": ["LLM", "Embeddings", "Library"],
-      "description": "Library for language and embeddings models for D with options, tooling, and much much more, supporting OpenAI-style endpoints natively.",
+      "starred": true,
+      "description": [
+        "A D library for talking to language and embedding model endpoints through native D structures instead of thin JSON shims, currently covering both OpenAI-compatible APIs (including local LMStudio-style servers, Qwen, Deepseek, Phi) and Claude.",
+        "Provides chat completions with streaming, single and batch embeddings, and per-model configuration of temperature, max tokens, top-p, and presence/frequency penalties via a persistent Model object.",
+        "Ships SIMD-optimized vector operations in `intuit.space` (cosine similarity, dot product, Euclidean distance, L2 norm, in-place normalization, normalized mean) using AVX intrinsics, and leans on D's compile-time metaprogramming for type-safe JSON serialization."
+      ],
       "github": "https://github.com/cetio/intuit"
     },
     {
       "title": "Akashi",
       "languages": ["d"],
       "badges": ["Corpus", "Research Data"],
-      "description": "Corpus for PubChem, Wikipedia, Psychonaut Wiki, PubMed, and PMC.",
+      "starred": true,
+      "description": [
+        "A D library for chemistry-aware retrieval, source resolution, and text parsing across public scientific and knowledge sources: PubChem compounds, assays, proteins, and 3D conformers, plus Wikipedia, PsychonautWiki, Erowid experience reports, PubMed, and PMC.",
+        "Unifies these behind a shared `Page` type that lazily fetches content and exposes `raw`, `document`, `sections`, `preamble`, and `fulltext`, with `akashi.text` parsing wikitext and XML into a compact AST for rendering or plain-text extraction.",
+        "Includes cross-source resolution (e.g. resolving a PubChem compound to its Wikipedia or PsychonautWiki page), similarity search on PubChem CIDs, and reusable HTTP + rate-limiting primitives via `akashi.composer` for building new source adapters. Designed to pair with Intuit but fully standalone."
+      ],
       "github": "https://github.com/cetio/akashi"
     },
     {
       "title": "Chemica",
       "languages": ["d"],
       "badges": ["PubChem", "Wikipedia", "PMC"],
-      "description": "PubChem wiki app for compounds with integration for Wikipedia, Psychonaut Wiki, PubMed, and PMC.",
+      "starred": true,
+      "description": [
+        "A GTK-based PubChem wiki app for compounds with a 3D molecular view (small and expanded) featuring atomic tooltips and full bond visualization, alongside chemical properties (XLogP, MW, formula, charge, energy) and identifiers (SMILES, InChI, InChIKey, CAS).",
+        "Automatically aggregates dosage data (route of administration, bioavailability, thresholds) and performs similarity matching using structural scoring combined with XLogP and MW to locate analogous compounds and fill gaps in dosage information.",
+        "Builds on Akashi to pull in Wikipedia, PsychonautWiki/Erowid, PubMed, and PMC, with an `infer` layer (`ease`, `config`, `resolve`) that uses local AI synthesis to blend overlapping sources into coherent entries."
+      ],
       "github": "https://github.com/cetio/chemica",
       "demoVideo": {
         "type": "video",
@@ -88,15 +113,13 @@
       "title": "Webull-SDK",
       "languages": ["d"],
       "badges": ["Finance", "SDK"],
-      "description": "Webull SDK for D with native-feeling finance types.",
+      "starred": true,
+      "description": [
+        "A D SDK for the Webull OpenAPI with first-class `Security` objects that support auto-updating cached market data, covering US stocks and options, HK and CN stocks, crypto, and futures.",
+        "Implements the full read-side market data surface as single and batch operations: OHLCV bars, snapshots, Level-2 order book depth, tick history, and footprint (delta-volume buy/sell breakdowns).",
+        "Handles the authentication pipeline end-to-end: HMAC-SHA1 request signing via `webull.composer`, token creation with MFA-approval polling callbacks, token validation, and endpoint permission probing."
+      ],
       "github": "https://github.com/cetio/webull-sdk"
-    },
-    {
-      "title": "Turnt",
-      "languages": ["d"],
-      "badges": ["Music", "Player", "UI"],
-      "description": "Music player using a vinyl record centric theme and minimal UI.",
-      "github": "https://github.com/cetio/turnt"
     },
     {
       "title": "Jitsort",
@@ -109,8 +132,12 @@
       "title": "AutoHandshake!",
       "languages": ["ruby"],
       "badges": ["Selenium", "Automation", "Workflow"],
-      "description": "Comprehensive workflow automation suite for Handshake AI.",
-      "note": "Reduces manual effort by 80-99%"
+      "starred": true,
+      "description": [
+        "A comprehensive Ruby workflow automation suite for Handshake AI, replacing repetitive manual annotation and triage work with scripted, auditable runs.",
+        "Drives the platform through Selenium, session management, and resilient selectors so long-running jobs survive UI changes and intermittent failures.",
+        "Allows for fine-control by workers while facilitating up to 95% reduction in manual effort."
+      ]
     },
     {
       "title": "LinkedIn",
@@ -123,7 +150,12 @@
       "title": "Nimbus",
       "languages": ["c"],
       "badges": ["Linux", "CLI", "DDC/CI"],
-      "description": "Linux for configuring external and integrated displays through DDC/CI and backlight, with powerful CLI queries.",
+      "starred": true,
+      "description": [
+        "A lightweight Linux CLI for controlling display brightness, contrast, gamma, color temperature, and arbitrary VCP (Video Control Protocol) features, with a single unified interface over both laptop backlights (`/sys/class/backlight`) and external monitors (DDC/CI via ddcutil).",
+        "Supports human-friendly labels (`light`, `brightness`, `backlight`, `contrast`, `gamma`, `temperature`) as well as raw hex VCP codes, with percentage or absolute values and multi-value commands like `nimbus set light=80%, contrast=60`.",
+        "Auto-detects connected displays and their capabilities (`nimbus list`), prefers backlight control over DDC brightness when both are available, and supports range queries such as `nimbus get min/light/max` for scripting use."
+      ],
       "github": "https://github.com/cetio/nimbus"
     },
     {
@@ -144,15 +176,20 @@
       "title": "Cassowary",
       "languages": ["csharp"],
       "badges": ["CoreCLR", "Reflection"],
-      "description": "CoreCLR manipulation library written entirely in managed code, providing significantly faster reflection and dynamic capabilities.",
-      "note": "Currently being developed privately using Microsoft's CLRMD library.",
+      "starred": true,
+      "description": [
+        "A managed-C# library that exposes CoreCLR internals directly, positioned as an alternative to Novus and Son of Strike for code that needs to reach past the BCL into the runtime itself.",
+        "Models the core CLR structures as first-class C# types: `MethodTable`, `EEClass` (including `ArrayClass`, `DelegateEEClass`, `LayoutEEClass`), `MethodDesc` / `MethodDescChunk`, `FieldDesc`, `Stub`, `UMThunkMarshInfo`, `NativeCodeVersion`, `WriteableData`, `CCWTemplate`, `GuidInfo`, `SparseVTableMap`, and related metadata.",
+        "Enables reflection-like operations on top of those structures: object allocation, instance construction, initialization, casts, boxing, and VTable/layout inspection, without dropping into native code."
+      ],
+      "note": "No longer maintained; succeeded by Godwit.",
       "github": "https://github.com/cetio/Cassowary"
     },
     {
       "title": "Godwit",
       "languages": ["d"],
       "badges": ["Rewrite", "Reference"],
-      "description": "Semi-completed rewrite of Cassowary in D, with all structures implemented but no logic. Useful as a reference implementation but not functional.",
+      "description": "Successor to Cassowary: partial D rewrite with all CLR structures modeled, serving as a reference implementation while the behavior layer is ported over.",
       "github": "https://github.com/cetio/godwit"
     },
     {
@@ -213,11 +250,39 @@
       "github": "https://github.com/cetio/Rio"
     },
     {
-      "title": "MhyprotExp",
+      "title": "MihoyoEXP",
       "languages": ["csharp"],
       "badges": ["Kernel R/W", "AoB Scanning", "Driver Exploit"],
-      "description": "Process enumeration, module enumeration, AoB scanning, kernel R/W, and more by exploiting vulnerable IOCTL for the mhyprot2 driver.",
-      "github": "https://github.com/cetio/MhyprotExp"
+      "description": "Obsolete Mhyprot2 exploitation library capable of advanced process and memory manipulation with vulnerable IOCTL communications.",
+      "github": "https://github.com/cetio/MihoyoEXP"
+    },
+    {
+      "title": "VEXAPI",
+      "languages": ["cpp"],
+      "badges": ["Reverse Engineering", "Firmware", "Robotics"],
+      "description": "Reverse analysis and documentation of VEX Robotics internal firmware and APIs.",
+      "github": "https://github.com/cetio/VEXAPI"
+    },
+    {
+      "title": "Mutagen",
+      "languages": ["d"],
+      "badges": ["FLAC", "MP4", "MP3"],
+      "description": "Format support for FLAC, MP4, and MP3 as well as full catalog parsing for tracks, albums, and artists.",
+      "github": "https://github.com/cetio/mutagen"
+    },
+    {
+      "title": "Git-Around",
+      "languages": ["python"],
+      "badges": ["Git", "CLI", "Housekeeping"],
+      "description": "Configurable Python Git housekeeping utility for maintaining local repositories and modules.",
+      "github": "https://github.com/cetio/git-around"
+    },
+    {
+      "title": "SImD",
+      "languages": ["d"],
+      "badges": ["SIMD", "Static Arrays", "Vectors"],
+      "description": "D SIMD implementation using static arrays for near-native vectors.",
+      "github": "https://github.com/cetio/SImD"
     }
   ]
 }

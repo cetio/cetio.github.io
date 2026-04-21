@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic retrieval on laptops &middot; cetio</title>
+    <link rel="stylesheet" href="../assets/fonts/style.css">
+    <link rel="stylesheet" href="../assets/theme/style.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <pre style="margin-bottom: 0px;">
+                          s       .                
+                         :8      @88>              
+                        .88      %8P          u.   
+      .        .u      :888ooo    .     ...ue888b  
+ .udR88N    ud8888.  -*8888888  .@88u   888R Y888r 
+&lt;888'888k :888'8888.   8888    ''888E`  888R I888&gt; 
+9888 'Y"  d888 '88%"   8888      888E   888R I888&gt; 
+9888      8888.+"      8888      888E   888R I888&gt; 
+9888      8888L       .8888Lu=   888E  u8888cJ888  
+?8888u../ '8888c. .+  ^%888*     888&amp;   "*888*P"   
+ "8888P'   "88888%      'Y"      R888"    'Y"      
+   "P'       "YP'                 ""               
+        </pre>
+        <h2 class="fallback" style="font-size: 128px; line-height: 128px; margin: 16px; margin-bottom: 0px; font-family: 'Heraldic', serif;">cetio</h2>
+
+        <div class="left-align">
+            <h2 style="margin-bottom: 0"><a href="/index.html" title="Back to index">&larr;</a></h2>
+            <h3>Semantic retrieval on laptops: embeddings, centroids, and SIMD</h3>
+        </div>
+
+        <div class="left-align">
+            <span>&middot;</span>
+            <time style="padding-left: 8px;">December 3, 2025</time>
+            <a href="https://www.linkedin.com/pulse/efficient-semantic-retrieval-laptops-benjamin-johnston-qzqke" target="_blank" rel="noopener noreferrer" class="inline-linkedin" style="padding-left: 12px;">
+                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                original on LinkedIn
+            </a>
+        </div>
+    </header>
+
+    <main>
+      <article>
+        <i>
+            Cloud-hosted retrieval is easy because you have infinite RAM and somebody else&rsquo;s GPU. Running the same stack on a laptop forces real decisions about dimensionality, index structure, compute layout, and quantization. This is a write-up of how Akashi and Intuit do semantic retrieval locally, and the specific trade-offs that make it tractable.
+        </i>
+
+        <hr>
+
+        <h3>Embeddings as a geometric substrate</h3>
+        <p>
+            An embedding maps a span of text into a fixed-length vector in &real;<sup>d</sup>. Similar text ends up near each other under some distance metric, usually cosine similarity or L2. Once text is a point, retrieval is just geometry: nearest-neighbor search, k-means clustering, centroid summarization, reranking by reweighted distance.
+        </p>
+
+        <div class="callout">
+            On a laptop, the real costs are memory bandwidth and SIMD lane utilization, not raw FLOPs. Good retrieval on local hardware is mostly a data-layout problem.
+        </div>
+
+        <h3>Coarse centroids, fine-grained local search</h3>
+        <p>
+            Scanning every vector for every query is O(N&middot;d). At millions of chunks that is already too slow on a laptop. The standard fix is a two-stage index: cluster the corpus once, keep a centroid per cluster, and at query time restrict the fine-grained search to the top-<em>k</em> nearest clusters.
+        </p>
+
+        <pre><code>// coarse pass: which clusters to inspect
+int[] shortlist = argTopK(dot(query, centroids), k: 8);
+
+// fine pass: full-precision search only inside those
+Candidate[] hits;
+foreach (c; shortlist)
+    hits ~= nearest(query, members[c], n: 20);
+
+return rerank(hits, query);</code></pre>
+
+        <p>
+            With ~&radic;N clusters, a typical query touches a small constant fraction of the corpus instead of all of it. Recall loss is bounded by how well the centroids separate the data, and is usually recoverable with a slightly wider shortlist.
+        </p>
+
+        <h3>Data layout beats algorithm</h3>
+        <p>
+            Cosine similarity between two <code>float[d]</code> vectors is the inner-product kernel from any linear algebra library. The wins on laptop hardware are not algorithmic; they come from how the vectors are stored:
+        </p>
+
+        <ul>
+            <li>Store vectors as a contiguous <code>float[N][d]</code> matrix in row-major order so one SIMD load streams <code>d/8</code> lanes at a time with AVX2, or <code>d/16</code> with AVX-512.</li>
+            <li>L2-normalize vectors at write time. Cosine similarity collapses to a single FMA-friendly dot product, no per-query sqrt.</li>
+            <li>Keep the query vector small and hot. It fits in L1 and stays there across a whole cluster scan.</li>
+            <li>Batch by cluster, not by query. All the vectors you compare against a given query live in one contiguous run.</li>
+        </ul>
+
+        <p>
+            Intuit&rsquo;s <code>intuit.space</code> module exposes <code>cosineSimilarity</code>, <code>dotProduct</code>, <code>euclideanDistance</code>, <code>l2Norm</code>, <code>normalize</code>, and <code>normMean</code> as SIMD-specialized primitives so downstream code can stay algorithmic without losing the low-level speed.
+        </p>
+
+        <h3>Quantization for memory, not accuracy</h3>
+        <p>
+            Full <code>float32</code> embeddings at d=1024 cost 4&nbsp;KB per chunk. At a million chunks that is 4&nbsp;GB just for the index. <code>float16</code> halves it with no meaningful recall change on most retrieval workloads; int8 scalar quantization with per-vector scale halves it again.
+        </p>
+        <p>
+            The useful insight on a laptop is that quantization is about <em>staying in cache</em>. Int8 vectors let a much larger working set live in L2/L3, which in practice dominates any precision loss.
+        </p>
+
+        <h3>Determinism and pure functions make this testable</h3>
+        <p>
+            Every transform in the pipeline (chunking, embedding, normalization, centroid computation, shortlist selection, reranking) is a pure function of its inputs. That makes clusters reproducible across runs, makes it possible to check centroid stability across corpus updates, and makes it possible to golden-test retrieval on a fixed corpus snapshot without spinning up any infrastructure.
+        </p>
+
+        <h3>Models that fit the laptop envelope</h3>
+        <p>
+            The pair that has worked best for me is Qwen 0.6B for embeddings and Qwen 4B for language. The embedding model is small enough to re-embed hundreds of thousands of chunks in an afternoon on CPU; the language model is small enough to stream tokens interactively while still producing useful extractive summaries when given retrieved context.
+        </p>
+
+        <h3>Takeaways</h3>
+        <ul>
+            <li>Treat retrieval as geometry, not string matching.</li>
+            <li>Use coarse centroids to prune, then do full-precision search inside a small shortlist.</li>
+            <li>Contiguous, normalized, SIMD-friendly layouts matter more than which inner-product algorithm you pick.</li>
+            <li>Quantize to keep the working set in cache, not to save disk.</li>
+            <li>Keep the pipeline pure and deterministic so you can actually test it.</li>
+        </ul>
+      </article>
+    </main>
+
+    <footer>
+        <div class="right-align">
+            <p style="text-align: right; margin-top: 1em; font-size: 0.9em; color: #d4be98;">
+                &copy; 2026 cet
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

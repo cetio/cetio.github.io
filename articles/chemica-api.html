@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Akashi &middot; cetio</title>
+    <link rel="stylesheet" href="../assets/fonts/style.css">
+    <link rel="stylesheet" href="../assets/theme/style.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <pre style="margin-bottom: 0px;">
+                          s       .                
+                         :8      @88>              
+                        .88      %8P          u.   
+      .        .u      :888ooo    .     ...ue888b  
+ .udR88N    ud8888.  -*8888888  .@88u   888R Y888r 
+&lt;888'888k :888'8888.   8888    ''888E`  888R I888&gt; 
+9888 'Y"  d888 '88%"   8888      888E   888R I888&gt; 
+9888      8888.+"      8888      888E   888R I888&gt; 
+9888      8888L       .8888Lu=   888E  u8888cJ888  
+?8888u../ '8888c. .+  ^%888*     888&amp;   "*888*P"   
+ "8888P'   "88888%      'Y"      R888"    'Y"      
+   "P'       "YP'                 ""               
+        </pre>
+        <h2 class="fallback" style="font-size: 128px; line-height: 128px; margin: 16px; margin-bottom: 0px; font-family: 'Heraldic', serif;">cetio</h2>
+
+        <div class="left-align">
+            <h2 style="margin-bottom: 0"><a href="/index.html" title="Back to index">&larr;</a></h2>
+            <h3>Building Akashi: identity, integration, and one shared <code>Page</code> type</h3>
+        </div>
+
+        <div class="left-align">
+            <span>&middot;</span>
+            <time style="padding-left: 8px;">April 21, 2026</time>
+            <a href="https://www.linkedin.com/pulse/chemica-ii-api-benjamin-johnston-ku2jc" target="_blank" rel="noopener noreferrer" class="inline-linkedin" style="padding-left: 12px;">
+                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                original on LinkedIn
+            </a>
+        </div>
+    </header>
+
+    <main>
+      <article>
+        <i>
+            Akashi is the D library that sits underneath Chemica. It unifies PubChem, Wikipedia, PsychonautWiki, Erowid, PubMed, and PMC behind one surface. This is a write-up of the three design decisions that actually earned their keep: picking an identity anchor, a single shared page abstraction, and a composer layer that owns the network.
+        </i>
+
+        <hr>
+
+        <h3>The problem: five schemas that disagree about "a compound"</h3>
+        <p>
+            Each scientific source models the world differently. PubChem keys on a numeric <code>CID</code> and a sprawling REST dialect. MediaWiki-family sources (Wikipedia, PsychonautWiki) speak Wikitext plus their own templates. PubMed and PMC live in NCBI&rsquo;s Entrez ecosystem and return JATS XML. None of them agree on what counts as a compound, what its canonical name is, or whether it even deserves its own page.
+        </p>
+        <p>
+            The job of the library is to make the caller never have to learn any of that.
+        </p>
+
+        <h3>Identity is the load-bearing wall</h3>
+        <p>
+            The single decision that collapsed most of the complexity was picking <em>one</em> source of truth for identity and treating every other integration as a resolution problem layered on top of it. PubChem got that role because PubChem is the only source that is both deterministic and exhaustive for small molecules.
+        </p>
+
+        <div class="callout">
+            Every other source is resolved <em>from</em> a PubChem CID, never toward one. That turns fuzzy string matching into structured lookup, and it means the resolution layer fails in one place instead of five.
+        </div>
+
+        <p>
+            Wikipedia resolution stops being &ldquo;fuzzy-match a title&rdquo; and becomes &ldquo;take the canonical name and known synonyms, rank candidate pages, and confirm against the chemistry infobox.&rdquo; PsychonautWiki follows the same pattern with a graceful fallback through parent compounds for the many psychoactives that don&rsquo;t have their own page. The core resolution layer was rewritten three times before I accepted that the right answer was to stop being clever and anchor everything to one trustworthy identifier.
+        </p>
+
+        <h3>One <code>Page</code> type to rule five sources</h3>
+        <p>
+            Every text source (Wikipedia, PsychonautWiki, PubMed, PMC) materializes as the same object:
+        </p>
+
+        <pre><code>struct Page
+{
+    string raw();        // untouched source payload
+    Document document(); // parsed AST (Wikitext or XML)
+    Section[] sections();
+    string preamble();
+    string fulltext();   // flattened plain text
+}</code></pre>
+
+        <p>
+            The frontend never learns which source produced a given page. That one abstraction erased a huge amount of special-case code in Chemica and made &ldquo;render whatever we have about caffeine&rdquo; a single code path instead of five.
+        </p>
+
+        <h3>Lazy hydration, no caching</h3>
+        <p>
+            Fields are fetched when they are first touched, and nothing is cached across calls. It reads heavier than it is: in practice, lazy hydration is simpler to reason about, easier to test, and honest about the fact that scientific data changes under you. If the caller wants caching, they add it at the call site where they actually know the correct lifetime.
+        </p>
+
+        <h3><code>akashi.composer</code>: network hygiene lives in one place</h3>
+        <p>
+            HTTP, retries, exponential backoff, and per-source rate limiting all live in <code>akashi.composer</code>. Every source adapter is written against it. Adding a sixth source later is a matter of writing a thin adapter, not relearning network hygiene.
+        </p>
+        <p>
+            Each module owns its own rate-limiting state (a clock and a minimum interval) instead of sharing a global singleton. Two modules hitting two providers never share a bottleneck, and when a provider changes policy, the fix is local.
+        </p>
+
+        <h3>Writing the parsers I didn&rsquo;t want to write</h3>
+        <p>
+            The Wikitext parser is a small AST with style <em>bitflags</em> instead of per-style node types. That keeps the tree compact, the renderer boring, and the transform layer able to do structural passes without switching on dozens of node kinds. Every existing D option either lost formatting, choked on templates, or pulled in an unwanted dependency.
+        </p>
+        <p>
+            PMC returns JATS XML, which is its own flavor of painful. Sharing utilities between the Wikitext and XML paths was one of those small cleanups that paid for itself many times over.
+        </p>
+
+        <h3>The extension test</h3>
+        <p>
+            After Chemica shipped I added a <code>pubchem/bio</code> module (genes, proteins, orthologs, pathways, disease associations) hydrated from PubChem&rsquo;s PUG REST and PUG View gene endpoints. Chemica doesn&rsquo;t use any of it yet. But it took an afternoon, not a refactor. That is the test I care about. Not &ldquo;does it work today,&rdquo; but &ldquo;how much does it cost me to extend.&rdquo;
+        </p>
+
+        <h3>What I&rsquo;d carry into the next one</h3>
+        <ul>
+            <li>Pick the identity anchor early. A bad identity model will cost more than a bad parser ever will.</li>
+            <li>Treat unreliable sources as unreliable. Build retries, rate limits, and fallbacks before you need them.</li>
+            <li>Write the boring abstraction. A shared <code>Page</code> type was worth more than any clever feature on top of it.</li>
+            <li>Own your parsers when you have to. A small purpose-built AST is often less code than integrating a generic one.</li>
+        </ul>
+      </article>
+    </main>
+
+    <footer>
+        <div class="right-align">
+            <p style="text-align: right; margin-top: 1em; font-size: 0.9em; color: #d4be98;">
+                &copy; 2026 cet
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

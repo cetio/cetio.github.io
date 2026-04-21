@@ -3,9 +3,8 @@
 
     const languageGrid = document.getElementById("language-grid");
     const projectsList = document.getElementById("projects-list");
-    const projectsHeaderLabel = document.getElementById("projects-header-label");
 
-    if (!languageGrid || !projectsList || !projectsHeaderLabel) {
+    if (!languageGrid || !projectsList) {
         return;
     }
 
@@ -25,6 +24,12 @@
         title: "Link",
         viewBox: "0 0 24 24",
         path: "M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zm5 16V12h2v9H3V3h9v2H5v14h14z"
+    };
+
+    const iconStar = {
+        title: "Starred",
+        viewBox: "0 0 24 24",
+        path: "M12 2l2.9 6.9L22 9.6l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.6L2 9.6l7.1-.7z"
     };
 
     const createIcon = (icon, fillColor) => {
@@ -50,17 +55,42 @@
 
     const safeArray = (value) => (Array.isArray(value) ? value : []);
 
+    const renderInlineMarkup = (text, parent) => {
+        if (!text) {
+            return;
+        }
+
+        const parts = String(text).split(/(`[^`\n]+`)/g);
+        parts.forEach((part) => {
+            if (!part) {
+                return;
+            }
+
+            if (part.length >= 2 && part.startsWith("`") && part.endsWith("`")) {
+                const code = document.createElement("code");
+                code.textContent = part.slice(1, -1);
+                parent.appendChild(code);
+            } else {
+                parent.appendChild(document.createTextNode(part));
+            }
+        });
+    };
+
     const render = (data) => {
         const languages = safeArray(data.languages);
         const projects = safeArray(data.projects);
         const languageMap = new Map(languages.map((language) => [language.id, language]));
 
         const filteredProjects = () => {
-            if (state.activeLanguageId === "all") {
-                return projects;
-            }
+            const base = state.activeLanguageId === "all"
+                ? projects.slice()
+                : projects.filter((project) => safeArray(project.languages).includes(state.activeLanguageId));
 
-            return projects.filter((project) => safeArray(project.languages).includes(state.activeLanguageId));
+            return base.sort((a, b) => {
+                const aStar = a.starred ? 1 : 0;
+                const bStar = b.starred ? 1 : 0;
+                return bStar - aStar;
+            });
         };
 
         const renderLanguageTiles = () => {
@@ -111,14 +141,6 @@
             const projectsToRender = filteredProjects();
             projectsList.innerHTML = "";
 
-            if (state.activeLanguageId === "all") {
-                projectsHeaderLabel.textContent = `Projects (${projectsToRender.length})`;
-            } else {
-                const activeLanguage = languageMap.get(state.activeLanguageId);
-                const languageLabel = activeLanguage ? activeLanguage.label : "Filtered";
-                projectsHeaderLabel.textContent = `${languageLabel} Projects (${projectsToRender.length})`;
-            }
-
             projectsToRender.forEach((project) => {
                 const card = document.createElement("article");
                 card.className = "project-card";
@@ -128,7 +150,20 @@
 
                 const title = document.createElement("h3");
                 title.style.margin = "0";
-                title.textContent = project.title || "Untitled";
+                title.style.display = "flex";
+                title.style.alignItems = "center";
+                title.style.gap = "6px";
+
+                const titleText = document.createElement("span");
+                titleText.className = "project-title-text";
+                titleText.textContent = project.title || "Untitled";
+                title.appendChild(titleText);
+
+                if (project.starred) {
+                    const star = createIcon(iconStar, "#fbf1c7");
+                    star.classList.add("project-star");
+                    title.appendChild(star);
+                }
 
                 const links = document.createElement("div");
                 links.className = "project-link-row";
@@ -190,10 +225,20 @@
                     card.appendChild(badges);
                 }
 
-                const description = document.createElement("p");
-                description.className = "project-description";
-                description.textContent = project.description || "";
-                card.appendChild(description);
+                const descriptionContent = project.description;
+                const descriptionParagraphs = Array.isArray(descriptionContent)
+                    ? descriptionContent
+                    : (descriptionContent ? [descriptionContent] : []);
+
+                descriptionParagraphs.forEach((paragraph, index) => {
+                    const p = document.createElement("p");
+                    p.className = "project-description";
+                    if (index > 0) {
+                        p.classList.add("project-description-continued");
+                    }
+                    renderInlineMarkup(paragraph, p);
+                    card.appendChild(p);
+                });
 
                 if (project.note) {
                     const note = document.createElement("p");
