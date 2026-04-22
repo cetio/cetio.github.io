@@ -174,6 +174,27 @@ details[open] > summary {
     color: #d4be98;
 }
 
+/* Issuing body brand colors */
+.cert-nasba {
+    color: #019d78;
+    font-weight: bold;
+}
+
+.cert-pmi {
+    color: #007ba7;
+    font-weight: bold;
+}
+
+.cert-comptia {
+    color: #C80F2E;
+    font-weight: bold;
+}
+
+.cert-handshake {
+    color: #d3fb52;
+    font-weight: bold;
+}
+
 .language-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -267,9 +288,10 @@ details[open] > summary {
     margin-top: 6px;
 }
 
-.project-badges .badge {
+.project-badge {
     background-color: #fbf1c7;
     color: #1d2021;
+    border: 1px solid #fbf1c7;
     padding: 4px 8px;
 }
 
@@ -447,10 +469,196 @@ th, td {
     opacity: 1;
 }
 
-.badge {
-    border: 1px solid #fbf1c7; 
-    color: #1d2021; 
-    padding: 6px 12px;
+.highlights {
+    margin: 10px 0 18px 0;
+}
+
+.highlights-viewport {
+    overflow: hidden;
+}
+
+.highlights-track {
+    display: flex;
+    transition: transform 0.35s ease;
+    will-change: transform;
+}
+
+.highlights-page {
+    flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.highlight-card {
+    border: 1px solid #fbf1c7;
+    padding: 12px 14px;
+    background-color: #1d2021;
+    box-sizing: border-box;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.highlight-card h3 {
+    margin: 0;
+    color: #fbf1c7;
+    font-size: 1em;
+}
+
+.highlight-card p {
+    margin: 0;
+    color: #d4be98;
+}
+
+.highlight-card code {
+    font-size: 0.9em;
+}
+
+.highlights-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.highlights-nav {
+    background: transparent;
+    border: 1px solid #d4be98;
+    color: #d4be98;
+    padding: 2px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+}
+
+.highlights-nav:hover,
+.highlights-nav:focus {
+    background-color: #d4be98;
+    color: #1d2021;
+    outline: none;
+}
+
+.highlights-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.highlights-dot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #d4be98;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.highlights-dot.is-active {
+    background-color: #52a4aa;
+    border-color: #52a4aa;
+}
+
+.highlights-dot-fill {
+    position: absolute;
+    inset: 0;
+    background-color: #52a4aa;
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+.highlights-dot.is-next .highlights-dot-fill {
+    animation: highlights-dot-fill 15s linear forwards;
+}
+
+.highlights.is-paused .highlights-dot.is-next .highlights-dot-fill {
+    animation-play-state: paused;
+}
+
+@keyframes highlights-dot-fill {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .highlights-dot.is-next .highlights-dot-fill {
+        animation: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .highlights-page {
+        grid-template-columns: 1fr;
+    }
+
+    .highlight-card {
+        min-height: auto;
+    }
+}
+
+.skills {
+    margin: 4px 0 18px 0;
+    padding: 12px 0;
+    border-top: 1px dashed #d4be98;
+    border-bottom: 1px dashed #d4be98;
+}
+
+.skills-title {
+    margin: 0 0 10px 0;
+    color: #fbf1c7;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 14px;
+    row-gap: 6px;
+    margin: 0;
+}
+
+.skills-grid dt {
+    color: #52a4aa;
+    font-weight: bold;
+    align-self: center;
+    white-space: nowrap;
+}
+
+.skills-grid dd {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    align-items: center;
+}
+
+.skill-chip {
+    color: #fbf1c7;
+    background-color: rgba(251, 241, 199, 0.08);
+    border: 1px solid rgba(212, 190, 152, 0.4);
+    padding: 2px 8px;
+    font-size: 0.95em;
+}
+
+@media (max-width: 640px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+        row-gap: 2px;
+    }
+
+    .skills-grid dt {
+        margin-top: 8px;
+    }
+
+    .skills-grid dt:first-of-type {
+        margin-top: 0;
+    }
 }
 
 svg {

@@ -55,6 +55,11 @@
 
     const safeArray = (value) => (Array.isArray(value) ? value : []);
 
+    const slugify = (text) => String(text || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
     const renderInlineMarkup = (text, parent) => {
         if (!text) {
             return;
@@ -144,6 +149,10 @@
             projectsToRender.forEach((project) => {
                 const card = document.createElement("article");
                 card.className = "project-card";
+                const slug = slugify(project.title);
+                if (slug) {
+                    card.id = `project-${slug}`;
+                }
 
                 const top = document.createElement("div");
                 top.className = "project-top";
@@ -217,7 +226,7 @@
 
                     project.badges.forEach((badgeText) => {
                         const badge = document.createElement("span");
-                        badge.className = "badge";
+                        badge.className = "project-badge";
                         badge.textContent = badgeText;
                         badges.appendChild(badge);
                     });

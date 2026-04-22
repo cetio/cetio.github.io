@@ -33,17 +33,92 @@
         <p style="text-align: center;">Ben &middot; EST</p>
     </header>
     <main>
-        <div class="intro-line">> Hey, I'm Ben. I go by cet or cetio personally, bejaunst professionally.</div>
+        <div class="intro-line">> Hey, I'm Ben.</div>
         <div class="intro-line">> Systems-focused engineer. I build tooling, API integrations, and workflow automation, mostly in D, C#, C, and Ruby.</div>
         <p class="intro-line">> I like understanding how systems actually work, reverse-engineering third-party APIs into typed native code, and replacing manual processes with scripts that don't forget.</p>
 
-        <div class="left-align" style="padding: 12px 12px 16px 12px; flex-wrap: wrap; gap: 6px;">
-            <span class="badge" style="background-color: #fbf1c7;">Systems Development</span>
-            <span class="badge" style="background-color: #d4be98;">API Integration</span>
-            <span class="badge" style="background-color: #52a4aa;">Workflow Automation</span>
-            <span class="badge" style="background-color: #cc241d;">Tooling &amp; SDKs</span>
-            <span class="badge" style="background-color: #1d2021; color: #fbf1c7;">Reverse Engineering</span>
-        </div>
+        <section class="highlights" aria-label="Highlights">
+            <div class="highlights-viewport">
+                <div class="highlights-track" id="highlights-track"></div>
+            </div>
+            <div class="highlights-controls">
+                <button type="button" class="highlights-nav highlights-prev" aria-label="Previous highlights">&larr;</button>
+                <div class="highlights-dots" id="highlights-dots" role="tablist" aria-label="Highlight pages"></div>
+                <button type="button" class="highlights-nav highlights-next" aria-label="Next highlights">&rarr;</button>
+            </div>
+        </section>
+
+        <section id="skills" class="skills" aria-label="Skills">
+            <h2 class="skills-title">&gt; skills</h2>
+            <dl class="skills-grid">
+                <dt>Languages</dt>
+                <dd>
+                    <span class="skill-chip">x86</span>
+                    <span class="skill-chip">z80</span>
+                    <span class="skill-chip">D</span>
+                    <span class="skill-chip">C</span>
+                    <span class="skill-chip">C++</span>
+                    <span class="skill-chip">C#</span>
+                    <span class="skill-chip">Python</span>
+                    <span class="skill-chip">Ruby</span>
+                    <span class="skill-chip">Bash</span>
+                    <span class="skill-chip">VB.Net</span>
+                </dd>
+
+                <dt>Platforms</dt>
+                <dd>
+                    <span class="skill-chip">Windows</span>
+                    <span class="skill-chip">Linux (Fedora)</span>
+                    <span class="skill-chip">Linux (Arch)</span>
+                    <span class="skill-chip">Embedded Linux</span>
+                </dd>
+
+                <dt>Tools &amp; Frameworks</dt>
+                <dd>
+                    <span class="skill-chip">Git</span>
+                    <span class="skill-chip">GDB</span>
+                    <span class="skill-chip">Bash</span>
+                    <span class="skill-chip">CMake</span>
+                    <span class="skill-chip">Agile</span>
+                    <span class="skill-chip">Selenium</span>
+                    <span class="skill-chip">Nokogiri</span>
+                    <span class="skill-chip">GTK</span>
+                    <span class="skill-chip">IDA Pro</span>
+                    <span class="skill-chip">Ghidra</span>
+                    <span class="skill-chip">Intel VTune</span>
+                    <span class="skill-chip">AMD uPerf</span>
+                    <span class="skill-chip">Python Scripting</span>
+                </dd>
+
+                <dt>Domains</dt>
+                <dd>
+                    <span class="skill-chip">Reverse Engineering</span>
+                    <span class="skill-chip">Low-level Systems</span>
+                    <span class="skill-chip">Profiling</span>
+                    <span class="skill-chip">Cryptography</span>
+                    <span class="skill-chip">SIMD / AVX</span>
+                    <span class="skill-chip">Metaprogramming</span>
+                    <span class="skill-chip">Kernel-mode</span>
+                    <span class="skill-chip">SDK Design</span>
+                    <span class="skill-chip">API Integration</span>
+                    <span class="skill-chip">Workflow Automation</span>
+                    <span class="skill-chip">Machine Learning / AI</span>
+                    <span class="skill-chip">LLMs &amp; Embeddings</span>
+                </dd>
+
+                <dt>Data &amp; Ops</dt>
+                <dd>
+                    <span class="skill-chip">SQL</span>
+                    <span class="skill-chip">Data Processing &amp; Analysis</span>
+                    <span class="skill-chip">Clustering</span>
+                    <span class="skill-chip">CI/CD</span>
+                    <span class="skill-chip">RPA</span>
+                    <span class="skill-chip">RPC</span>
+                    <span class="skill-chip">JSON</span>
+                    <span class="skill-chip">System Configuration</span>
+                </dd>
+            </dl>
+        </section>
 
         <details open id="projects-section" aria-label="Projects">
             <summary>Projects</summary>
@@ -51,7 +126,7 @@
             <div id="projects-list" class="projects-list"></div>
         </details>
 
-        <details>
+        <details id="articles-section">
             <summary>Articles (4)</summary>
             <div class="details-body">
                 <p style="margin-top: 0;">
@@ -84,158 +159,81 @@
             </div>
         </details>
 
-        <details>
-            <summary>Certificates (63)</summary>
+        <details id="certs-section">
+            <summary>Certificates (23+)</summary>
             <div class="details-body">
-            <p style="margin-top: 0;">This table is no longer comprehensive, and will likely be updated at a later date.</p>
-            <p style="font-size: 0.9em;">
-                <span style="color: #70ff6b;">CPE</span> continuing professional education &middot;
-                <span style="color: #f0ff6b;">CDU</span> continuing development units &middot;
-                <span style="color: #f0ff6b;">CEU</span> continuing education units &middot;
-                <span style="color: #f0ff6b;">PDU</span> professional development units &middot;
-                <span>X</span> completion only
-            </p>
+            <p style="margin-top: 0;">Representative sample shown. Contact me for a complete, up-to-date tally.</p>
 
             <table border="1" width="100%">
                 <tbody>
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>MS Career Essentials Generative AI</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>MS Career Essentials Software Development</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>MS Generative AI for Customer Service...</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>MS Azure AI Essentials</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>MS Security Essentials</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>Accounting Foundations</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>KNIME Data Science</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>Zendesk Customer Service</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>SQL Programming</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #70ff6b;">CPE</td>
+                        <td class="cert-nasba">NASBA</td>
                         <td>SQL Essential Training</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #f0ff6b;">CDU</td>
-                        <td>Astronomer Data Engineering Foundations</td>
-                    </tr>
-
-                    <tr>
-                        <td style="color: #f0ff6b;">CPE + CDU</td>
-                        <td>Cybersecurity with Cloud Computing</td>
-                    </tr>
-
-                    <tr>
-                        <td style="color: #f0ff6b;">CDU</td>
-                        <td>Cybersecurity for IT</td>
-                    </tr>
-
-                    <tr>
-                        <td style="color: #f0ff6b;">CEU</td>
-                        <td>Full-Stack Web Dev</td>
-                    </tr>
-
-                    <tr>
-                        <td style="color: #f0ff6b;">PDU</td>
+                        <td class="cert-pmi">PMI</td>
                         <td>Career Essentials in GitHub</td>
                     </tr>
 
                     <tr>
-                        <td style="color: #f0ff6b;">PDU</td>
+                        <td class="cert-pmi">PMI</td>
                         <td>Cybersecurity Awareness</td>
                     </tr>
 
                     <tr>
-                        <td>X</td>
-                        <td>Atlassian IT Service Management</td>
+                        <td class="cert-comptia">CompTIA</td>
+                        <td>Full-Stack Web Dev</td>
                     </tr>
 
                     <tr>
-                        <td>X</td>
-                        <td>MS Career Essentials Cybersecurity</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>MS Career Essentials Data Analysis</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>Canonical Ubuntu Linux</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>OpenEDG C++ Programming</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>Docker Foundations</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>LambdaTest Test Automation</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>LambdaTest Software Testing</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>Cybrary Penetration Testing</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>HackerRank C# (Intermediate)</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>HackerRank Python (Intermediate)</td>
-                    </tr>
-
-                    <tr>
-                        <td>X</td>
-                        <td>HackerRank Problem Solving (Intermediate)</td>
+                        <td class="cert-handshake">Handshake</td>
+                        <td>Model Validation 2 - Expert</td>
                     </tr>
                 </tbody>
             </table>
@@ -298,6 +296,7 @@
         </div>
     </footer>
 
+    <script src="/cards.js"></script>
     <script src="/projects.js"></script>
 </body>
 </html>
