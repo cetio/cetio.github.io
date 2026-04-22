@@ -93,9 +93,9 @@
             Fields are fetched when they are first touched, and nothing is cached across calls. It reads heavier than it is: in practice, lazy hydration is simpler to reason about, easier to test, and honest about the fact that scientific data changes under you. If the caller wants caching, they add it at the call site where they actually know the correct lifetime.
         </p>
 
-        <h3><code>akashi.composer</code>: network hygiene lives in one place</h3>
+        <h3><code>conductor</code>: network hygiene lives in one place</h3>
         <p>
-            HTTP, retries, exponential backoff, and per-source rate limiting all live in <code>akashi.composer</code>. Every source adapter is written against it. Adding a sixth source later is a matter of writing a thin adapter, not relearning network hygiene.
+            HTTP, retries, exponential backoff, and per-source rate limiting all live in the <code>conductor</code> library. Every source adapter is written against it. Adding a sixth source later is a matter of writing a thin adapter, not relearning network hygiene.
         </p>
         <p>
             Each module owns its own rate-limiting state (a clock and a minimum interval) instead of sharing a global singleton. Two modules hitting two providers never share a bottleneck, and when a provider changes policy, the fix is local.

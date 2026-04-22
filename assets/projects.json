@@ -82,7 +82,7 @@
       "description": [
         "A D library for chemistry-aware retrieval, source resolution, and text parsing across public scientific and knowledge sources: PubChem compounds, assays, proteins, and 3D conformers, plus Wikipedia, PsychonautWiki, Erowid experience reports, PubMed, and PMC.",
         "Unifies these behind a shared `Page` type that lazily fetches content and exposes `raw`, `document`, `sections`, `preamble`, and `fulltext`, with `akashi.text` parsing wikitext and XML into a compact AST for rendering or plain-text extraction.",
-        "Includes cross-source resolution (e.g. resolving a PubChem compound to its Wikipedia or PsychonautWiki page), similarity search on PubChem CIDs, and reusable HTTP + rate-limiting primitives via `akashi.composer` for building new source adapters. Designed to pair with Intuit but fully standalone."
+        "Includes cross-source resolution (e.g. resolving a PubChem compound to its Wikipedia or PsychonautWiki page), similarity search on PubChem CIDs, and reusable HTTP + rate-limiting primitives via the `conductor` library for building new source adapters. Designed to pair with Intuit but fully standalone."
       ],
       "github": "https://github.com/cetio/akashi"
     },
@@ -117,7 +117,7 @@
       "description": [
         "A D SDK for the Webull OpenAPI with first-class `Security` objects that support auto-updating cached market data, covering US stocks and options, HK and CN stocks, crypto, and futures.",
         "Implements the full read-side market data surface as single and batch operations: OHLCV bars, snapshots, Level-2 order book depth, tick history, and footprint (delta-volume buy/sell breakdowns).",
-        "Handles the authentication pipeline end-to-end: HMAC-SHA1 request signing via `webull.composer`, token creation with MFA-approval polling callbacks, token validation, and endpoint permission probing."
+        "Handles the authentication pipeline end-to-end: HMAC-SHA1 request signing via `webull.orchestrate`, token creation with MFA-approval polling callbacks, token validation, and endpoint permission probing."
       ],
       "github": "https://github.com/cetio/webull-sdk"
     },
@@ -288,7 +288,7 @@
       "title": "Galah",
       "languages": ["d"],
       "badges": ["AI", "Grading", "Education"],
-      "description": "AI grading tool for teachers, implementing Intuit, GDrive, and Composer for assignment uploads and parsing."
+      "description": "AI grading tool for teachers, implementing Intuit, GDrive, and Conductor for assignment uploads and parsing."
     },
     {
       "title": "Insurgent",
@@ -316,11 +316,11 @@
       "github": "https://github.com/cetio/gdrive"
     },
     {
-      "title": "Composer",
+      "title": "Conductor",
       "languages": ["d"],
       "badges": ["HTTP", "OAuth", "Network"],
       "description": "HTTP, OAuth, and network orchestration utilities for easy API integrations.",
-      "github": "https://github.com/cetio/composer"
+      "github": "https://github.com/cetio/conductor"
     }
   ]
 }
