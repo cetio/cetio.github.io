@@ -1,28 +1,28 @@
 {
   "cards": [
     {
-      "title": "Shipped native LLM & embedding plumbing",
-      "description": "Designed [Intuit](#project-intuit), a D library that wraps OpenAI-compatible and Claude endpoints behind persistent `Model` objects — streaming chat, single and batch embeddings, and per-model config. Ships AVX-optimized `cosine`, `dot`, and `L2` primitives in `intuit.space` for embedding-heavy retrieval."
+      "title": "Cut manual work by ~95% with automation",
+      "description": "Replaced Handshake AI's manual annotation pipeline with [AutoHandshake](#project-autohandshake) — reliable Selenium automation that runs unattended, recovers from failures, and keeps a full audit trail. Recognized with Handshake's [Model Validation 2 — Expert](#certs-section) credential."
     },
     {
-      "title": "Unified scientific retrieval under one type",
-      "description": "Built [Akashi](#project-akashi) to pull PubChem, Wikipedia, PsychonautWiki, PubMed, and PMC behind a shared `Page` type, with a wikitext/XML parser that emits a compact AST and cross-source resolution (PubChem → wiki, similarity by CID). Written up in [Building Akashi](/articles/chemica-api)."
+      "title": "Built a developer-ready AI integration library",
+      "description": "[Intuit](#project-intuit) lets applications plug into OpenAI, Claude, and local language models through one clean interface — streaming chat, embeddings, and retrieval fast enough to run on a laptop. My go-to foundation for building AI-powered tools."
     },
     {
-      "title": "Cut manual annotation effort by ~95%",
-      "description": "Scripted Handshake AI's annotation pipeline with [AutoHandshake](#project-autohandshake) — Selenium driven like a dispatch runtime, resilient selectors, session recovery, and audit trails. Backed by Handshake's [Model Validation 2 — Expert](#certs-section) credential."
+      "title": "Shipped a full trading-platform SDK",
+      "description": "Reverse-engineered Webull's trading platform into [Webull-SDK](#project-webull-sdk) — real-time stock, options, and crypto market data with secure authentication, ready for algorithmic strategies and dashboards without wrestling the wire format."
     },
     {
-      "title": "Reverse-engineered Webull into a typed SDK",
-      "description": "Turned the Webull OpenAPI into [Webull-SDK](#project-webull-sdk): first-class `Security` objects with auto-updating market data, HMAC-SHA1 request signing, MFA-polling auth, and the full read-side surface — OHLCV bars, snapshots, L2 depth, ticks, and delta-volume footprints."
+      "title": "Unified five scientific databases behind one API",
+      "description": "[Akashi](#project-akashi) pulls PubChem, Wikipedia, PsychonautWiki, PubMed, and PMC into one developer-friendly interface — the retrieval backbone for source-grounded AI answers and [Chemica](#project-chemica). Full story in [Building Akashi](/articles/chemica-api)."
     },
     {
-      "title": "Reached into the CLR from managed code",
-      "description": "Modeled CoreCLR internals — `MethodTable`, `EEClass`, `MethodDesc`, `FieldDesc`, VTable layout — as first-class C# types in [Cassowary](#project-cassowary), enabling allocation, casting, and boxing without dropping to native code. Ported to D as [Godwit](#project-godwit); dynamic syscall stubs explored in [Hacking C#](/articles/syscall-hooks)."
+      "title": "Low-level .NET runtime engineering",
+      "description": "Built [Cassowary](#project-cassowary) (C#) and its D successor [Godwit](#project-godwit) to reach into .NET's internals — advanced reflection, allocation, and inspection that most libraries can't touch. See [Hacking C#](/articles/syscall-hooks) for syscall-level security work."
     },
     {
-      "title": "Credentialed across AI, security, and data",
-      "description": "Stacked Microsoft Career Essentials in [Generative AI, Software Development, Azure AI, and Security](#certs-section), plus NASBA SQL Programming, KNIME Data Science, PMI GitHub Career Essentials, and CompTIA Full-Stack Web Dev — grounding the [skills](#skills) I ship with."
+      "title": "Credentialed in AI, security, and data",
+      "description": "Microsoft Career Essentials in [Generative AI, Azure AI, Software Development, and Security](#certs-section), plus SQL Programming, KNIME Data Science, GitHub essentials, and CompTIA full-stack web — the credentials behind every [skill](#skills) I ship with."
     }
   ]
 }
