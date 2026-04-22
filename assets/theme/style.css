@@ -467,7 +467,7 @@ details[open] > summary {
     padding: 2px 0;
 }
 
-.intro-line + .intro-line {
+.intro-lead {
     padding-top: 6px;
 }
 

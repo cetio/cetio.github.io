@@ -37,7 +37,7 @@
       "icon": {
         "title": "JavaScript",
         "viewBox": "0 0 24 24",
-        "path": "M3 3h18v18H3zm4 2v10c0 1.657 1.343 3 3 3h1c1.657 0 3-1.343 3-3V7h-2v8c0 .552-.448 1-1 1h-1c-.552 0-1-.448-1-1V5zm9 0c-1.657 0-3 1.343-3 3v1c0 1.657 1.343 3 3 3h2c.552 0 1 .448 1 1v1c0 .552-.448 1-1 1h-2c-.552 0-1-.448-1-1v-.5h-2v.5c0 1.657 1.343 3 3 3h2c1.657 0 3-1.343 3-3v-1c0-1.657-1.343-3-3-3h-2c-.552 0-1-.448-1-1V8c0-.552.448-1 1-1h2c.552 0 1 .448 1 1v.5h2V8c0-1.657-1.343-3-3-3z"
+        "path": "M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"
       }
     },
     {
@@ -83,6 +83,7 @@
         "Performance Engineering"
       ],
       "starred": true,
+      "sortOrder": 1,
       "description": [
         "A D library for talking to language and embedding model endpoints through native D structures instead of thin JSON shims, currently covering both OpenAI-compatible APIs (including local LMStudio-style servers, Qwen, Deepseek, Phi) and Claude.",
         "Provides chat completions with streaming, single and batch embeddings, and per-model configuration of temperature, max tokens, top-p, and presence/frequency penalties via a persistent Model object.",
@@ -101,6 +102,7 @@
         "Networking & Protocols"
       ],
       "starred": true,
+      "sortOrder": 2,
       "description": [
         "A D library for chemistry-aware retrieval, source resolution, and text parsing across public scientific and knowledge sources: PubChem compounds, assays, proteins, and 3D conformers, plus Wikipedia, PsychonautWiki, Erowid experience reports, PubMed, and PMC.",
         "Unifies these behind a shared `Page` type that lazily fetches content and exposes `raw`, `document`, `sections`, `preamble`, and `fulltext`, with `akashi.text` parsing wikitext and XML into a compact AST for rendering or plain-text extraction.",
@@ -119,6 +121,7 @@
         "Tooling & Applications"
       ],
       "starred": true,
+      "sortOrder": 3,
       "description": [
         "A GTK-based PubChem wiki app for compounds with a 3D molecular view (small and expanded) featuring atomic tooltips and full bond visualization, alongside chemical properties (XLogP, MW, formula, charge, energy) and identifiers (SMILES, InChI, InChIKey, CAS).",
         "Automatically aggregates dosage data (route of administration, bioavailability, thresholds) and performs similarity matching using structural scoring combined with XLogP and MW to locate analogous compounds and fill gaps in dosage information.",
@@ -139,6 +142,7 @@
         "Code Generation",
         "Systems Internals"
       ],
+      "sortOrder": 4,
       "description": "Comptime dynamic assembler for cross-arch routine compilation built from the ground up for D comptime integration.",
       "github": "https://github.com/cetio/multidasm"
     },
@@ -152,7 +156,7 @@
         "Networking & Protocols",
         "Data Parsing / Retrieval"
       ],
-      "starred": true,
+      "sortOrder": 3,
       "description": [
         "A D SDK for the Webull OpenAPI with first-class `Security` objects that support auto-updating cached market data, covering US stocks and options, HK and CN stocks, crypto, and futures.",
         "Implements the full read-side market data surface as single and batch operations: OHLCV bars, snapshots, Level-2 order book depth, tick history, and footprint (delta-volume buy/sell breakdowns).",
@@ -170,6 +174,7 @@
         "Performance Engineering",
         "Systems Internals"
       ],
+      "sortOrder": 10,
       "description": "Just-In-Time sorting algorithm that dynamically generates code to sort data in O(1)!",
       "github": "https://github.com/cetio/jitsort"
     },
@@ -186,6 +191,7 @@
         "Tooling & Applications"
       ],
       "starred": true,
+      "sortOrder": 4,
       "description": [
         "A Ruby + JavaScript workflow automation suite for Handshake AI that replaces repetitive manual annotation and triage work with scripted, auditable runs designed to support contractors at scale.",
         "Uses Selenium alongside injected JavaScript hooks to monitor page state, coordinate multi-tab workflows, recover from UI stalls, and keep long-running sessions reliable even as the interface shifts underneath it.",
@@ -201,6 +207,7 @@
         "Browser Automation",
         "Data Parsing / Retrieval"
       ],
+      "sortOrder": 5,
       "description": "LinkedIn Learning scraper using Selenium and Nokogiri for aggregating course and learning path data.",
       "github": "https://github.com/cetio/linkedin"
     },
@@ -214,6 +221,7 @@
         "Systems Internals"
       ],
       "starred": true,
+      "sortOrder": 7,
       "description": [
         "A lightweight Linux CLI for controlling display brightness, contrast, gamma, color temperature, and arbitrary VCP (Video Control Protocol) features, with a single unified interface over both laptop backlights (`/sys/class/backlight`) and external monitors (DDC/CI via ddcutil).",
         "Supports human-friendly labels (`light`, `brightness`, `backlight`, `contrast`, `gamma`, `temperature`) as well as raw hex VCP codes, with percentage or absolute values and multi-value commands like `nimbus set light=80%, contrast=60`.",
@@ -232,6 +240,7 @@
         "Tooling & Applications",
         "Media & File Formats"
       ],
+      "sortOrder": 6,
       "description": "Implementation of the BitTorrent protocol in D as well as Python streaming support for torrent providers.",
       "github": "https://github.com/cetio/mobster"
     },
@@ -244,6 +253,7 @@
         "Performance Engineering",
         "Systems Internals"
       ],
+      "sortOrder": 7,
       "description": "Fork of Intel Intrinsics for D (https://github.com/AuburnSounds/intel-intrinsics), implementing AVX512 and a dozen+ intrinsics. Merged into codebase.",
       "github": "https://github.com/cetio/intel-intrinsics"
     },
@@ -257,6 +267,7 @@
         "Reverse Engineering"
       ],
       "starred": true,
+      "sortOrder": 6,
       "description": [
         "A managed-C# library that exposes CoreCLR internals directly, positioned as an alternative to Novus and Son of Strike for code that needs to reach past the BCL into the runtime itself.",
         "Models the core CLR structures as first-class C# types: `MethodTable`, `EEClass` (including `ArrayClass`, `DelegateEEClass`, `LayoutEEClass`), `MethodDesc` / `MethodDescChunk`, `FieldDesc`, `Stub`, `UMThunkMarshInfo`, `NativeCodeVersion`, `WriteableData`, `CCWTemplate`, `GuidInfo`, `SparseVTableMap`, and related metadata.",
@@ -274,6 +285,7 @@
         "Systems Internals",
         "Reverse Engineering"
       ],
+      "sortOrder": 8,
       "description": "Successor to Cassowary: partial D rewrite with all CLR structures modeled, serving as a reference implementation while the behavior layer is ported over.",
       "github": "https://github.com/cetio/godwit"
     },
@@ -286,6 +298,7 @@
         "Code Generation",
         "Performance Engineering"
       ],
+      "sortOrder": 1,
       "description": "Extensive standard library expansion for D's Phobos focusing on performance and comptime features.",
       "note": "The project is maintained, but current effort is focused on a rewrite tailored to newer needs.",
       "github": "https://github.com/cetio/tern"
@@ -299,6 +312,7 @@
         "Tooling & Applications",
         "Performance Engineering"
       ],
+      "sortOrder": 9,
       "description": "Blazingly fast terminal editor designed from the ground up for efficiency and throughput by extensively leveraging AVX2 and AVX512.",
       "github": "https://github.com/cetio/pipit"
     },
@@ -311,6 +325,7 @@
         "Systems Internals",
         "Code Generation"
       ],
+      "sortOrder": 14,
       "description": "TModLoader (Terraria) mod for dynamic dependency injection of unmanaged code.",
       "github": "https://github.com/cetio/Depcat"
     },
@@ -322,6 +337,7 @@
       "badges": [
         "Tooling & Applications"
       ],
+      "sortOrder": 15,
       "description": "Minimal SWWW wrapper for slideshow wallpapers from multiple directories.",
       "github": "https://github.com/cetio/swaypaper"
     },
@@ -396,6 +412,7 @@
         "Reverse Engineering",
         "Systems Internals"
       ],
+      "sortOrder": 20,
       "description": "Reverse analysis and documentation of VEX Robotics internal firmware and APIs.",
       "github": "https://github.com/cetio/VEXAPI"
     },
@@ -408,6 +425,7 @@
         "Media & File Formats",
         "Data Parsing / Retrieval"
       ],
+      "sortOrder": 11,
       "description": "Format support for FLAC, MP4, and MP3 as well as full catalog parsing for tracks, albums, and artists.",
       "github": "https://github.com/cetio/mutagen"
     },
@@ -420,6 +438,7 @@
         "Tooling & Applications",
         "Workflow Automation"
       ],
+      "sortOrder": 12,
       "description": "Configurable Python Git housekeeping utility for maintaining local repositories and modules.",
       "github": "https://github.com/cetio/git-around"
     },
@@ -432,6 +451,7 @@
         "Performance Engineering",
         "Systems Internals"
       ],
+      "sortOrder": 13,
       "description": "D SIMD implementation using static arrays for near-native vectors.",
       "github": "https://github.com/cetio/sim-d"
     },
@@ -445,6 +465,7 @@
         "Data Parsing / Retrieval",
         "Tooling & Applications"
       ],
+      "sortOrder": 16,
       "description": "AI grading tool for teachers, implementing Intuit, GDrive, and Conductor for assignment uploads and parsing."
     },
     {
@@ -456,6 +477,7 @@
         "Data Parsing / Retrieval",
         "Tooling & Applications"
       ],
+      "sortOrder": 18,
       "description": "Supremacy WW3 comprehensive game data parser, scraper, and wiki app."
     },
     {
@@ -467,6 +489,7 @@
         "Data Parsing / Retrieval",
         "Tooling & Applications"
       ],
+      "sortOrder": 19,
       "description": "OOP-native, efficient HTML and JavaScript parser and GDI renderer."
     },
     {
@@ -478,6 +501,7 @@
         "Systems Internals",
         "Data Parsing / Retrieval"
       ],
+      "sortOrder": 17,
       "description": "Fully featured SMBIOS reader and DSP interpreter."
     },
     {
@@ -489,6 +513,8 @@
         "API & SDK Engineering",
         "Networking & Protocols"
       ],
+      "starred": true,
+      "sortOrder": 5,
       "description": "Google Drive API with support for OAuth, accounts, and full file system with metadata.",
       "github": "https://github.com/cetio/gdrive"
     },
@@ -501,6 +527,7 @@
         "API & SDK Engineering",
         "Networking & Protocols"
       ],
+      "sortOrder": 2,
       "description": "HTTP, OAuth, and network orchestration utilities for easy API integrations.",
       "github": "https://github.com/cetio/conductor"
     }

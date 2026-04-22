@@ -3,6 +3,7 @@
 
     const projectFilters = document.getElementById("project-filters");
     const projectsList = document.getElementById("projects-list");
+    const maxVisibleBadges = 2;
     const domainOrder = [
         "AI / LLM Integration",
         "API & SDK Engineering",
@@ -164,6 +165,7 @@
     const render = (data) => {
         const languages = safeArray(data.languages);
         const projects = safeArray(data.projects);
+        const projectEntries = projects.map((project, originalIndex) => ({ project, originalIndex }));
         const languageMap = new Map(languages.map((language) => [language.id, language]));
         const domains = Array.from(new Set(projects.flatMap((project) => safeArray(project.badges))));
         const orderedDomains = [
@@ -181,21 +183,35 @@
             domainId === "all" || safeArray(project.badges).includes(domainId)
         );
 
+        const getSortOrder = (project) => {
+            const value = Number(project.sortOrder);
+            return Number.isFinite(value) ? value : Number.POSITIVE_INFINITY;
+        };
+
         const sortProjects = (projectSet) => projectSet.slice().sort((a, b) => {
-            const aStar = a.starred ? 1 : 0;
-            const bStar = b.starred ? 1 : 0;
-            return bStar - aStar;
+            const aStar = a.project.starred ? 1 : 0;
+            const bStar = b.project.starred ? 1 : 0;
+            if (bStar !== aStar) {
+                return bStar - aStar;
+            }
+
+            const orderDelta = getSortOrder(a.project) - getSortOrder(b.project);
+            if (orderDelta !== 0) {
+                return orderDelta;
+            }
+
+            return a.originalIndex - b.originalIndex;
         });
 
         const getLanguageOptions = () => [
             {
                 id: "all",
                 label: "All Languages",
-                count: projects.filter((project) => matchesDomain(project)).length,
+                count: projectEntries.filter(({ project }) => matchesDomain(project)).length,
                 icon: iconGrid
             },
             ...languages.map((language) => {
-                const count = projects.filter((project) => matchesDomain(project) && safeArray(project.languages).includes(language.id)).length;
+                const count = projectEntries.filter(({ project }) => matchesDomain(project) && safeArray(project.languages).includes(language.id)).length;
                 return {
                     id: language.id,
                     label: language.label,
@@ -209,12 +225,12 @@
             {
                 id: "all",
                 label: "All Domains",
-                count: projects.filter((project) => matchesLanguage(project)).length
+                count: projectEntries.filter(({ project }) => matchesLanguage(project)).length
             },
             ...orderedDomains.map((domain) => ({
                 id: domain,
                 label: domain,
-                count: projects.filter((project) => matchesLanguage(project) && safeArray(project.badges).includes(domain)).length
+                count: projectEntries.filter(({ project }) => matchesLanguage(project) && safeArray(project.badges).includes(domain)).length
             }))
         ];
 
@@ -242,8 +258,27 @@
         };
 
         const filteredProjects = () => sortProjects(
-            projects.filter((project) => matchesLanguage(project) && matchesDomain(project))
+            projectEntries.filter(({ project }) => matchesLanguage(project) && matchesDomain(project))
         );
+
+        const getVisibleBadges = (project) => {
+            const badgeValues = safeArray(project.badges);
+            const visibleBadges = badgeValues.slice(0, maxVisibleBadges);
+
+            if (
+                state.activeDomainId !== "all" &&
+                badgeValues.includes(state.activeDomainId) &&
+                !visibleBadges.includes(state.activeDomainId)
+            ) {
+                if (visibleBadges.length >= maxVisibleBadges) {
+                    visibleBadges[visibleBadges.length - 1] = state.activeDomainId;
+                } else {
+                    visibleBadges.push(state.activeDomainId);
+                }
+            }
+
+            return visibleBadges.filter((badgeText, index) => badgeText && visibleBadges.indexOf(badgeText) === index);
+        };
 
         const renderFilterGroup = ({ filterId, label, options, activeId, includeIcon }) => {
             const group = document.createElement("div");
@@ -353,7 +388,7 @@
                 return;
             }
 
-            projectsToRender.forEach((project) => {
+            projectsToRender.forEach(({ project }) => {
                 const card = document.createElement("article");
                 card.className = "project-card";
                 const slug = slugify(project.title);
@@ -430,11 +465,15 @@
                 top.appendChild(links);
                 card.appendChild(top);
 
-                if (safeArray(project.badges).length > 0) {
+                const badgeValues = safeArray(project.badges);
+                const visibleBadges = getVisibleBadges(project);
+
+                if (visibleBadges.length > 0) {
                     const badges = document.createElement("div");
                     badges.className = "project-badges";
+                    badges.title = badgeValues.join(" • ");
 
-                    project.badges.forEach((badgeText) => {
+                    visibleBadges.forEach((badgeText) => {
                         const badge = document.createElement("span");
                         badge.className = "project-badge";
                         badge.textContent = badgeText;
