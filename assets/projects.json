@@ -222,9 +222,9 @@
       "github": "https://github.com/cetio/swaypaper"
     },
     {
-      "title": "Challenge02",
+      "title": "Challenge 02",
       "languages": ["d"],
-      "badges": ["Challenge", "Encryption"],
+      "badges": ["SIMD", "Competition", "Encryption"],
       "description": "Challenge library for SIMD high entropy encryption algorithms, CAHS 2024.",
       "github": "https://github.com/cetio/challenge02"
     },
@@ -278,11 +278,49 @@
       "github": "https://github.com/cetio/git-around"
     },
     {
-      "title": "SImD",
+      "title": "Sim-D",
       "languages": ["d"],
       "badges": ["SIMD", "Static Arrays", "Vectors"],
       "description": "D SIMD implementation using static arrays for near-native vectors.",
-      "github": "https://github.com/cetio/SImD"
+      "github": "https://github.com/cetio/sim-d"
+    },
+    {
+      "title": "Galah",
+      "languages": ["d"],
+      "badges": ["AI", "Grading", "Education"],
+      "description": "AI grading tool for teachers, implementing Intuit, GDrive, and Composer for assignment uploads and parsing."
+    },
+    {
+      "title": "Insurgent",
+      "languages": ["d"],
+      "badges": ["Parser", "Scraper", "Wiki"],
+      "description": "Supremacy WW3 comprehensive game data parser, scraper, and wiki app."
+    },
+    {
+      "title": "Nosferatu",
+      "languages": ["csharp"],
+      "badges": ["HTML", "JavaScript", "GDI"],
+      "description": "OOP-native, efficient HTML and JavaScript parser and GDI renderer."
+    },
+    {
+      "title": "SMBIOSReader",
+      "languages": ["csharp"],
+      "badges": ["SMBIOS", "DSP", "Interpreter"],
+      "description": "Fully featured SMBIOS reader and DSP interpreter."
+    },
+    {
+      "title": "GDrive",
+      "languages": ["d"],
+      "badges": ["API", "OAuth", "File System"],
+      "description": "Google Drive API with support for OAuth, accounts, and full file system with metadata.",
+      "github": "https://github.com/cetio/gdrive"
+    },
+    {
+      "title": "Composer",
+      "languages": ["d"],
+      "badges": ["HTTP", "OAuth", "Network"],
+      "description": "HTTP, OAuth, and network orchestration utilities for easy API integrations.",
+      "github": "https://github.com/cetio/composer"
     }
   ]
 }

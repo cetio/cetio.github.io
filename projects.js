@@ -32,6 +32,12 @@
         path: "M12 2l2.9 6.9L22 9.6l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.6L2 9.6l7.1-.7z"
     };
 
+    const iconLock = {
+        title: "Private repository",
+        viewBox: "0 0 16 16",
+        path: "M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"
+    };
+
     const createIcon = (icon, fillColor) => {
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("role", "img");
@@ -200,6 +206,9 @@
                     githubLink.setAttribute("aria-label", `${project.title} GitHub`);
                     githubLink.appendChild(createIcon(iconGitHub, "#fbf1c7"));
                     links.appendChild(githubLink);
+                } else {
+                    const lockIcon = createIcon(iconLock, "#fbf1c7");
+                    links.appendChild(lockIcon);
                 }
 
                 safeArray(project.links).forEach((projectLink) => {
