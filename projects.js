@@ -1,10 +1,43 @@
 (function () {
     const JSON_URL = "/assets/projects.json";
 
-    const languageGrid = document.getElementById("language-grid");
+    const projectFilters = document.getElementById("project-filters");
     const projectsList = document.getElementById("projects-list");
+    const domainOrder = [
+        "AI / LLM Integration",
+        "API & SDK Engineering",
+        "Workflow Automation",
+        "Browser Automation",
+        "Data Parsing / Retrieval",
+        "Tooling & Applications",
+        "Systems Internals",
+        "Networking & Protocols",
+        "Performance Engineering",
+        "Code Generation",
+        "Reverse Engineering",
+        "Security Research",
+        "Media & File Formats"
+    ];
+    const domainPalette = {
+        "Reverse Engineering": { border: "#d65d0e", fill: "rgba(214, 93, 14, 0.16)", text: "#fabd2f" },
+        "Systems Internals": { border: "#cc241d", fill: "rgba(204, 36, 29, 0.14)", text: "#fb4934" },
+        "Kernel-mode": { border: "#9d0006", fill: "rgba(157, 0, 6, 0.16)", text: "#ff6b6b" },
+        "Security Research": { border: "#b16286", fill: "rgba(177, 98, 134, 0.16)", text: "#ff9ff3" },
+        "Cryptography": { border: "#8f3f71", fill: "rgba(143, 63, 113, 0.16)", text: "#f5c2e7" },
+        "Performance Engineering": { border: "#d79921", fill: "rgba(215, 153, 33, 0.16)", text: "#ffe08a" },
+        "Profiling": { border: "#e9b143", fill: "rgba(233, 177, 67, 0.15)", text: "#ffd580" },
+        "Code Generation": { border: "#b8bb26", fill: "rgba(184, 187, 38, 0.16)", text: "#f1fa8c" },
+        "API & SDK Engineering": { border: "#689d6a", fill: "rgba(104, 157, 106, 0.16)", text: "#b8f7a1" },
+        "Workflow Automation": { border: "#5a8f3d", fill: "rgba(90, 143, 61, 0.16)", text: "#c8f77b" },
+        "Browser Automation": { border: "#3c8d5a", fill: "rgba(60, 141, 90, 0.16)", text: "#8ee6a7" },
+        "Data Parsing / Retrieval": { border: "#458588", fill: "rgba(69, 133, 136, 0.16)", text: "#8bd5ca" },
+        "Networking & Protocols": { border: "#076678", fill: "rgba(7, 102, 120, 0.16)", text: "#7dcfff" },
+        "Tooling & Applications": { border: "#3b6ea8", fill: "rgba(59, 110, 168, 0.16)", text: "#89b4fa" },
+        "AI / LLM Integration": { border: "#7c6fbe", fill: "rgba(124, 111, 190, 0.16)", text: "#c4b5fd" },
+        "Media & File Formats": { border: "#a879b8", fill: "rgba(168, 121, 184, 0.16)", text: "#f0abfc" }
+    };
 
-    if (!languageGrid || !projectsList) {
+    if (!projectFilters || !projectsList) {
         return;
     }
 
@@ -56,8 +89,11 @@
     };
 
     const state = {
-        activeLanguageId: "all"
+        activeLanguageId: "all",
+        activeDomainId: "all",
+        openDropdown: null
     };
+    let refreshFilters = () => {};
 
     const safeArray = (value) => (Array.isArray(value) ? value : []);
 
@@ -87,70 +123,235 @@
         });
     };
 
+    const applyDomainTheme = (element, domainName) => {
+        const theme = domainPalette[domainName];
+        if (!theme) {
+            return;
+        }
+
+        element.classList.add("is-domain");
+        element.style.setProperty("--domain-border", theme.border);
+        element.style.setProperty("--domain-fill", theme.fill);
+        element.style.setProperty("--domain-text", theme.text);
+    };
+
+    const themeDomainSkillChips = () => {
+        const domainHeadings = Array.from(document.querySelectorAll(".skills-grid dt"));
+        const domainsHeading = domainHeadings.find((heading) => heading.textContent.trim() === "Domains");
+        if (!domainsHeading || !domainsHeading.nextElementSibling) {
+            return;
+        }
+
+        domainsHeading.nextElementSibling.querySelectorAll(".skill-chip").forEach((chip) => {
+            applyDomainTheme(chip, chip.textContent.trim());
+        });
+    };
+
+    document.addEventListener("click", (event) => {
+        if (state.openDropdown && !projectFilters.contains(event.target)) {
+            state.openDropdown = null;
+            refreshFilters();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && state.openDropdown) {
+            state.openDropdown = null;
+            refreshFilters();
+        }
+    });
+
     const render = (data) => {
         const languages = safeArray(data.languages);
         const projects = safeArray(data.projects);
         const languageMap = new Map(languages.map((language) => [language.id, language]));
+        const domains = Array.from(new Set(projects.flatMap((project) => safeArray(project.badges))));
+        const orderedDomains = [
+            ...domainOrder.filter((domain) => domains.includes(domain)),
+            ...domains
+                .filter((domain) => !domainOrder.includes(domain))
+                .sort((a, b) => a.localeCompare(b))
+        ];
 
-        const filteredProjects = () => {
-            const base = state.activeLanguageId === "all"
-                ? projects.slice()
-                : projects.filter((project) => safeArray(project.languages).includes(state.activeLanguageId));
+        const matchesLanguage = (project, languageId = state.activeLanguageId) => (
+            languageId === "all" || safeArray(project.languages).includes(languageId)
+        );
 
-            return base.sort((a, b) => {
-                const aStar = a.starred ? 1 : 0;
-                const bStar = b.starred ? 1 : 0;
-                return bStar - aStar;
-            });
+        const matchesDomain = (project, domainId = state.activeDomainId) => (
+            domainId === "all" || safeArray(project.badges).includes(domainId)
+        );
+
+        const sortProjects = (projectSet) => projectSet.slice().sort((a, b) => {
+            const aStar = a.starred ? 1 : 0;
+            const bStar = b.starred ? 1 : 0;
+            return bStar - aStar;
+        });
+
+        const getLanguageOptions = () => [
+            {
+                id: "all",
+                label: "All Languages",
+                count: projects.filter((project) => matchesDomain(project)).length,
+                icon: iconGrid
+            },
+            ...languages.map((language) => {
+                const count = projects.filter((project) => matchesDomain(project) && safeArray(project.languages).includes(language.id)).length;
+                return {
+                    id: language.id,
+                    label: language.label,
+                    count,
+                    icon: language.icon
+                };
+            })
+        ];
+
+        const getDomainOptions = () => [
+            {
+                id: "all",
+                label: "All Domains",
+                count: projects.filter((project) => matchesLanguage(project)).length
+            },
+            ...orderedDomains.map((domain) => ({
+                id: domain,
+                label: domain,
+                count: projects.filter((project) => matchesLanguage(project) && safeArray(project.badges).includes(domain)).length
+            }))
+        ];
+
+        const getActiveOption = (options, activeId) => options.find((option) => option.id === activeId) || options[0];
+
+        const createDropdownContent = (option, includeIcon) => {
+            const content = document.createElement("span");
+            content.className = "project-dropdown-content";
+
+            if (includeIcon && option.icon) {
+                content.appendChild(createIcon(option.icon, "currentColor"));
+            }
+
+            const label = document.createElement("span");
+            label.className = "project-dropdown-label";
+            label.textContent = option.label;
+            content.appendChild(label);
+
+            const count = document.createElement("span");
+            count.className = "project-dropdown-count";
+            count.textContent = `[${option.count}]`;
+            content.appendChild(count);
+
+            return content;
         };
 
-        const renderLanguageTiles = () => {
-            languageGrid.innerHTML = "";
+        const filteredProjects = () => sortProjects(
+            projects.filter((project) => matchesLanguage(project) && matchesDomain(project))
+        );
 
-            const tiles = [
-                {
-                    id: "all",
-                    label: `All (${projects.length})`,
-                    icon: iconGrid
-                },
-                ...languages.map((language) => {
-                    const count = projects.filter((project) => safeArray(project.languages).includes(language.id)).length;
-                    return {
-                        id: language.id,
-                        label: `${language.label} (${count})`,
-                        icon: language.icon
-                    };
-                })
-            ];
+        const renderFilterGroup = ({ filterId, label, options, activeId, includeIcon }) => {
+            const group = document.createElement("div");
+            group.className = "project-filter-group";
 
-            tiles.forEach((tile) => {
-                const button = document.createElement("button");
-                button.type = "button";
-                button.className = "language-tile";
+            const groupLabel = document.createElement("span");
+            groupLabel.className = "project-filter-label";
+            groupLabel.textContent = label;
+            group.appendChild(groupLabel);
 
-                if (tile.id === state.activeLanguageId) {
-                    button.classList.add("is-active");
-                }
+            const dropdown = document.createElement("div");
+            dropdown.className = "project-dropdown";
 
-                button.appendChild(createIcon(tile.icon, "#1d2021"));
+            const activeOption = getActiveOption(options, activeId);
+            const trigger = document.createElement("button");
+            trigger.type = "button";
+            trigger.className = "project-dropdown-trigger";
+            trigger.setAttribute("aria-haspopup", "listbox");
+            trigger.setAttribute("aria-expanded", state.openDropdown === filterId ? "true" : "false");
+            trigger.setAttribute("aria-label", label);
+            trigger.appendChild(createDropdownContent(activeOption, includeIcon));
 
-                const label = document.createElement("span");
-                label.textContent = tile.label;
-                button.appendChild(label);
+            const caret = document.createElement("span");
+            caret.className = "project-dropdown-caret";
+            caret.setAttribute("aria-hidden", "true");
+            trigger.appendChild(caret);
 
-                button.addEventListener("click", () => {
-                    state.activeLanguageId = tile.id;
-                    renderLanguageTiles();
-                    renderProjectCards();
+            trigger.addEventListener("click", (event) => {
+                event.stopPropagation();
+                state.openDropdown = state.openDropdown === filterId ? null : filterId;
+                refreshFilters();
+            });
+
+            dropdown.appendChild(trigger);
+
+            if (state.openDropdown === filterId) {
+                const menu = document.createElement("div");
+                menu.className = "project-dropdown-menu";
+                menu.setAttribute("role", "listbox");
+                menu.setAttribute("aria-label", `${label} options`);
+
+                options.forEach((option) => {
+                    const item = document.createElement("button");
+                    item.type = "button";
+                    item.className = "project-dropdown-option";
+                    item.setAttribute("role", "option");
+                    item.setAttribute("aria-selected", option.id === activeId ? "true" : "false");
+
+                    const isActive = option.id === activeId;
+                    const isDisabled = option.count === 0 && !isActive;
+
+                    if (isActive) {
+                        item.classList.add("is-active");
+                    }
+                    if (isDisabled) {
+                        item.classList.add("is-disabled");
+                        item.disabled = true;
+                    }
+
+                    item.appendChild(createDropdownContent(option, includeIcon));
+                    item.addEventListener("click", (event) => {
+                        event.stopPropagation();
+                        if (filterId === "language") {
+                            state.activeLanguageId = option.id;
+                        } else {
+                            state.activeDomainId = option.id;
+                        }
+                        state.openDropdown = null;
+                        refreshFilters();
+                        renderProjectCards();
+                    });
+
+                    menu.appendChild(item);
                 });
 
-                languageGrid.appendChild(button);
-            });
+                dropdown.appendChild(menu);
+            }
+
+            group.appendChild(dropdown);
+            return group;
+        };
+
+        const renderFilters = () => {
+            projectFilters.innerHTML = "";
+            projectFilters.appendChild(renderFilterGroup({
+                filterId: "language",
+                label: "Filter by Language",
+                options: getLanguageOptions(),
+                activeId: state.activeLanguageId,
+                includeIcon: true
+            }));
+            projectFilters.appendChild(renderFilterGroup({
+                filterId: "domain",
+                label: "Filter by Domain",
+                options: getDomainOptions(),
+                activeId: state.activeDomainId,
+                includeIcon: false
+            }));
         };
 
         const renderProjectCards = () => {
             const projectsToRender = filteredProjects();
             projectsList.innerHTML = "";
+
+            if (projectsToRender.length === 0) {
+                projectsList.innerHTML = "<p>No projects match the selected filters.</p>";
+                return;
+            }
 
             projectsToRender.forEach((project) => {
                 const card = document.createElement("article");
@@ -237,6 +438,7 @@
                         const badge = document.createElement("span");
                         badge.className = "project-badge";
                         badge.textContent = badgeText;
+                        applyDomainTheme(badge, badgeText);
                         badges.appendChild(badge);
                     });
 
@@ -290,11 +492,16 @@
             });
         };
 
-        renderLanguageTiles();
+        refreshFilters = () => {
+            renderFilters();
+        };
+
+        themeDomainSkillChips();
+        renderFilters();
         renderProjectCards();
     };
 
-    fetch(JSON_URL)
+    fetch(JSON_URL, { cache: "no-store" })
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`Failed to fetch ${JSON_URL}`);

@@ -195,12 +195,71 @@ details[open] > summary {
     font-weight: bold;
 }
 
-.language-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 8px;
+.project-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
     padding: 12px 8px 0 8px;
     margin-bottom: 12px;
+}
+
+.project-filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.project-filter-label {
+    color: #fbf1c7;
+    font-weight: bold;
+    padding-top: 2px;
+    padding-left: 3px;
+}
+
+.project-dropdown {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 180px;
+    max-width: 100%;
+}
+
+.project-dropdown-trigger,
+.project-dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fbf1c7;
+    font: inherit;
+    text-align: left;
+}
+
+.project-dropdown-trigger {
+    justify-content: space-between;
+    padding: 3px 0;
+}
+
+.project-dropdown-trigger:hover,
+.project-dropdown-trigger:focus,
+.project-dropdown-option:hover,
+.project-dropdown-option:focus {
+    background: transparent;
+    border-color: transparent;
+    color: #fbf1c7;
+    outline: none;
+}
+
+.project-dropdown-content {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    gap: 8px;
+    min-width: 0;
 }
 
 .project-star {
@@ -215,29 +274,72 @@ details[open] > summary {
     font-weight: inherit;
 }
 
-.language-tile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+.project-card h3 {
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+.project-dropdown-label,
+.project-dropdown-count {
+    color: inherit;
+}
+
+.project-dropdown-count {
+    opacity: 0.85;
+}
+
+.project-dropdown-trigger svg,
+.project-dropdown-option svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.project-dropdown-caret {
+    width: 14px;
+    height: 12px;
+    color: inherit;
+    flex-shrink: 0;
+    transform-origin: center;
+    transition: transform 120ms ease;
+}
+
+.project-dropdown-caret::before {
+    content: "";
+    display: block;
     width: 100%;
-    background-color: #d4be98;
-    color: #1d2021;
-    padding: 8px;
+    height: 100%;
+    background-color: currentColor;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
 }
 
-.language-tile span {
-    color: #1d2021;
+.project-dropdown-trigger[aria-expanded="true"] .project-dropdown-caret {
+    transform: rotate(180deg);
 }
 
-.language-tile svg {
-    width: 20px;
-    height: 20px;
-    fill: #1d2021;
+.project-dropdown-menu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 100%;
+    margin-top: 6px;
+    background-color: #1d2021;
 }
 
-.language-tile.is-active {
-    background-color: #fbf1c7;
+.project-dropdown-option {
+    padding: 2px 0;
+}
+
+.project-dropdown-option.is-active {
+    color: #fbf1c7;
+    font-weight: bold;
+}
+
+.project-dropdown-option.is-disabled {
+    opacity: 0.35;
+    cursor: default;
 }
 
 .projects-list {
@@ -288,10 +390,17 @@ details[open] > summary {
 }
 
 .project-badge {
-    background-color: #fbf1c7;
-    color: #1d2021;
-    border: 1px solid #fbf1c7;
+    background-color: rgba(251, 241, 199, 0.08);
+    color: #fbf1c7;
+    border: 1px solid rgba(251, 241, 199, 0.65);
     padding: 4px 8px;
+}
+
+.project-badge.is-domain,
+.skill-chip.is-domain {
+    color: var(--domain-text, #fbf1c7);
+    background-color: var(--domain-fill, rgba(251, 241, 199, 0.08));
+    border-color: var(--domain-border, rgba(251, 241, 199, 0.65));
 }
 
 .project-description {
@@ -323,6 +432,17 @@ details[open] > summary {
 }
 
 @media (max-width: 640px) {
+    .project-filters {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .project-filter-group,
+    .project-dropdown {
+        width: 100%;
+        min-width: 0;
+    }
+
     .project-top {
         flex-direction: column;
     }

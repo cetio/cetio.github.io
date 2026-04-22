@@ -31,6 +31,16 @@
       }
     },
     {
+      "id": "javascript",
+      "label": "JavaScript",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "icon": {
+        "title": "JavaScript",
+        "viewBox": "0 0 24 24",
+        "path": "M3 3h18v18H3zm4 2v10c0 1.657 1.343 3 3 3h1c1.657 0 3-1.343 3-3V7h-2v8c0 .552-.448 1-1 1h-1c-.552 0-1-.448-1-1V5zm9 0c-1.657 0-3 1.343-3 3v1c0 1.657 1.343 3 3 3h2c.552 0 1 .448 1 1v1c0 .552-.448 1-1 1h-2c-.552 0-1-.448-1-1v-.5h-2v.5c0 1.657 1.343 3 3 3h2c1.657 0 3-1.343 3-3v-1c0-1.657-1.343-3-3-3h-2c-.552 0-1-.448-1-1V8c0-.552.448-1 1-1h2c.552 0 1 .448 1 1v.5h2V8c0-1.657-1.343-3-3-3z"
+      }
+    },
+    {
       "id": "python",
       "label": "Python",
       "url": "https://www.python.org/",
@@ -64,8 +74,14 @@
   "projects": [
     {
       "title": "Intuit",
-      "languages": ["d"],
-      "badges": ["LLM", "Embeddings", "Library"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "AI / LLM Integration",
+        "API & SDK Engineering",
+        "Performance Engineering"
+      ],
       "starred": true,
       "description": [
         "A D library for talking to language and embedding model endpoints through native D structures instead of thin JSON shims, currently covering both OpenAI-compatible APIs (including local LMStudio-style servers, Qwen, Deepseek, Phi) and Claude.",
@@ -76,8 +92,14 @@
     },
     {
       "title": "Akashi",
-      "languages": ["d"],
-      "badges": ["Corpus", "Research Data"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Data Parsing / Retrieval",
+        "API & SDK Engineering",
+        "Networking & Protocols"
+      ],
       "starred": true,
       "description": [
         "A D library for chemistry-aware retrieval, source resolution, and text parsing across public scientific and knowledge sources: PubChem compounds, assays, proteins, and 3D conformers, plus Wikipedia, PsychonautWiki, Erowid experience reports, PubMed, and PMC.",
@@ -88,8 +110,14 @@
     },
     {
       "title": "Chemica",
-      "languages": ["d"],
-      "badges": ["PubChem", "Wikipedia", "PMC"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "AI / LLM Integration",
+        "Data Parsing / Retrieval",
+        "Tooling & Applications"
+      ],
       "starred": true,
       "description": [
         "A GTK-based PubChem wiki app for compounds with a 3D molecular view (small and expanded) featuring atomic tooltips and full bond visualization, alongside chemical properties (XLogP, MW, formula, charge, energy) and identifiers (SMILES, InChI, InChIKey, CAS).",
@@ -104,15 +132,26 @@
     },
     {
       "title": "Multidasm",
-      "languages": ["d"],
-      "badges": ["Comptime", "Assembler", "Cross-Arch"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Code Generation",
+        "Systems Internals"
+      ],
       "description": "Comptime dynamic assembler for cross-arch routine compilation built from the ground up for D comptime integration.",
       "github": "https://github.com/cetio/multidasm"
     },
     {
       "title": "Webull-SDK",
-      "languages": ["d"],
-      "badges": ["Finance", "SDK"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "API & SDK Engineering",
+        "Networking & Protocols",
+        "Data Parsing / Retrieval"
+      ],
       "starred": true,
       "description": [
         "A D SDK for the Webull OpenAPI with first-class `Security` objects that support auto-updating cached market data, covering US stocks and options, HK and CN stocks, crypto, and futures.",
@@ -123,33 +162,57 @@
     },
     {
       "title": "Jitsort",
-      "languages": ["c"],
-      "badges": ["JIT", "Sorting", "O(1)"],
+      "languages": [
+        "c"
+      ],
+      "badges": [
+        "Code Generation",
+        "Performance Engineering",
+        "Systems Internals"
+      ],
       "description": "Just-In-Time sorting algorithm that dynamically generates code to sort data in O(1)!",
       "github": "https://github.com/cetio/jitsort"
     },
     {
       "title": "AutoHandshake!",
-      "languages": ["ruby"],
-      "badges": ["Selenium", "Automation", "Workflow"],
+      "languages": [
+        "ruby",
+        "javascript"
+      ],
+      "badges": [
+        "Workflow Automation",
+        "Browser Automation",
+        "Data Parsing / Retrieval",
+        "Tooling & Applications"
+      ],
       "starred": true,
       "description": [
-        "A comprehensive Ruby workflow automation suite for Handshake AI, replacing repetitive manual annotation and triage work with scripted, auditable runs.",
-        "Drives the platform through Selenium, session management, and resilient selectors so long-running jobs survive UI changes and intermittent failures.",
-        "Allows for fine-control by workers while facilitating up to 95% reduction in manual effort."
+        "A Ruby + JavaScript workflow automation suite for Handshake AI that replaces repetitive manual annotation and triage work with scripted, auditable runs designed to support contractors at scale.",
+        "Uses Selenium alongside injected JavaScript hooks to monitor page state, coordinate multi-tab workflows, recover from UI stalls, and keep long-running sessions reliable even as the interface shifts underneath it.",
+        "Parses HTML for workflow context and quality-of-life helpers, giving workers fine-grained control while still cutting manual effort by up to 95%."
       ]
     },
     {
       "title": "LinkedIn",
-      "languages": ["ruby"],
-      "badges": ["Scraper", "Selenium", "Nokogiri"],
+      "languages": [
+        "ruby"
+      ],
+      "badges": [
+        "Browser Automation",
+        "Data Parsing / Retrieval"
+      ],
       "description": "LinkedIn Learning scraper using Selenium and Nokogiri for aggregating course and learning path data.",
       "github": "https://github.com/cetio/linkedin"
     },
     {
       "title": "Nimbus",
-      "languages": ["c"],
-      "badges": ["Linux", "CLI", "DDC/CI"],
+      "languages": [
+        "c"
+      ],
+      "badges": [
+        "Tooling & Applications",
+        "Systems Internals"
+      ],
       "starred": true,
       "description": [
         "A lightweight Linux CLI for controlling display brightness, contrast, gamma, color temperature, and arbitrary VCP (Video Control Protocol) features, with a single unified interface over both laptop backlights (`/sys/class/backlight`) and external monitors (DDC/CI via ddcutil).",
@@ -160,22 +223,39 @@
     },
     {
       "title": "Mobster",
-      "languages": ["python", "d"],
-      "badges": ["BitTorrent", "MPV", "Streaming"],
+      "languages": [
+        "python",
+        "d"
+      ],
+      "badges": [
+        "Networking & Protocols",
+        "Tooling & Applications",
+        "Media & File Formats"
+      ],
       "description": "Implementation of the BitTorrent protocol in D as well as Python streaming support for torrent providers.",
       "github": "https://github.com/cetio/mobster"
     },
     {
       "title": "Intel Intrinsics",
-      "languages": ["d"],
-      "badges": ["SIMD", "AVX512", "Intrinsics"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Performance Engineering",
+        "Systems Internals"
+      ],
       "description": "Fork of Intel Intrinsics for D (https://github.com/AuburnSounds/intel-intrinsics), implementing AVX512 and a dozen+ intrinsics. Merged into codebase.",
       "github": "https://github.com/cetio/intel-intrinsics"
     },
     {
       "title": "Cassowary",
-      "languages": ["csharp"],
-      "badges": ["CoreCLR", "Reflection"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Systems Internals",
+        "Reverse Engineering"
+      ],
       "starred": true,
       "description": [
         "A managed-C# library that exposes CoreCLR internals directly, positioned as an alternative to Novus and Son of Strike for code that needs to reach past the BCL into the runtime itself.",
@@ -187,138 +267,240 @@
     },
     {
       "title": "Godwit",
-      "languages": ["d"],
-      "badges": ["Rewrite", "Reference"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Systems Internals",
+        "Reverse Engineering"
+      ],
       "description": "Successor to Cassowary: partial D rewrite with all CLR structures modeled, serving as a reference implementation while the behavior layer is ported over.",
       "github": "https://github.com/cetio/godwit"
     },
     {
       "title": "Tern",
-      "languages": ["d"],
-      "badges": ["Standard Library", "Comptime", "Performance"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Code Generation",
+        "Performance Engineering"
+      ],
       "description": "Extensive standard library expansion for D's Phobos focusing on performance and comptime features.",
       "note": "The project is maintained, but current effort is focused on a rewrite tailored to newer needs.",
       "github": "https://github.com/cetio/tern"
     },
     {
       "title": "Pipit",
-      "languages": ["c"],
-      "badges": ["Editor", "AVX2", "AVX512"],
+      "languages": [
+        "c"
+      ],
+      "badges": [
+        "Tooling & Applications",
+        "Performance Engineering"
+      ],
       "description": "Blazingly fast terminal editor designed from the ground up for efficiency and throughput by extensively leveraging AVX2 and AVX512.",
       "github": "https://github.com/cetio/pipit"
     },
     {
       "title": "Depcat",
-      "languages": ["csharp"],
-      "badges": ["TModLoader", "Modding", "DI"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Systems Internals",
+        "Code Generation"
+      ],
       "description": "TModLoader (Terraria) mod for dynamic dependency injection of unmanaged code.",
       "github": "https://github.com/cetio/Depcat"
     },
     {
       "title": "Swaypaper",
-      "languages": ["d"],
-      "badges": ["Daemon", "Desktop Appearance", "Sway"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Tooling & Applications"
+      ],
       "description": "Minimal SWWW wrapper for slideshow wallpapers from multiple directories.",
       "github": "https://github.com/cetio/swaypaper"
     },
     {
       "title": "Challenge 02",
-      "languages": ["d"],
-      "badges": ["SIMD", "Competition", "Encryption"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Security Research",
+        "Performance Engineering"
+      ],
       "description": "Challenge library for SIMD high entropy encryption algorithms, CAHS 2024.",
       "github": "https://github.com/cetio/challenge02"
     },
     {
       "title": "GarbageCorruptor",
-      "languages": ["csharp"],
-      "badges": ["CoreCLR", "Experimental"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Systems Internals",
+        "Security Research"
+      ],
       "description": "Corrupts the GC heap as optimally as possible. Experiment on CoreCLR exposure.",
       "github": "https://github.com/cetio/GarbageCorruptor"
     },
     {
       "title": "UndeadInterop",
-      "languages": ["csharp"],
-      "badges": ["Windows NTAPI", "Interoperability", "Code Generation"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Security Research",
+        "Systems Internals",
+        "Code Generation"
+      ],
       "description": "Syscall library for C#, using shellcode and exports to resolve and execute syscalls as well as detect hooks on functions.",
       "github": "https://github.com/cetio/UndeadInterop"
     },
     {
       "title": "Rio",
-      "languages": ["csharp"],
-      "badges": ["Virtual Assembly", "Obfuscation", "Dynamic Scripting"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Code Generation",
+        "Systems Internals"
+      ],
       "description": "Assembly-like dynamic scripting language, with C# object wrappers, designed for code virtualization.",
       "github": "https://github.com/cetio/Rio"
     },
     {
       "title": "MihoyoEXP",
-      "languages": ["csharp"],
-      "badges": ["Kernel R/W", "AoB Scanning", "Driver Exploit"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Security Research",
+        "Reverse Engineering",
+        "Systems Internals"
+      ],
       "description": "Obsolete Mhyprot2 exploitation library capable of advanced process and memory manipulation with vulnerable IOCTL communications.",
       "github": "https://github.com/cetio/MihoyoEXP"
     },
     {
       "title": "VEXAPI",
-      "languages": ["cpp"],
-      "badges": ["Reverse Engineering", "Firmware", "Robotics"],
+      "languages": [
+        "cpp"
+      ],
+      "badges": [
+        "Reverse Engineering",
+        "Systems Internals"
+      ],
       "description": "Reverse analysis and documentation of VEX Robotics internal firmware and APIs.",
       "github": "https://github.com/cetio/VEXAPI"
     },
     {
       "title": "Mutagen",
-      "languages": ["d"],
-      "badges": ["FLAC", "MP4", "MP3"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Media & File Formats",
+        "Data Parsing / Retrieval"
+      ],
       "description": "Format support for FLAC, MP4, and MP3 as well as full catalog parsing for tracks, albums, and artists.",
       "github": "https://github.com/cetio/mutagen"
     },
     {
       "title": "Git-Around",
-      "languages": ["python"],
-      "badges": ["Git", "CLI", "Housekeeping"],
+      "languages": [
+        "python"
+      ],
+      "badges": [
+        "Tooling & Applications",
+        "Workflow Automation"
+      ],
       "description": "Configurable Python Git housekeeping utility for maintaining local repositories and modules.",
       "github": "https://github.com/cetio/git-around"
     },
     {
       "title": "Sim-D",
-      "languages": ["d"],
-      "badges": ["SIMD", "Static Arrays", "Vectors"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Performance Engineering",
+        "Systems Internals"
+      ],
       "description": "D SIMD implementation using static arrays for near-native vectors.",
       "github": "https://github.com/cetio/sim-d"
     },
     {
       "title": "Galah",
-      "languages": ["d"],
-      "badges": ["AI", "Grading", "Education"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "AI / LLM Integration",
+        "Data Parsing / Retrieval",
+        "Tooling & Applications"
+      ],
       "description": "AI grading tool for teachers, implementing Intuit, GDrive, and Conductor for assignment uploads and parsing."
     },
     {
       "title": "Insurgent",
-      "languages": ["d"],
-      "badges": ["Parser", "Scraper", "Wiki"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Data Parsing / Retrieval",
+        "Tooling & Applications"
+      ],
       "description": "Supremacy WW3 comprehensive game data parser, scraper, and wiki app."
     },
     {
       "title": "Nosferatu",
-      "languages": ["csharp"],
-      "badges": ["HTML", "JavaScript", "GDI"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Data Parsing / Retrieval",
+        "Tooling & Applications"
+      ],
       "description": "OOP-native, efficient HTML and JavaScript parser and GDI renderer."
     },
     {
       "title": "SMBIOSReader",
-      "languages": ["csharp"],
-      "badges": ["SMBIOS", "DSP", "Interpreter"],
+      "languages": [
+        "csharp"
+      ],
+      "badges": [
+        "Systems Internals",
+        "Data Parsing / Retrieval"
+      ],
       "description": "Fully featured SMBIOS reader and DSP interpreter."
     },
     {
       "title": "GDrive",
-      "languages": ["d"],
-      "badges": ["API", "OAuth", "File System"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "API & SDK Engineering",
+        "Networking & Protocols"
+      ],
       "description": "Google Drive API with support for OAuth, accounts, and full file system with metadata.",
       "github": "https://github.com/cetio/gdrive"
     },
     {
       "title": "Conductor",
-      "languages": ["d"],
-      "badges": ["HTTP", "OAuth", "Network"],
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "API & SDK Engineering",
+        "Networking & Protocols"
+      ],
       "description": "HTTP, OAuth, and network orchestration utilities for easy API integrations.",
       "github": "https://github.com/cetio/conductor"
     }
