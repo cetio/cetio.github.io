@@ -43,15 +43,11 @@
 
     <main>
       <article>
-        <i>
-            Windows user-mode APIs get hooked for a lot of legitimate reasons (security software, anti-cheat, telemetry) and those same hooks interfere with perfectly legitimate low-level tooling and research. This is a write-up of how to classify the common hook patterns, extract the underlying syscall ID from a system-API stub, and invoke it directly from C# by building the stub yourself.
-        </i>
+        <hr>
 
         <div class="callout">
             This is an educational walk-through of techniques that are well-documented in OS internals literature. I&rsquo;m describing patterns, not shipping a tool. Don&rsquo;t use this to bypass endpoint security on systems you don&rsquo;t own.
         </div>
-
-        <hr>
 
         <h3>User-mode API vs system API</h3>
         <p>

@@ -12,6 +12,15 @@ hr {
     color: #d4be98;
 }
 
+body > main > article {
+    padding-top: 12px;
+}
+
+body > main > article > hr:first-of-type {
+    margin-top: 36px;
+    margin-bottom: 28px;
+}
+
 header pre {
     font-weight: bold; 
     text-align: center;
