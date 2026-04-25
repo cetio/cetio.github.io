@@ -158,11 +158,15 @@
       ],
       "sortOrder": 3,
       "description": [
-        "A D SDK for the Webull OpenAPI with first-class `Security` objects that support auto-updating cached market data, covering US stocks and options, HK and CN stocks, crypto, and futures.",
-        "Implements the full read-side market data surface as single and batch operations: OHLCV bars, snapshots, Level-2 order book depth, tick history, and footprint (delta-volume buy/sell breakdowns).",
-        "Handles the authentication pipeline end-to-end: HMAC-SHA1 request signing via `webull.orchestrate`, token creation with MFA-approval polling callbacks, token validation, and endpoint permission probing."
+        "A D SDK for the Webull OpenAPI with typed account access and first-class `Security` objects for cached market data across US stocks and options, HK and CN stocks, crypto, and futures.",
+        "Implements the full read-side market data surface as single and batch operations: OHLCV bars, snapshots, Level-2 order book depth, tick history, and footprint (delta-volume buy/sell breakdowns), alongside account list, profile, balance, and paginated positions APIs.",
+        "Handles the authentication pipeline end-to-end with HMAC-SHA1 request signing, MFA-aware token creation and polling, token validation, endpoint permission probing, and a polished masked terminal demo for portfolio-ready screenshots."
       ],
-      "github": "https://github.com/cetio/webull-sdk"
+      "github": "https://github.com/cetio/webull-sdk",
+      "demoImage": {
+        "url": "/assets/demos/webull-sdk.png",
+        "alt": "Webull-SDK terminal dashboard demo"
+      }
     },
     {
       "title": "Jitsort",
@@ -466,7 +470,7 @@
         "Tooling & Applications"
       ],
       "sortOrder": 16,
-      "description": "AI grading tool for teachers, implementing Intuit, GDrive, and Conductor for assignment uploads and parsing."
+      "description": "AI grading tool for teachers, implementing Intuit, Google-SDK, and Conductor for assignment uploads and parsing."
     },
     {
       "title": "Insurgent",
@@ -505,7 +509,7 @@
       "description": "Fully featured SMBIOS reader and DSP interpreter."
     },
     {
-      "title": "GDrive",
+      "title": "Google-SDK",
       "languages": [
         "d"
       ],
@@ -515,8 +519,8 @@
       ],
       "starred": true,
       "sortOrder": 5,
-      "description": "Google Drive API with support for OAuth, accounts, and full file system with metadata.",
-      "github": "https://github.com/cetio/gdrive"
+      "description": "A D SDK for Google APIs, starting with Drive: OAuth flows, account support, typed file-system operations, and metadata-rich file management behind a native-feeling interface.",
+      "github": "https://github.com/cetio/google-sdk"
     },
     {
       "title": "Conductor",

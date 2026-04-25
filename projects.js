@@ -506,7 +506,18 @@
                     card.appendChild(note);
                 }
 
-                if (project.demoVideo && project.demoVideo.url) {
+                if (project.demoImage && project.demoImage.url) {
+                    const imageContainer = document.createElement("div");
+                    imageContainer.className = "project-video";
+
+                    const image = document.createElement("img");
+                    image.src = project.demoImage.url;
+                    image.alt = project.demoImage.alt || `${project.title} demo`;
+                    image.loading = "lazy";
+                    imageContainer.appendChild(image);
+
+                    card.appendChild(imageContainer);
+                } else if (project.demoVideo && project.demoVideo.url) {
                     const videoContainer = document.createElement("div");
                     videoContainer.className = "project-video";
 
