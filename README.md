@@ -9,8 +9,8 @@ Theme is a derivative of Gruvbox Dark Hard, all fonts and colors are available o
 - `articles/` - Blog posts and articles
 - `assets/fonts`/`assets/theme` - Font and theming assets
 
-![Desktop](desktop-apr24.png)
-![Mobile](mobile-apr24.png)
+![Desktop](desktop-apr27.png)
+![Mobile](mobile-apr27.png)
 
 ## Hosting
 

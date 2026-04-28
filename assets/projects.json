@@ -143,7 +143,7 @@
         "Systems Internals"
       ],
       "sortOrder": 4,
-      "description": "Comptime dynamic assembler for cross-arch routine compilation built from the ground up for D comptime integration.",
+      "description": "Dynamic assembler built from the ground up for D comptime integration.",
       "github": "https://github.com/cetio/multidasm"
     },
     {
@@ -157,11 +157,7 @@
         "Data Parsing / Retrieval"
       ],
       "sortOrder": 3,
-      "description": [
-        "A D SDK for the Webull OpenAPI with typed account access and first-class `Security` objects for cached market data across US stocks and options, HK and CN stocks, crypto, and futures.",
-        "Implements the full read-side market data surface as single and batch operations: OHLCV bars, snapshots, Level-2 order book depth, tick history, and footprint (delta-volume buy/sell breakdowns), alongside account list, profile, balance, and paginated positions APIs.",
-        "Handles the authentication pipeline end-to-end with HMAC-SHA1 request signing, MFA-aware token creation and polling, token validation, endpoint permission probing, and a polished masked terminal demo for portfolio-ready screenshots."
-      ],
+      "description": "D SDK for the Webull OpenAPI with typed market data (OHLCV, snapshots, L2 depth, ticks, footprint) and account access across US/HK/CN equities, options, crypto, and futures, plus full HMAC-SHA1 signing and MFA token flow.",
       "github": "https://github.com/cetio/webull-sdk",
       "demoImage": {
         "url": "/assets/demos/webull-sdk.png",
@@ -258,7 +254,7 @@
         "Systems Internals"
       ],
       "sortOrder": 7,
-      "description": "Fork of Intel Intrinsics for D (https://github.com/AuburnSounds/intel-intrinsics), implementing AVX512 and a dozen+ intrinsics. Merged into codebase.",
+      "description": "Fork of Intel Intrinsics for D (AuburnSounds/intel-intrinsics) adding AVX-512 and a dozen-plus additional intrinsics; merged upstream.",
       "github": "https://github.com/cetio/intel-intrinsics"
     },
     {
@@ -519,7 +515,11 @@
       ],
       "starred": true,
       "sortOrder": 5,
-      "description": "A D SDK for Google APIs, starting with Drive: OAuth flows, account support, typed file-system operations, and metadata-rich file management behind a native-feeling interface.",
+      "description": [
+        "A D library for Google Drive with pragmatic Docs and Sheets text export helpers, keeping the surface direct: authenticate, browse Drive, read or write files, and pull text from Docs or Sheets without wrapping the API in a large object graph.",
+        "Exposes a Drive-first API (`Session`, `Identity`, `Folder`, `File`, `IFile`) covering OAuth login, account identity, folder and file listing, metadata refresh, upload, download, save, and delete, with a shared `IFile` surface unifying metadata plus `read`, `write`, `save`, and `text`.",
+        "Adds focused `google.docs` and `google.sheets` modules for MIME detection and lightweight plain-text / CSV export from Google-native files, with `File.text` dispatching to them automatically. Built on `conductor` for OAuth and HTTP primitives."
+      ],
       "github": "https://github.com/cetio/google-sdk"
     },
     {
