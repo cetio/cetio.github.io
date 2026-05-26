@@ -481,14 +481,14 @@
         "Tooling & Applications"
       ],
       "sortOrder": 3,
-      "description": [
-        "A comprehensive game parser, scraper, and wiki app for Supremacy WW3, combining a Selenium-driven web automation layer with a GTK client to surface game data, leaderboards, and real-time war statistics.",
-        "Authenticated session management ties the scraper to user accounts for personalized dashboards, with a wiki backend that ingests and cross-references nation profiles, alliance structures, and territorial maps.",
-        "Built in D and JavaScript at roughly 10,000 lines standalone (15,000 including familiar internal libraries), making it one of the largest projects to date. Maintained under Twin Harbor."
-      ],
+      "description": "Insurgent is a companion client for Supremacy WW3 which runs alongside the game in Chrome. It supports a dashboard which allows for quick-lookup of unit stacks, a full catalog containing in-depth data on all units, research, and buildings, and live match data on all nations and stacks visible on the map. All data is collected live and aims to be minimally invasive and lightweight.",
       "starred": true,
       "github": "https://github.com/cetio/insurgent",
-      "note": "Maintained under the Twin Harbor umbrella."
+      "note": "Under the purview of Twin Harbor",
+      "demoVideo": {
+        "type": "video",
+        "url": "/assets/demos/insurgent.mp4"
+      }
     },
     {
       "title": "Nosferatu",
