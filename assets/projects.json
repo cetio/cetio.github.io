@@ -69,6 +69,16 @@
         "viewBox": "0 0 24 24",
         "path": "M22.394 6c-.167-.29-.398-.543-.652-.69L12.926.22c-.509-.294-1.34-.294-1.848 0L2.26 5.31c-.508.293-.923 1.013-.923 1.6v10.18c0 .294.104.62.271.91.167.29.398.543.652.69l8.816 5.09c.508.293 1.34.293 1.848 0l8.816-5.09c.254-.147.485-.4.652-.69.167-.29.27-.616.27-.91V6.91c.003-.294-.1-.62-.268-.91zM12 19.11c-3.92 0-7.109-3.19-7.109-7.11 0-3.92 3.19-7.11 7.11-7.11a7.133 7.133 0 0 1 6.156 3.553l-3.076 1.78a3.567 3.567 0 0 0-3.08-1.78A3.56 3.56 0 0 0 8.444 12 3.56 3.56 0 0 0 12 15.555a3.57 3.57 0 0 0 3.08-1.778l3.078 1.78A7.135 7.135 0 0 1 12 19.11zm7.11-6.715h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79zm2.962 0h-.79v.79h-.79v-.79h-.79v-.79h.79v-.79h.79v.79h.79z"
       }
+    },
+    {
+      "id": "rust",
+      "label": "Rust",
+      "url": "https://www.rust-lang.org/",
+      "icon": {
+        "title": "Rust",
+        "viewBox": "0 0 24 24",
+        "path": "M23.8346 11.7033l-1.0073-.6236a13.7268 13.7268 0 00-.0283-.2936l.8656-.8069a.3483.3483 0 00-.1154-.578l-1.1066-.414a8.4958 8.4958 0 00-.087-.2856l.6904-.9587a.3462.3462 0 00-.2257-.5446l-1.1663-.1894a9.3574 9.3574 0 00-.1407-.2622l.49-1.0761a.3437.3437 0 00-.0274-.3361.3486.3486 0 00-.3006-.154l-1.1845.0416a6.7444 6.7444 0 00-.1873-.2268l.2723-1.153a.3472.3472 0 00-.417-.4172l-1.1532.2724a14.0183 14.0183 0 00-.2278-.1873l.0415-1.1845a.3442.3442 0 00-.49-.328l-1.076.491c-.0872-.0476-.1742-.0952-.2623-.1407l-.1903-1.1673A.3483.3483 0 0016.256.955l-.9597.6905a8.4867 8.4867 0 00-.2855-.086l-.414-1.1066a.3483.3483 0 00-.5781-.1154l-.8069.8666a9.2936 9.2936 0 00-.2936-.0284L12.2946.1683a.3462.3462 0 00-.5892 0l-.6236 1.0073a13.7383 13.7383 0 00-.2936.0284L9.9803.3374a.3462.3462 0 00-.578.1154l-.4141 1.1065c-.0962.0274-.1903.0567-.2855.086L7.744.955a.3483.3483 0 00-.5447.2258L7.009 2.348a9.3574 9.3574 0 00-.2622.1407l-1.0762-.491a.3462.3462 0 00-.49.328l.0416 1.1845a7.9826 7.9826 0 00-.2278.1873L3.8413 3.425a.3472.3472 0 00-.4171.4171l.2713 1.1531c-.0628.075-.1255.1509-.1863.2268l-1.1845-.0415a.3462.3462 0 00-.328.49l.491 1.0761a9.167 9.167 0 00-.1407.2622l-1.1662.1894a.3483.3483 0 00-.2258.5446l.6904.9587a13.303 13.303 0 00-.087.2855l-1.1065.414a.3483.3483 0 00-.1155.5781l.8656.807a9.2936 9.2936 0 00-.0283.2935l-1.0073.6236a.3442.3442 0 000 .5892l1.0073.6236c.008.0982.0182.1964.0283.2936l-.8656.8079a.3462.3462 0 00.1155.578l1.1065.4141c.0273.0962.0567.1914.087.2855l-.6904.9587a.3452.3452 0 00.2268.5447l1.1662.1893c.0456.088.0922.1751.1408.2622l-.491 1.0762a.3462.3462 0 00.328.49l1.1834-.0415c.0618.0769.1235.1528.1873.2277l-.2713 1.1541a.3462.3462 0 00.4171.4161l1.153-.2713c.075.0638.151.1255.2279.1863l-.0415 1.1845a.3442.3442 0 00.49.327l1.0761-.49c.087.0486.1741.0951.2622.1407l.1903 1.1662a.3483.3483 0 00.5447.2268l.9587-.6904a9.299 9.299 0 00.2855.087l.414 1.1066a.3452.3452 0 00.5781.1154l.8079-.8656c.0972.0111.1954.0203.2936.0294l.6236 1.0073a.3472.3472 0 00.5892 0l.6236-1.0073c.0982-.0091.1964-.0183.2936-.0294l.8069.8656a.3483.3483 0 00.578-.1154l.4141-1.1066a8.4626 8.4626 0 00.2855-.087l.9587.6904a.3452.3452 0 00.5447-.2268l.1903-1.1662c.088-.0456.1751-.0931.2622-.1407l1.0762.49a.3472.3472 0 00.49-.327l-.0415-1.1845a6.7267 6.7267 0 00.2267-.1863l1.1531.2713a.3472.3472 0 00.4171-.416l-.2713-1.1542c.0628-.0749.1255-.1508.1863-.2278l1.1845.0415a.3442.3442 0 00.328-.49l-.49-1.076c.0475-.0872.0951-.1742.1407-.2623l1.1662-.1893a.3483.3483 0 00.2258-.5447l-.6904-.9587.087-.2855 1.1066-.414a.3462.3462 0 00.1154-.5781l-.8656-.8079c.0101-.0972.0202-.1954.0283-.2936l1.0073-.6236a.3442.3442 0 000-.5892zm-6.7413 8.3551a.7138.7138 0 01.2986-1.396.714.714 0 11-.2997 1.396zm-.3422-2.3142a.649.649 0 00-.7715.5l-.3573 1.6685c-1.1035.501-2.3285.7795-3.6193.7795a8.7368 8.7368 0 01-3.6951-.814l-.3574-1.6684a.648.648 0 00-.7714-.499l-1.473.3158a8.7216 8.7216 0 01-.7613-.898h7.1676c.081 0 .1356-.0141.1356-.088v-2.536c0-.074-.0536-.0881-.1356-.0881h-2.0966v-1.6077h2.2677c.2065 0 1.1065.0587 1.394 1.2088.0901.3533.2875 1.5044.4232 1.8729.1346.413.6833 1.2381 1.2685 1.2381h3.5716a.7492.7492 0 00.1296-.0131 8.7874 8.7874 0 01-.8119.9526zM6.8369 20.024a.714.714 0 11-.2997-1.396.714.714 0 01.2997 1.396zM4.1177 8.9972a.7137.7137 0 11-1.304.5791.7137.7137 0 011.304-.579zm-.8352 1.9813l1.5347-.6824a.65.65 0 00.33-.8585l-.3158-.7147h1.2432v5.6025H3.5669a8.7753 8.7753 0 01-.2834-3.348zm6.7343-.5437V8.7836h2.9601c.153 0 1.0792.1772 1.0792.8697 0 .575-.7107.7815-1.2948.7815zm10.7574 1.4862c0 .2187-.008.4363-.0243.651h-.9c-.09 0-.1265.0586-.1265.1477v.413c0 .973-.5487 1.1846-1.0296 1.2382-.4576.0517-.9648-.1913-1.0275-.4717-.2704-1.5186-.7198-1.8436-1.4305-2.4034.8817-.5599 1.799-1.386 1.799-2.4915 0-1.1936-.819-1.9458-1.3769-2.3153-.7825-.5163-1.6491-.6195-1.883-.6195H5.4682a8.7651 8.7651 0 014.907-2.7699l1.0974 1.151a.648.648 0 00.9182.0213l1.227-1.1743a8.7753 8.7753 0 016.0044 4.2762l-.8403 1.8982a.652.652 0 00.33.8585l1.6178.7188c.0283.2875.0425.577.0425.8717zm-9.3006-9.5993a.7128.7128 0 11.984 1.0316.7137.7137 0 01-.984-1.0316zm8.3389 6.71a.7107.7107 0 01.9395-.3625.7137.7137 0 11-.9405.3635z"
+      }
     }
   ],
   "projects": [
@@ -86,7 +96,7 @@
       "sortOrder": 1,
       "description": [
         "A D library for talking to language and embedding model endpoints through native D structures instead of thin JSON shims, currently covering both OpenAI-compatible APIs (including local LMStudio-style servers, Qwen, Deepseek, Phi) and Claude.",
-        "Provides chat completions with streaming, single and batch embeddings, and per-model configuration of temperature, max tokens, top-p, and presence/frequency penalties via a persistent Model object.",
+        "Provides chat completions with streaming, single and batch embeddings, tool usage, and per-model configuration of temperature, max tokens, top-p, and presence/frequency penalties via a persistent Model object.",
         "Ships SIMD-optimized vector operations in `intuit.space` (cosine similarity, dot product, Euclidean distance, L2 norm, in-place normalization, normalized mean) using AVX intrinsics, and leans on D's compile-time metaprogramming for type-safe JSON serialization."
       ],
       "github": "https://github.com/cetio/intuit"
@@ -104,7 +114,7 @@
       "starred": true,
       "sortOrder": 2,
       "description": [
-        "A D library for chemistry-aware retrieval, source resolution, and text parsing across public scientific and knowledge sources: PubChem compounds, assays, proteins, and 3D conformers, plus Wikipedia, PsychonautWiki, Erowid experience reports, PubMed, and PMC.",
+        "Corpus for PubChem, Wikipedia, Psychonaut Wiki, PubMed, and PMC \u2014 a D library for chemistry-aware retrieval, source resolution, and text parsing across public scientific and knowledge sources.",
         "Unifies these behind a shared `Page` type that lazily fetches content and exposes `raw`, `document`, `sections`, `preamble`, and `fulltext`, with `akashi.text` parsing wikitext and XML into a compact AST for rendering or plain-text extraction.",
         "Includes cross-source resolution (e.g. resolving a PubChem compound to its Wikipedia or PsychonautWiki page), similarity search on PubChem CIDs, and reusable HTTP + rate-limiting primitives via the `conductor` library for building new source adapters. Designed to pair with Intuit but fully standalone."
       ],
@@ -157,7 +167,11 @@
         "Data Parsing / Retrieval"
       ],
       "sortOrder": 3,
-      "description": "D SDK for the Webull OpenAPI with typed market data (OHLCV, snapshots, L2 depth, ticks, footprint) and account access across US/HK/CN equities, options, crypto, and futures, plus full HMAC-SHA1 signing and MFA token flow.",
+      "description": [
+        "Webull SDK for D with native-feeling finance types: typed market data (OHLCV, snapshots, L2 depth, ticks, footprint) and account access across US/HK/CN equities, options, crypto, and futures.",
+        "Handles full HMAC-SHA1 request signing, MFA token flows, and session refresh so integrations stay authenticated without manual intervention.",
+        "Designed for algorithmic strategies and dashboards that need real-time data without wrestling the wire format directly."
+      ],
       "github": "https://github.com/cetio/webull-sdk",
       "demoImage": {
         "url": "/assets/demos/webull-sdk.png",
@@ -208,7 +222,7 @@
         "Data Parsing / Retrieval"
       ],
       "sortOrder": 5,
-      "description": "LinkedIn Learning scraper using Selenium and Nokogiri for aggregating course and learning path data.",
+      "description": "CLI and library for interacting with LinkedIn Learning and aggregating course and path data using Selenium and Nokogiri.",
       "github": "https://github.com/cetio/linkedin"
     },
     {
@@ -223,7 +237,7 @@
       "starred": true,
       "sortOrder": 7,
       "description": [
-        "A lightweight Linux CLI for controlling display brightness, contrast, gamma, color temperature, and arbitrary VCP (Video Control Protocol) features, with a single unified interface over both laptop backlights (`/sys/class/backlight`) and external monitors (DDC/CI via ddcutil).",
+        "Wayland tool for unified display configuration \u2014 a lightweight Linux CLI for controlling display brightness, contrast, gamma, color temperature, and arbitrary VCP features.",
         "Supports human-friendly labels (`light`, `brightness`, `backlight`, `contrast`, `gamma`, `temperature`) as well as raw hex VCP codes, with percentage or absolute values and multi-value commands like `nimbus set light=80%, contrast=60`.",
         "Auto-detects connected displays and their capabilities (`nimbus list`), prefers backlight control over DDC brightness when both are available, and supports range queries such as `nimbus get min/light/max` for scripting use."
       ],
@@ -241,7 +255,7 @@
         "Media & File Formats"
       ],
       "sortOrder": 6,
-      "description": "Implementation of the BitTorrent protocol in D as well as Python streaming support for torrent providers.",
+      "description": "Alternative to Lobster (lobster.sh) for watching movies, shows, etc. from the terminal with support for cover art and quality. Implementation of the BitTorrent protocol in D as well as Python streaming support for torrent providers.",
       "github": "https://github.com/cetio/mobster"
     },
     {
@@ -254,7 +268,7 @@
         "Systems Internals"
       ],
       "sortOrder": 7,
-      "description": "Fork of Intel Intrinsics for D (AuburnSounds/intel-intrinsics) adding AVX-512 and a dozen-plus additional intrinsics; merged upstream.",
+      "description": "The Dlang SIMD library \u2014 fork of intel-intrinsics adding AVX-512 and a dozen-plus additional intrinsics; merged upstream.",
       "github": "https://github.com/cetio/intel-intrinsics"
     },
     {
@@ -269,7 +283,7 @@
       "starred": true,
       "sortOrder": 6,
       "description": [
-        "A managed-C# library that exposes CoreCLR internals directly, positioned as an alternative to Novus and Son of Strike for code that needs to reach past the BCL into the runtime itself.",
+        "Managed CoreCLR exposure and reflection library inspired by Novus \u2014 a managed-C# library that exposes CoreCLR internals directly, positioned as an alternative to Son of Strike for code that needs to reach past the BCL into the runtime itself.",
         "Models the core CLR structures as first-class C# types: `MethodTable`, `EEClass` (including `ArrayClass`, `DelegateEEClass`, `LayoutEEClass`), `MethodDesc` / `MethodDescChunk`, `FieldDesc`, `Stub`, `UMThunkMarshInfo`, `NativeCodeVersion`, `WriteableData`, `CCWTemplate`, `GuidInfo`, `SparseVTableMap`, and related metadata.",
         "Enables reflection-like operations on top of those structures: object allocation, instance construction, initialization, casts, boxing, and VTable/layout inspection, without dropping into native code."
       ],
@@ -286,7 +300,7 @@
         "Reverse Engineering"
       ],
       "sortOrder": 8,
-      "description": "Successor to Cassowary: partial D rewrite with all CLR structures modeled, serving as a reference implementation while the behavior layer is ported over.",
+      "description": "Comprehensive reverse analysis and exposure of CoreCLR internals from D. Successor to Cassowary: all CLR structures modeled, serving as a reference implementation while the behavior layer is ported over.",
       "github": "https://github.com/cetio/godwit"
     },
     {
@@ -299,7 +313,7 @@
         "Performance Engineering"
       ],
       "sortOrder": 1,
-      "description": "Extensive standard library expansion for D's Phobos focusing on performance and comptime features.",
+      "description": "Comprehensive and efficient standard library extension for D's Phobos, specializing in compile-time tooling and object manipulation. Extensive standard library expansion focusing on performance and comptime features.",
       "note": "The project is maintained, but current effort is focused on a rewrite tailored to newer needs.",
       "github": "https://github.com/cetio/tern"
     },
@@ -313,7 +327,7 @@
         "Performance Engineering"
       ],
       "sortOrder": 9,
-      "description": "Blazingly fast terminal editor designed from the ground up for efficiency and throughput by extensively leveraging AVX2 and AVX512.",
+      "description": "Pipit is an exceedingly fast terminal text editor designed for simplicity, performance, and tight constraints. Blazingly fast terminal editor leveraging AVX2 and AVX-512.",
       "github": "https://github.com/cetio/pipit"
     },
     {
@@ -387,7 +401,7 @@
         "Code Generation",
         "Systems Internals"
       ],
-      "description": "Assembly-like dynamic scripting language, with C# object wrappers, designed for code virtualization.",
+      "description": "Assembly-like dynamic scripting language for C#. Currently not being worked on, since Cassowary needs to be completed first.",
       "github": "https://github.com/cetio/Rio"
     },
     {
@@ -426,7 +440,7 @@
         "Data Parsing / Retrieval"
       ],
       "sortOrder": 11,
-      "description": "Format support for FLAC, MP4, and MP3 as well as full catalog parsing for tracks, albums, and artists.",
+      "description": "Format support for Flac, Mp4, and Mp3 as well as full catalog parsing for tracks, albums, and artists.",
       "github": "https://github.com/cetio/mutagen"
     },
     {
@@ -456,29 +470,25 @@
       "github": "https://github.com/cetio/sim-d"
     },
     {
-      "title": "Galah",
-      "languages": [
-        "d"
-      ],
-      "badges": [
-        "AI / LLM Integration",
-        "Data Parsing / Retrieval",
-        "Tooling & Applications"
-      ],
-      "sortOrder": 16,
-      "description": "AI grading tool for teachers, implementing Intuit, Google-SDK, and Conductor for assignment uploads and parsing."
-    },
-    {
       "title": "Insurgent",
       "languages": [
-        "d"
+        "d",
+        "javascript"
       ],
       "badges": [
+        "Browser Automation",
         "Data Parsing / Retrieval",
         "Tooling & Applications"
       ],
-      "sortOrder": 18,
-      "description": "Supremacy WW3 comprehensive game data parser, scraper, and wiki app."
+      "sortOrder": 3,
+      "description": [
+        "A comprehensive game parser, scraper, and wiki app for Supremacy WW3, combining a Selenium-driven web automation layer with a GTK client to surface game data, leaderboards, and real-time war statistics.",
+        "Authenticated session management ties the scraper to user accounts for personalized dashboards, with a wiki backend that ingests and cross-references nation profiles, alliance structures, and territorial maps.",
+        "Built in D and JavaScript at roughly 10,000 lines standalone (15,000 including familiar internal libraries), making it one of the largest projects to date. Maintained under Twin Harbor."
+      ],
+      "starred": true,
+      "github": "https://github.com/cetio/insurgent",
+      "note": "Maintained under the Twin Harbor umbrella."
     },
     {
       "title": "Nosferatu",
@@ -516,7 +526,7 @@
       "starred": true,
       "sortOrder": 5,
       "description": [
-        "A D library for Google Drive with pragmatic Docs and Sheets text export helpers, keeping the surface direct: authenticate, browse Drive, read or write files, and pull text from Docs or Sheets without wrapping the API in a large object graph.",
+        "Google Drive API with support for OAuth, accounts, and full file system with metadata \u2014 a D library for Google Drive with pragmatic Docs and Sheets text export helpers.",
         "Exposes a Drive-first API (`Session`, `Identity`, `Folder`, `File`, `IFile`) covering OAuth login, account identity, folder and file listing, metadata refresh, upload, download, save, and delete, with a shared `IFile` surface unifying metadata plus `read`, `write`, `save`, and `text`.",
         "Adds focused `google.docs` and `google.sheets` modules for MIME detection and lightweight plain-text / CSV export from Google-native files, with `File.text` dispatching to them automatically. Built on `conductor` for OAuth and HTTP primitives."
       ],
@@ -532,8 +542,116 @@
         "Networking & Protocols"
       ],
       "sortOrder": 2,
-      "description": "HTTP, OAuth, and network orchestration utilities for easy API integrations.",
+      "description": [
+        "HTTP, OAuth, serialization, and network orchestration utilities for API integrations, designed to remove boilerplate when wiring D applications to external services.",
+        "Covers request building with typed parameter maps, token refresh flows, JSON and form serialization, connection pooling, and retry/circuit helpers.",
+        "Powers the transport layer for Intuit, Akashi, Google-SDK, and Warbler."
+      ],
       "github": "https://github.com/cetio/conductor"
+    },
+    {
+      "title": "Warbler",
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Tooling & Applications",
+        "API & SDK Engineering",
+        "Workflow Automation"
+      ],
+      "starred": true,
+      "sortOrder": 3,
+      "description": [
+        "A D CLI interface backend for academic institutions, providing a git-esque command structure for grading papers, generating rubrics, and organizing classrooms through configurable endpoints.",
+        "Defines an institutional plugin model that maps commands like `warbler grade`, `warbler rubric`, and `warbler roster` to arbitrary LMS backends, with per-school configuration files and OAuth-based authentication.",
+        "Built on Conductor for HTTP and OAuth primitives, designed to be scriptable, auditable, and composable into larger academic workflows."
+      ],
+      "github": "https://github.com/cetio/warbler"
+    },
+    {
+      "title": "Selenium-SDK",
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Browser Automation",
+        "API & SDK Engineering"
+      ],
+      "sortOrder": 8,
+      "description": "Modern Selenium SDK for D, inspired by Ruby's Selenium \u2014 provides a clean, typed interface for browser automation, element queries, and session management.",
+      "github": "https://github.com/cetio/selenium-sdk"
+    },
+    {
+      "title": "Cilk",
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Code Generation",
+        "Systems Internals"
+      ],
+      "sortOrder": 10,
+      "description": "CIL disassembler and assembler for D \u2014 reads and writes Common Intermediate Language bytecode with a focus on comptime integration and low-allocation parsing.",
+      "github": "https://github.com/cetio/cilk"
+    },
+    {
+      "title": "Head",
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Systems Internals",
+        "Reverse Engineering"
+      ],
+      "sortOrder": 11,
+      "description": "PE and ELF format support for D \u2014 parses executables, object files, and core dumps into structured types suitable for analysis and manipulation.",
+      "github": "https://github.com/cetio/head"
+    },
+    {
+      "title": "Regex",
+      "languages": [
+        "d"
+      ],
+      "badges": [
+        "Performance Engineering",
+        "Tooling & Applications"
+      ],
+      "sortOrder": 12,
+      "description": "D regex library experimenting with alternative matching engines and compile-time pattern compilation for zero-runtime-overhead text scanning.",
+      "github": "https://github.com/cetio/regex"
+    },
+    {
+      "title": "Soundcore A3954 Dump",
+      "languages": [
+        "rust"
+      ],
+      "badges": [
+        "Reverse Engineering",
+        "Networking & Protocols"
+      ],
+      "sortOrder": 21,
+      "description": "Reverse-engineered state packets for the Soundcore Liberty 4 Pro (Model A3954). Raw BLE protocol captures decoded into structured packet definitions for downstream tooling.",
+      "github": "https://github.com/cetio/soundcore-a3954-dump",
+      "note": "Archived; served as the reference for OpenSCQ30 integration."
+    },
+    {
+      "title": "OpenSCQ30",
+      "languages": [
+        "rust"
+      ],
+      "badges": [
+        "Tooling & Applications",
+        "Reverse Engineering",
+        "Networking & Protocols"
+      ],
+      "starred": true,
+      "sortOrder": 10,
+      "description": [
+        "Cross platform application for controlling settings of Soundcore headphones, earbuds, and speakers. Supports desktop (CLI and GUI) and Android.",
+        "Implements the Soundcore Liberty 4 Pro (Model A3954) configuration protocol on top of the OpenSCQ30 open-source framework, exposing EQ profiles, ANC modes, and firmware metadata through a unified interface.",
+        "Built on the reverse-engineered packet definitions from soundcore-a3954-dump, bridging raw BLE captures to a usable cross-platform configuration tool."
+      ],
+      "github": "https://github.com/cetio/OpenSCQ30"
     }
   ]
 }
