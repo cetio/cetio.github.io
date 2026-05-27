@@ -45,15 +45,15 @@ html {
     font-size: 16px;
 }
 
-/* Force all text elements to use multiples of 16px */
+/* Force all text elements to inherit size from parent */
 body, body * {
     font-size: inherit;
-    line-height: 1;
+    line-height: inherit;
 }
 
 /* Explicitly override headers and common text elements */
 h1 {
-    font-size: 64x;
+    font-size: 64px;
     line-height: 64px;
 }
 
@@ -67,7 +67,7 @@ h3 {
     line-height: 20px;
 }
 
-h4, h5, p, span, a, button, input, label, code, time {
+h4, h5, p, a, button, input, label, time {
     font-size: 16px;
     line-height: 16px;
 }
@@ -83,4 +83,10 @@ input, button {
     font-family: inherit;
     font-size: 16px;
     line-height: 16px;
+}
+
+/* Let Prism control code block typography */
+pre[class*="language-"], pre[class*="language-"] *,
+code[class*="language-"], code[class*="language-"] * {
+    line-height: inherit;
 }

@@ -51,56 +51,272 @@
             </div>
 
             <p>
-                Wikipedia resolution stops being &ldquo;fuzzy-match a title&rdquo; and becomes &ldquo;take the canonical name and known synonyms, rank candidate pages, and confirm against the chemistry infobox.&rdquo; PsychonautWiki follows the same pattern with a graceful fallback through parent compounds for the many psychoactives that don&rsquo;t have their own page. The core resolution layer was rewritten three times before I accepted that the right answer was to stop being clever and anchor everything to one trustworthy identifier.
+                Wikipedia resolution stops being &ldquo;fuzzy-match a title&rdquo; and becomes &ldquo;take the canonical name and known synonyms, rank candidate pages, and confirm against the chemistry infobox.&rdquo; The confirmation is not DOM scraping; it is CID extraction from the raw Wikitext source using four independent regex patterns because chemistry editors do not agree on how to cite PubChem:
             </p>
 
-            <h3>One <code>Page</code> type to rule five sources</h3>
-            <p>
-                Every text source (Wikipedia, PsychonautWiki, PubMed, PMC) materializes as the same object:
-            </p>
-
-<pre><code class="language-d">struct Page
+<pre><code class="language-d">string[] extractCIDs(Page page)
 {
-    string raw();        // untouched source payload
-    Document document(); // parsed AST (Wikitext or XML)
-    Section[] sections();
-    string preamble();
-    string fulltext();   // flattened plain text
+    string[] cids;
+
+    enum pubChemRe = ctRegex!`PubChem\s*=\s*(\d+)`;
+    foreach (m; matchAll(page.raw, pubChemRe))
+        cids ~= strip(m[1]);
+
+    enum pubChemCidRe = ctRegex!`PubChemCID\s*=\s*(\d+)`;
+    foreach (m; matchAll(page.raw, pubChemCidRe))
+        cids ~= strip(m[1]);
+
+    enum pubChemTemplateRe = ctRegex!`\{\{\s*PubChem\s*\|\s*(\d+)\s*\}\}`;
+    foreach (m; matchAll(page.raw, pubChemTemplateRe))
+        cids ~= strip(m[1]);
+
+    enum pubChemUrlRe = ctRegex!
+        `https?://(?:www\.)?pubchem\.ncbi\.nlm\.nih\.gov/compound/(\d+)`;
+    foreach (m; matchAll(page.raw, pubChemUrlRe))
+        cids ~= strip(m[1]);
+
+    return cids;
 }</code></pre>
 
             <p>
-                The frontend never learns which source produced a given page. That one abstraction erased a huge amount of special-case code in Chemica and made &ldquo;render whatever we have about caffeine&rdquo; a single code path instead of five.
+                PsychonautWiki follows the same pattern with a graceful fallback through parent compounds. Most psychoactives do not have their own PsychonautWiki page; they redirect to a parent (LSD instead of ALD-52, for example). The resolution pipeline handles this by querying for structurally similar compounds from PubChem, filtering by XLogP and molecular weight, and then matching exact synonyms against PsychonautWiki page titles.
             </p>
 
-            <h3>Lazy hydration, no caching</h3>
+            <h3>The <code>Compound</code> registry: flyweight by necessity</h3>
             <p>
-                Fields are fetched when they are first touched, and nothing is cached across calls. It reads heavier than it is: in practice, lazy hydration is simpler to reason about, easier to test, and honest about the fact that scientific data changes under you. If the caller wants caching, they add it at the call site where they actually know the correct lifetime.
+                PubChem compounds are referenced everywhere: properties, assays, proteins, conformers, dosage lookups, similarity searches. Creating a new object every time the same CID appears would mean fetching the same title and synonyms repeatedly. Instead, <code>Compound</code> uses a static registry with <code>getOrCreate</code>:
             </p>
 
-            <h3><code>conductor</code>: network hygiene lives in one place</h3>
+<pre><code class="language-d">class Compound
+{
+    static Compound[int] registry;
+
+    static Compound getOrCreate(int cid)
+    {
+        assert(cid != 0, "CID must not be zero");
+        if (auto p = cid in registry)
+            return *p;
+
+        Compound c = new Compound(cid);
+        registry[cid] = c;
+        return c;
+    }
+
+    int cid;
+    Properties properties;
+
+    ref string name()
+    {
+        if (properties.title == null)
+            properties = getProperties!"cid"(cid)[0].properties;
+        return properties.title;
+    }
+}</code></pre>
+
             <p>
-                HTTP, retries, exponential backoff, and per-source rate limiting all live in the <code>conductor</code> library. Every source adapter is written against it. Adding a sixth source later is a matter of writing a thin adapter, not relearning network hygiene.
-            </p>
-            <p>
-                Each module owns its own rate-limiting state (a clock and a minimum interval) instead of sharing a global singleton. Two modules hitting two providers never share a bottleneck, and when a provider changes policy, the fix is local.
+                Every property is lazy. <code>name()</code> triggers a fetch. <code>smiles()</code>, <code>iupac()</code>, <code>inchi()</code> do the same. <code>synonyms()</code>, <code>description()</code>, and <code>conformer3D</code> are cached on first access. The caller gets a rich object that looks like it was fully hydrated, but nothing happens until it is actually needed.
             </p>
 
-            <h3>Writing the parsers I didn&rsquo;t want to write</h3>
+            <h3>One <code>Page</code> type, five source formats</h3>
             <p>
-                The Wikitext parser is a small AST with style <em>bitflags</em> instead of per-style node types. That keeps the tree compact, the renderer boring, and the transform layer able to do structural passes without switching on dozens of node kinds. Every existing D option either lost formatting, choked on templates, or pulled in an unwanted dependency.
+                Wikipedia and PsychonautWiki emit Wikitext. PubMed and PMC emit JATS XML. The frontend does not care. Every text source materializes as the same object with the same interface:
             </p>
+
+<pre><code class="language-d">class Page
+{
+    string title;
+    string source;
+    string url;
+
+    ref string raw();        // lazy fetch via delegate
+    ref Document document(); // parsed AST (Wikitext or XML)
+    Section[] sections();
+    string fulltext();
+    string preamble();
+}</code></pre>
+
             <p>
-                PMC returns JATS XML, which is its own flavor of painful. Sharing utilities between the Wikitext and XML paths was one of those small cleanups that paid for itself many times over.
+                The lazy fetch is a delegate stored at construction time and nulled after first use:
+            </p>
+
+<pre><code class="language-d">ref string raw()
+{
+    if (_raw is null && _fetchContent !is null)
+    {
+        _fetchContent(this);
+        _fetchContent = null;
+    }
+    return _raw;
+}</code></pre>
+
+            <p>
+                Each source module defines its own fetch delegate. Wikipedia uses the MediaWiki <code>action=parse</code> API. PsychonautWiki does the same. PubMed uses NCBI EUtils <code>efetch</code> with a regex-based article splitter because the returned XML contains multiple <code>PubmedArticle</code> records. The caller never sees any of this.
+            </p>
+
+            <h3>A zero-copy AST for both Wikitext and XML</h3>
+            <p>
+                Existing D Wikitext options either lost formatting, choked on templates, or pulled in dependencies I did not want. So Akashi has its own parser. The AST is a flat array of nodes with child index ranges, not a tree of pointers. Every node&rsquo;s <code>text</code> field is a slice into the original source string. No copies during parsing.
+            </p>
+
+<pre><code class="language-d">struct Node
+{
+    NodeType type;
+    string text;     // slice into original source (zero-copy)
+    NodeFlags flags; // Bold | Italic, combined freely
+    ubyte level;     // Section heading depth or list nesting
+    string target;   // Link URL or page name
+    uint childStart; // index into Document.nodes
+    uint childEnd;
+}
+
+struct Document
+{
+    Node[] nodes;   // flat storage; nodes[0] is always root
+    string source;  // kept alive so slices remain valid
+}</code></pre>
+
+            <p>
+                The flat array makes tree traversal cache-friendly and lets the parser emit nodes in a single pass without allocating per-node children vectors. Walking siblings is just incrementing an index. Walking subtrees uses the child range. Dropping non-renderable node types (Templates, References, Comments, Categories, Images) is an in-place filter that rebuilds the flat array while preserving the remaining structure:
+            </p>
+
+<pre><code class="language-d">ref Document document()
+{
+    if (!_parsed)
+    {
+        if (source == "pubmed" || source == "pmc")
+            _doc = parseXml(raw);
+        else
+            _doc = parseWikitext(raw);
+
+        _doc.drop(Document.dropFlag(
+            NodeType.Template,
+            NodeType.Reference,
+            NodeType.Comment,
+            NodeType.Category,
+            NodeType.Image,
+        ));
+        _parsed = true;
+    }
+    return _doc;
+}</code></pre>
+
+            <h3>Parsing dosage from Wikitext templates</h3>
+            <p>
+                PsychonautWiki stores dosage data in <code>Template:SubstanceBox/&lt;compound&gt;</code> pages, not in the article text. The template parameters look like this:
+            </p>
+
+<pre><code class="language-wiki">| OralROA_Threshold = 50 mg
+| OralROA_Light     = 50 - 100 mg
+| OralROA_Common    = 100 - 150 mg
+| OralROA_Strong    = 150 - 200 mg
+| OralROA_Heavy     = 200+ mg
+</code></pre>
+
+            <p>
+                Extracting this requires fetching the template page separately, then running a compiled regex over the raw Wikitext. The regex captures route name, rank, and value. Values are cleaned by stripping nested <code>[[Effect::...]]</code> semantic links, <code>[[Page|Display]]</code> wikilinks, and <code>&lt;ref&gt;</code> citation tags:
+            </p>
+
+<pre><code class="language-d">enum roaRe = ctRegex!(
+    `\|\s*(\w+)ROA_(Bioavailability|Threshold|Light|Common|Strong|Heavy)`
+   ~`\s*=\s*([^\n|]+)`);
+
+foreach (m; matchAll(raw, roaRe))
+{
+    string range = cleanValue(m[3], m[2]);
+    if (range.length == 0 || range.indexOf(" x ") != -1)
+        continue;
+    routes[m[1]][m[2]] = range;
+}</code></pre>
+
+            <h3>PsychonautWiki resolution: similarity, not names</h3>
+            <p>
+                When a compound lacks its own PsychonautWiki page, Akashi falls back to structural similarity. The process is deliberately conservative:
+            </p>
+            <ol>
+                <li>Query PubChem for structurally similar compounds (Tanimoto > 90%).</li>
+                <li>Fetch full properties for each candidate.</li>
+                <li>Filter by XLogP (within &pm;0.5 units) and molecular weight (within &pm;8%).</li>
+                <li>Query PsychonautWiki for each filtered candidate by name.</li>
+                <li>Match the returned page title against the candidate&rsquo;s complete synonym list from PubChem.</li>
+            </ol>
+
+<pre><code class="language-d">Compound[] similar = similaritySearch(compound.cid, 90, 5);
+Compound[] withProps = getProperties!"cid"(simCids);
+
+foreach (sim; withProps)
+{
+    if (!isNaN(refXLogP) && !isNaN(sim.properties.xlogp))
+        if (abs(sim.properties.xlogp - refXLogP) > 0.5)
+            continue;
+
+    if (!isNaN(refMW) && refMW > 0 && !isNaN(sim.properties.weight))
+        if (abs(sim.properties.weight - refMW) / refMW > 0.08)
+            continue;
+
+    filtered ~= sim;
+}</code></pre>
+
+            <p>
+                Only exact synonym matches are accepted. A close structural analog with a different name will not silently pass as the target compound. Every inferred dosage is flagged with the source compound&rsquo;s name so the caller knows where it came from.
+            </p>
+
+            <h3>PubMed and PMC: XML into the same AST</h3>
+            <p>
+                NCBI EUtils returns JATS XML, which is verbose, deeply nested, and full of metadata tags the renderer does not care about. Akashi has a second parser that reads this XML into the <em>same</em> AST structure as the Wikitext parser. <code>article-title</code> becomes a <code>Section</code> node. <code>abstract</code> and <code>sec</code> become sections with headings. <code>p</code> becomes <code>Paragraph</code>. <code>bold</code> and <code>italic</code> become <code>Styled</code> nodes with bitflags. Tables, figures, and reference lists are skipped entirely.
+            </p>
+
+<pre><code class="language-d">Document parseXml(string src)
+{
+    XmlParser parser = XmlParser(src);
+    parser.parse();
+    return Document(parser.nodes, src);
+}
+
+// Inside the parser:
+if (matchTag("article-title")) { parseSimpleElement("article-title", NodeType.Section, 1); }
+if (matchTag("abstract"))      { parseSectionElement("abstract", "Abstract", 2); }
+if (matchTag("sec"))           { parseSec(); }
+if (matchTag("p"))             { parseParagraphElement(); }
+if (matchTag("bold") || matchTag("b"))
+    { parseInlineElement("bold", NodeType.Styled, NodeFlags.Bold); }</code></pre>
+
+            <h3>Network hygiene: per-source rate limiting</h3>
+            <p>
+                Every adapter uses the <code>conductor</code> HTTP library, but each source carries its own rate-limiting state. PubChem PUG REST is generous. NCBI EUtils demands 333ms between requests. MediaWiki asks for 200ms. These are not global locks; they are per-module clocks. Two modules hitting two different providers never share a bottleneck.
+            </p>
+
+<pre><code class="language-d">static Orchestrator psychonautOrchestrator =
+    Orchestrator("https://psychonautwiki.org/w", 200);
+
+static Orchestrator entrezOrchestrator =
+    Orchestrator("https://eutils.ncbi.nlm.nih.gov/entrez/eutils", 333);
+
+JSONValue query(string[string] params)
+{
+    params["format"] = "json";
+    params["formatversion"] = "2";
+    orchestrator.rateLimit();
+    orchestrator.client.get(
+        orchestrator.buildURL("/api.php", params),
+        (ubyte[] data) { json = parseJSON(data.assumeUTF); },
+        null
+    );
+    return json;
+}</code></pre>
+
+            <p>
+                The PubMed adapter also switches from GET to POST automatically when the ID list exceeds 200 items or 2000 characters, because NCBI EUtils rejects oversized GET requests without a helpful error.
             </p>
 
             <h3>The extension test</h3>
             <p>
-                After Chemica shipped I added a <code>pubchem/bio</code> module (genes, proteins, orthologs, pathways, disease associations) hydrated from PubChem&rsquo;s PUG REST and PUG View gene endpoints. Chemica doesn&rsquo;t use any of it yet. But it took an afternoon, not a refactor. That is the test I care about. Not &ldquo;does it work today,&rdquo; but &ldquo;how much does it cost me to extend.&rdquo;
+                After Chemica shipped I added a <code>pubchem/bio</code> module (genes, proteins, orthologs, pathways, disease associations) hydrated from PubChem&rsquo;s PUG REST and PUG View gene endpoints. Chemica does not use any of it yet. But it took an afternoon, not a refactor. That is the test I care about. Not &ldquo;does it work today,&rdquo; but &ldquo;how much does it cost me to extend.&rdquo;
             </p>
 
             <h3>What I&rsquo;d carry into the next one</h3>
             <ul>
                 <li>Pick the identity anchor early. A bad identity model will cost more than a bad parser ever will.</li>
+                <li>Zero-copy ASTs with flat arrays are faster to build, easier to filter, and simpler to traverse than pointer trees.</li>
                 <li>Treat unreliable sources as unreliable. Build retries, rate limits, and fallbacks before you need them.</li>
                 <li>Write the boring abstraction. A shared <code>Page</code> type was worth more than any clever feature on top of it.</li>
                 <li>Own your parsers when you have to. A small purpose-built AST is often less code than integrating a generic one.</li>
