@@ -3,306 +3,553 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta name="author" content="cetio">
-    <meta name="description" content="cetio's portfolio website!">
+    <meta name="description" content="cetio's portfolio">
     <title>cetio</title>
-
     <link rel="stylesheet" href="assets/fonts/style.css">
     <link rel="stylesheet" href="assets/theme/style.css">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <pre>
-                          s       .                
-                         :8      @88>              
-                        .88      %8P          u.   
-      .        .u      :888ooo    .     ...ue888b  
- .udR88N    ud8888.  -*8888888  .@88u   888R Y888r 
-<888'888k :888'8888.   8888    ''888E`  888R I888> 
-9888 'Y"  d888 '88%"   8888      888E   888R I888> 
-9888      8888.+"      8888      888E   888R I888> 
-9888      8888L       .8888Lu=   888E  u8888cJ888  
-?8888u../ '8888c. .+  ^%888*     888&   "*888*P"   
- "8888P'   "88888%      'Y"      R888"    'Y"      
-   "P'       "YP'                 ""               
-                                   
-        </pre>
-        <h2 class="fallback">cetio</h2>
-        <p style="text-align: center;">Ben &middot; EST</p>
-    </header>
+    <nav class="top-nav" role="tablist" aria-label="Primary">
+        <button class="tab-btn active" data-tab="about" role="tab" aria-selected="true">About</button>
+        <button class="tab-btn" data-tab="projects" role="tab" aria-selected="false">Projects</button>
+        <button class="tab-btn" data-tab="skills" role="tab" aria-selected="false">Skills</button>
+        <button class="tab-btn" data-tab="articles" role="tab" aria-selected="false">Articles</button>
+        <button class="tab-btn" data-tab="certs" role="tab" aria-selected="false">Certs</button>
+    </nav>
+
+    <div class="watermark" aria-hidden="true">cetios</div>
+
     <main>
-        <div class="intro-line">> Hey, I'm Ben.</div>
-        <div class="intro-line intro-lead">> Systems-focused engineer. I build tooling, API integrations, and workflow automation, mostly in D, C#, C, and Ruby.</div>
-        <p class="intro-line">> I like understanding how systems actually work, reverse-engineering third-party APIs into typed native code, and replacing manual processes with scripts that don't forget.</p>
+        <!-- About -->
+        <section id="tab-about" class="tab-panel active" role="tabpanel">
+            <div class="panel">
+                <p class="intro-line intro-lead">I build tools, libraries, and automation that reduce friction, simplify complex workflows, and make systems easier to extend and rely on.</p>
+                <p class="intro-line">My work spans native and managed environments, with a strong focus on turning messy or repetitive processes into clean, durable products. Recent examples: a typed D SDK for LLM endpoints with SIMD-optimized embeddings, a unified data-retrieval library that fronts five incompatible scientific APIs behind one shared <code>Page</code> type, and a browser-automation runtime that cut manual annotation effort by 95%.</p>
 
-        <section class="highlights" aria-label="Highlights">
-            <div class="highlights-viewport">
-                <div class="highlights-track" id="highlights-track"></div>
+                <div class="focus-row">
+                    <div class="focus-card">
+                        <h4>API &amp; SDK Engineering</h4>
+                        <p>Reverse-engineer undocumented or poorly-documented APIs into typed, native SDKs. See <a href="https://github.com/cetio/intuit" target="_blank" rel="noopener noreferrer">Intuit</a> (OpenAI/Claude in D) and <a href="https://github.com/cetio/webull-sdk" target="_blank" rel="noopener noreferrer">Webull-SDK</a> (finance data with HMAC auth).</p>
+                    </div>
+                    <div class="focus-card">
+                        <h4>Systems Internals</h4>
+                        <p>Model runtime structures and expose them as first-class types. See <a href="https://github.com/cetio/Cassowary" target="_blank" rel="noopener noreferrer">Cassowary</a> and <a href="https://github.com/cetio/godwit" target="_blank" rel="noopener noreferrer">Godwit</a> (CoreCLR reflection without native code).</p>
+                    </div>
+                    <div class="focus-card">
+                        <h4>Performance Engineering</h4>
+                        <p>SIMD-specialized vector ops, JIT code generation, and cache-conscious data layout. See <a href="https://github.com/cetio/jitsort" target="_blank" rel="noopener noreferrer">Jitsort</a> (O(1) sorting via codegen) and Intuit's <code>intuit.space</code> AVX primitives.</p>
+                    </div>
+                    <div class="focus-card">
+                        <h4>Workflow Automation</h4>
+                        <p>Replace fragile linear scripts with observable state machines and dispatch queues. See <a href="https://github.com/cetio/linkedin" target="_blank" rel="noopener noreferrer">AutoHandshake</a> (95% effort reduction via Selenium runtime).</p>
+                    </div>
+                </div>
             </div>
-            <div class="highlights-controls">
-                <button type="button" class="highlights-nav highlights-prev" aria-label="Previous highlights">&larr;</button>
-                <div class="highlights-dots" id="highlights-dots" role="tablist" aria-label="Highlight pages"></div>
-                <button type="button" class="highlights-nav highlights-next" aria-label="Next highlights">&rarr;</button>
-            </div>
+            <div id="highlights-container"></div>
         </section>
 
-        <section id="skills" class="skills" aria-label="Skills">
-            <h2 class="skills-title">&gt; skills</h2>
-            <dl class="skills-grid">
-                <dt>Languages</dt>
-                <dd>
-                    <span class="skill-chip">x86</span>
-                    <span class="skill-chip">z80</span>
-                    <span class="skill-chip">D</span>
-                    <span class="skill-chip">C</span>
-                    <span class="skill-chip">C++</span>
-                    <span class="skill-chip">C#</span>
-                    <span class="skill-chip">JavaScript</span>
-                    <span class="skill-chip">Python</span>
-                    <span class="skill-chip">Ruby</span>
-                    <span class="skill-chip">Bash</span>
-                    <span class="skill-chip">VB.Net</span>
-                </dd>
-
-                <dt>Platforms</dt>
-                <dd>
-                    <span class="skill-chip">Windows</span>
-                    <span class="skill-chip">Linux (Fedora)</span>
-                    <span class="skill-chip">Linux (Arch)</span>
-                    <span class="skill-chip">Embedded Linux</span>
-                </dd>
-
-                <dt>Tools &amp; Frameworks</dt>
-                <dd>
-                    <span class="skill-chip">Git</span>
-                    <span class="skill-chip">GDB</span>
-                    <span class="skill-chip">Bash</span>
-                    <span class="skill-chip">CMake</span>
-                    <span class="skill-chip">Agile</span>
-                    <span class="skill-chip">Selenium</span>
-                    <span class="skill-chip">Nokogiri</span>
-                    <span class="skill-chip">GTK</span>
-                    <span class="skill-chip">IDA Pro</span>
-                    <span class="skill-chip">Ghidra</span>
-                    <span class="skill-chip">Intel VTune</span>
-                    <span class="skill-chip">AMD uPerf</span>
-                    <span class="skill-chip">Python Scripting</span>
-                </dd>
-
-                <dt>Domains</dt>
-                <dd>
-                    <span class="skill-chip">Reverse Engineering</span>
-                    <span class="skill-chip">Systems Internals</span>
-                    <span class="skill-chip">Profiling</span>
-                    <span class="skill-chip">Cryptography</span>
-                    <span class="skill-chip">Performance Engineering</span>
-                    <span class="skill-chip">Code Generation</span>
-                    <span class="skill-chip">Kernel-mode</span>
-                    <span class="skill-chip">API &amp; SDK Engineering</span>
-                    <span class="skill-chip">Workflow Automation</span>
-                    <span class="skill-chip">Browser Automation</span>
-                    <span class="skill-chip">Data Parsing / Retrieval</span>
-                    <span class="skill-chip">AI / LLM Integration</span>
-                    <span class="skill-chip">Networking &amp; Protocols</span>
-                    <span class="skill-chip">Tooling &amp; Applications</span>
-                    <span class="skill-chip">Media &amp; File Formats</span>
-                    <span class="skill-chip">Security Research</span>
-                </dd>
-
-                <dt>Data &amp; Ops</dt>
-                <dd>
-                    <span class="skill-chip">SQL</span>
-                    <span class="skill-chip">Data Processing &amp; Analysis</span>
-                    <span class="skill-chip">Clustering</span>
-                    <span class="skill-chip">CI/CD</span>
-                    <span class="skill-chip">RPA</span>
-                    <span class="skill-chip">RPC</span>
-                    <span class="skill-chip">JSON</span>
-                    <span class="skill-chip">System Configuration</span>
-                </dd>
-            </dl>
-        </section>
-
-        <details open id="projects-section" aria-label="Projects">
-            <summary>Projects</summary>
-            <div id="project-filters" class="project-filters"></div>
+        <!-- Projects -->
+        <section id="tab-projects" class="tab-panel" role="tabpanel">
+            <div class="project-filters">
+                <div class="lang-dropdown" id="lang-dropdown">
+                    <button class="lang-dropdown-trigger" id="lang-dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+                        <span id="lang-trigger-icon"></span>
+                        <span id="lang-trigger-label">All Languages</span>
+                        <span aria-hidden="true">&#9662;</span>
+                    </button>
+                    <div class="lang-dropdown-menu" id="lang-dropdown-menu" role="menu"></div>
+                </div>
+            </div>
             <div id="projects-list" class="projects-list"></div>
-        </details>
+        </section>
 
-        <details id="articles-section">
-            <summary>Articles (4)</summary>
-            <div class="details-body">
-                <div class="article-entry">
-                    <h3><a href="/articles/chemica-api">Building Akashi: identity, integration, and one shared Page type</a></h3>
-                    <time>April 21, 2026</time>
+        <!-- Skills -->
+        <section id="tab-skills" class="tab-panel" role="tabpanel">
+            <div class="panel">
+                <dl class="skills-grid">
+                    <dt>Languages</dt>
+                    <dd>
+                        <span class="skill-chip">x86</span>
+                        <span class="skill-chip">z80</span>
+                        <span class="skill-chip">D</span>
+                        <span class="skill-chip">C</span>
+                        <span class="skill-chip">C++</span>
+                        <span class="skill-chip">C#</span>
+                        <span class="skill-chip">JavaScript</span>
+                        <span class="skill-chip">Python</span>
+                        <span class="skill-chip">Ruby</span>
+                        <span class="skill-chip">Bash</span>
+                        <span class="skill-chip">VB.Net</span>
+                    </dd>
+
+                    <dt>Platforms</dt>
+                    <dd>
+                        <span class="skill-chip">Windows</span>
+                        <span class="skill-chip">Linux (Fedora)</span>
+                        <span class="skill-chip">Linux (Arch)</span>
+                        <span class="skill-chip">Embedded Linux</span>
+                    </dd>
+
+                    <dt>Tools &amp; Frameworks</dt>
+                    <dd>
+                        <span class="skill-chip">Git</span>
+                        <span class="skill-chip">GDB</span>
+                        <span class="skill-chip">Bash</span>
+                        <span class="skill-chip">CMake</span>
+                        <span class="skill-chip">Agile</span>
+                        <span class="skill-chip">Selenium</span>
+                        <span class="skill-chip">Nokogiri</span>
+                        <span class="skill-chip">GTK</span>
+                        <span class="skill-chip">IDA Pro</span>
+                        <span class="skill-chip">Ghidra</span>
+                        <span class="skill-chip">Intel VTune</span>
+                        <span class="skill-chip">AMD uPerf</span>
+                        <span class="skill-chip">Python Scripting</span>
+                    </dd>
+
+                    <dt>Domains</dt>
+                    <dd>
+                        <span class="skill-chip">Reverse Engineering</span>
+                        <span class="skill-chip">Systems Internals</span>
+                        <span class="skill-chip">Profiling</span>
+                        <span class="skill-chip">Cryptography</span>
+                        <span class="skill-chip">Performance Engineering</span>
+                        <span class="skill-chip">Code Generation</span>
+                        <span class="skill-chip">Kernel-mode</span>
+                        <span class="skill-chip">API &amp; SDK Engineering</span>
+                        <span class="skill-chip">Workflow Automation</span>
+                        <span class="skill-chip">Browser Automation</span>
+                        <span class="skill-chip">Data Parsing / Retrieval</span>
+                        <span class="skill-chip">AI / LLM Integration</span>
+                        <span class="skill-chip">Networking &amp; Protocols</span>
+                        <span class="skill-chip">Tooling &amp; Applications</span>
+                        <span class="skill-chip">Media &amp; File Formats</span>
+                        <span class="skill-chip">Security Research</span>
+                    </dd>
+
+                    <dt>Data &amp; Ops</dt>
+                    <dd>
+                        <span class="skill-chip">SQL</span>
+                        <span class="skill-chip">Data Processing &amp; Analysis</span>
+                        <span class="skill-chip">Clustering</span>
+                        <span class="skill-chip">CI/CD</span>
+                        <span class="skill-chip">RPA</span>
+                        <span class="skill-chip">RPC</span>
+                        <span class="skill-chip">JSON</span>
+                        <span class="skill-chip">System Configuration</span>
+                    </dd>
+                </dl>
+            </div>
+        </section>
+
+        <!-- Articles -->
+        <section id="tab-articles" class="tab-panel" role="tabpanel">
+            <div class="panel article-list">
+                <div class="article-series" data-series="chemica">
+                    <div class="series-label">Chemica</div>
+                    <div class="article-entry">
+                        <h3><a href="/articles/chemica-api.html">Chemica II: identity, integration, and one shared Page type</a></h3>
+                        <time>April 21, 2026</time>
+                        <p class="article-preview">How Akashi unifies five disparate scientific data sources behind one lazy-fetching <code>Page</code> type in D, and why picking a single identity anchor early matters more than any clever parser.</p>
+                        <div class="article-tags">
+                            <span class="article-tag">D</span>
+                            <span class="article-tag">API Design</span>
+                            <span class="article-tag">Data Integration</span>
+                        </div>
+                    </div>
+                    <div class="article-entry">
+                        <h3><a href="/articles/chemica-gtk.html">Chemica I: a GTK-based PubChem wiki app with 3D molecular viewing</a></h3>
+                        <time>February 26, 2026</time>
+                        <p class="article-preview">GTK4 application architecture in D, a custom Cairo-based 3D molecular viewer, PubChem compound search, article rendering with collapsible panels, and dosage aggregation with multi-dimensional similarity matching.</p>
+                        <div class="article-tags">
+                            <span class="article-tag">D</span>
+                            <span class="article-tag">GTK</span>
+                            <span class="article-tag">Cairo</span>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="article-entry">
-                    <h3><a href="/articles/semantic-retrieval">Semantic retrieval on laptops: embeddings, centroids, and SIMD</a></h3>
+                <div class="article-series" data-series="selenium">
+                    <div class="series-label">Selenium</div>
+                    <div class="article-entry">
+                        <h3><a href="/articles/dispatch-automation.html">Selenium II: dispatch-oriented browser automation</a></h3>
+                        <time>December 9, 2025</time>
+                        <p class="article-preview">Replacing fragile linear click-and-sleep scripts with an observable state machine and event dispatch queue. Stale-element errors went from constant to almost never.</p>
+                        <div class="article-tags">
+                            <span class="article-tag">Ruby</span>
+                            <span class="article-tag">Selenium</span>
+                            <span class="article-tag">Automation</span>
+                        </div>
+                    </div>
+                    <div class="article-entry">
+                        <h3><a href="/articles/selenium-workflow.html">Selenium I: automating multi-page workflows with Ruby and Selenium</a></h3>
+                        <time>December 2, 2025</time>
+                        <p class="article-preview">Building a robust Ruby automation from 500 to 700 lines with explicit waits, DOM-driven state machines, CDP hooks, layered retry logic, and modular page objects.</p>
+                        <div class="article-tags">
+                            <span class="article-tag">Ruby</span>
+                            <span class="article-tag">Selenium</span>
+                            <span class="article-tag">Automation</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="article-entry standalone">
+                    <h3><a href="/articles/semantic-retrieval.html">Semantic retrieval on laptops: embeddings, centroids, and SIMD</a></h3>
                     <time>December 3, 2025</time>
+                    <p class="article-preview">Running embedding-based search on consumer hardware with two-stage centroid pruning, AVX-optimized dot products, and int8 quantization to keep the working set in cache instead of on disk.</p>
+                    <div class="article-tags">
+                        <span class="article-tag">SIMD</span>
+                        <span class="article-tag">Embeddings</span>
+                        <span class="article-tag">Performance</span>
+                    </div>
                 </div>
-
-                <div class="article-entry">
-                    <h3><a href="/articles/dispatch-automation">Dispatch-oriented browser automation: treating Selenium like a runtime</a></h3>
-                    <time>December 9, 2025</time>
-                </div>
-
-                <div class="article-entry">
-                    <h3><a href="/articles/syscall-hooks">Hacking C#: dynamic syscall stubs and user-mode hook detection</a></h3>
+                <div class="article-entry standalone">
+                    <h3><a href="/articles/syscall-hooks.html">Hacking C#: dynamic syscall stubs and user-mode hook detection</a></h3>
                     <time>August 7, 2025</time>
+                    <p class="article-preview">An educational walkthrough of syscall-ID extraction, shellcode stub generation, and hook taxonomy in C# on Windows, built on top of CoreCLR internal structures.</p>
+                    <div class="article-tags">
+                        <span class="article-tag">C#</span>
+                        <span class="article-tag">Windows Internals</span>
+                        <span class="article-tag">Security Research</span>
+                    </div>
                 </div>
             </div>
-        </details>
+        </section>
 
-        <details id="certs-section">
-            <summary>Certificates (23+)</summary>
-            <div class="details-body">
-            <p style="margin-top: 0;">Representative sample shown. Contact me for a complete, up-to-date tally.</p>
-
-            <table border="1" width="100%">
-                <tbody>
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>MS Career Essentials Generative AI</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>MS Career Essentials Software Development</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>MS Generative AI for Customer Service...</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>MS Azure AI Essentials</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>MS Security Essentials</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>Accounting Foundations</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>KNIME Data Science</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>Zendesk Customer Service</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>SQL Programming</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-nasba">NASBA</td>
-                        <td>SQL Essential Training</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-pmi">PMI</td>
-                        <td>Career Essentials in GitHub</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-pmi">PMI</td>
-                        <td>Cybersecurity Awareness</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-comptia">CompTIA</td>
-                        <td>Full-Stack Web Dev</td>
-                    </tr>
-
-                    <tr>
-                        <td class="cert-handshake">Handshake</td>
-                        <td>Model Validation 2 - Expert</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Certificates -->
+        <section id="tab-certs" class="tab-panel" role="tabpanel">
+            <div class="panel">
+                <p class="subtle" style="margin-top: 0;">Representative sample shown. Contact me for a complete, up-to-date tally.</p>
+                <table class="cert-table">
+                    <tbody>
+                        <tr><td class="cert-nasba">NASBA</td><td>MS Career Essentials Generative AI</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>MS Career Essentials Software Development</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>MS Generative AI for Customer Service...</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>MS Azure AI Essentials</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>MS Security Essentials</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>Accounting Foundations</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>KNIME Data Science</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>Zendesk Customer Service</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>SQL Programming</td></tr>
+                        <tr><td class="cert-nasba">NASBA</td><td>SQL Essential Training</td></tr>
+                        <tr><td class="cert-pmi">PMI</td><td>Career Essentials in GitHub</td></tr>
+                        <tr><td class="cert-pmi">PMI</td><td>Cybersecurity Awareness</td></tr>
+                        <tr><td class="cert-comptia">CompTIA</td><td>Full-Stack Web Dev</td></tr>
+                        <tr><td class="cert-handshake">Handshake</td><td>Model Validation 2 - Expert</td></tr>
+                    </tbody>
+                </table>
             </div>
-        </details>
-
+        </section>
     </main>
+
     <footer>
-        <div class="right-align" style="padding-top: 0">
-            <div>
-                <div class="contact-list">
-                    <a class="contact-link" href="https://github.com/cetio" target="_blank" rel="noopener noreferrer" aria-label="GitHub: cetio">
-                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <title>GitHub</title>
-                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                        </svg>
-                        <span class="contact-handle">cetio</span>
-                        <span class="contact-platform">(GitHub)</span>
-                    </a>
-
-                    <a class="contact-link" href="https://www.linkedin.com/in/bejaunst" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn: bejaunst">
-                        <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <title>LinkedIn</title>
-                            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
-                        </svg>
-                        <span class="contact-handle">bejaunst</span>
-                        <span class="contact-platform">(LinkedIn)</span>
-                    </a>
-
-                    <span class="contact-link" aria-label="Discord: dlang.org">
-                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <title>Discord</title>
-                            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
-                        </svg>
-                        <span class="contact-handle">dlang.org</span>
-                        <span class="contact-platform">(Discord)</span>
-                    </span>
-
-                    <a class="contact-link" href="mailto:bejaunst@gmail.com" aria-label="Email: bejaunst@gmail.com">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                            <title>Email</title>
-                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
-                        </svg>
-                        <span class="contact-handle">bejaunst@gmail.com</span>
-                        <span class="contact-platform">(Email)</span>
-                    </a>
-                </div>
-
-                <span>Like the font?
-                    <a href="https://int10h.org/oldschool-pc-fonts/readme/#intro" style="color: #52a4aa;">MxPlus IBM VGA 9x16</a>
-                </span>
-                <div>Like the header?
-                    <a href="https://www.1001fonts.com/heraldic-shadows-font.html" style="font-family: Heraldic; color: #52a4aa;">Heraldic Shadows</a>
-                </div>
-            </div>
-            
-            <div>
-                <div class="left-align">
-                    <div class="color-swatch" style="background-color: rgb(251, 241, 199);"><span>#fbf1c7</span></div>
-                    <div class="color-swatch" style="background-color: #d4be98;"><span>#d4be98</span></div>
-                    <div class="color-swatch" style="background-color: #1d2021;"><span style="color: #fbf1c7;">#1d2021</span></div>
-                    <div class="color-swatch" style="background-color: #cc241d;"><span>#cc241d</span></div>
-                    <div class="color-swatch" style="background-color: rgb(82, 164, 170);"><span>#52a4aa</span></div>
-                </div>
-                <p style="text-align: right; margin-top: 1em; font-size: 0.9em; color: #d4be98;">
-                    &copy; 2026 cet
-                </p>
-            </div>
+        <p class="footer-name">Ben &middot; <span id="tz-label">EST</span></p>
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/cetio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                <span>github.com/cetio</span>
+            </a>
+            <a class="footer-link" href="https://www.linkedin.com/in/bejaunst" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                <span>linkedin.com/in/bejaunst</span>
+            </a>
+            <a class="footer-link" href="mailto:bejaunst@gmail.com" aria-label="Email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><title>Email</title><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/></svg>
+                <span>bejaunst@gmail.com</span>
+            </a>
         </div>
     </footer>
 
-    <script src="/cards.js"></script>
-    <script src="/projects.js"></script>
+    <script>
+    (function () {
+        // ── Tabs ──
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+                tabButtons.forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                tabPanels.forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                const panel = document.getElementById('tab-' + target);
+                if (panel) panel.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // ── Inline renderer ──
+        const INLINE_PATTERN = /(`[^`\n]+`|\[[^\]\n]+\]\([^)\s]+\))/g;
+        const LINK_PATTERN = /^\[([^\]]+)\]\(([^)\s]+)\)$/;
+
+        const renderInline = (text, parent) => {
+            if (!text) return;
+            const parts = String(text).split(INLINE_PATTERN);
+            parts.forEach(part => {
+                if (!part) return;
+                if (part.length >= 2 && part.startsWith('`') && part.endsWith('`')) {
+                    const code = document.createElement('code');
+                    code.textContent = part.slice(1, -1);
+                    parent.appendChild(code);
+                    return;
+                }
+                const m = part.match(LINK_PATTERN);
+                if (m) {
+                    const a = document.createElement('a');
+                    a.href = m[2];
+                    a.textContent = m[1];
+                    if (/^https?:\/\//.test(m[2])) {
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                    }
+                    parent.appendChild(a);
+                    return;
+                }
+                parent.appendChild(document.createTextNode(part));
+            });
+        };
+
+        // ── Highlights ──
+        const highlightsContainer = document.getElementById('highlights-container');
+        fetch('/assets/cards.json')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                const cards = Array.isArray(data) ? data : (data && Array.isArray(data.cards) ? data.cards : []);
+                if (!cards.length || !highlightsContainer) return;
+                const grid = document.createElement('div');
+                grid.className = 'highlight-cards';
+                cards.forEach(c => {
+                    const card = document.createElement('div');
+                    card.className = 'highlight-card';
+                    const h3 = document.createElement('h3');
+                    renderInline(c.title || '', h3);
+                    const p = document.createElement('p');
+                    renderInline(c.description || '', p);
+                    card.appendChild(h3);
+                    card.appendChild(p);
+                    grid.appendChild(card);
+                });
+                highlightsContainer.appendChild(grid);
+            })
+            .catch(() => {
+                if (highlightsContainer) highlightsContainer.innerHTML = '';
+            });
+
+        // ── Projects & Language Dropdown ──
+        const projectsList = document.getElementById('projects-list');
+        const langDropdown = document.getElementById('lang-dropdown');
+        const langTrigger = document.getElementById('lang-dropdown-trigger');
+        const langTriggerIcon = document.getElementById('lang-trigger-icon');
+        const langTriggerLabel = document.getElementById('lang-trigger-label');
+        const langMenu = document.getElementById('lang-dropdown-menu');
+
+        let allProjects = [];
+        let allLanguages = [];
+        let activeLangId = 'all';
+
+        const makeIconSvg = (icon) => {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('role', 'img');
+            svg.setAttribute('viewBox', icon.viewBox || '0 0 24 24');
+            svg.setAttribute('aria-hidden', 'true');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', icon.path);
+            svg.appendChild(path);
+            return svg;
+        };
+
+        const closeDropdown = () => {
+            langMenu.classList.remove('open');
+            langTrigger.setAttribute('aria-expanded', 'false');
+        };
+
+        const openDropdown = () => {
+            langMenu.classList.add('open');
+            langTrigger.setAttribute('aria-expanded', 'true');
+        };
+
+        const toggleDropdown = () => {
+            if (langMenu.classList.contains('open')) closeDropdown();
+            else openDropdown();
+        };
+
+        langTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!langDropdown.contains(e.target)) closeDropdown();
+        });
+
+        const selectLang = (lang) => {
+            activeLangId = lang.id;
+            langTriggerLabel.textContent = lang.id === 'all' ? 'All Languages' : lang.label;
+            langTriggerIcon.innerHTML = '';
+            if (lang.icon) {
+                langTriggerIcon.appendChild(makeIconSvg(lang.icon));
+            }
+            langTrigger.style.color = langColors[lang.id] || '';
+            closeDropdown();
+            renderProjects();
+        };
+
+        const buildDropdown = () => {
+            if (!langMenu) return;
+            langMenu.innerHTML = '';
+
+            const allOption = { id: 'all', label: 'All Languages' };
+            [allOption, ...allLanguages].forEach(lang => {
+                const btn = document.createElement('button');
+                btn.className = 'lang-dropdown-option';
+                btn.type = 'button';
+                btn.setAttribute('role', 'menuitem');
+                btn.style.color = langColors[lang.id] || 'var(--fg-muted)';
+                if (lang.icon) {
+                    btn.appendChild(makeIconSvg(lang.icon));
+                } else {
+                    const spacer = document.createElement('span');
+                    spacer.style.width = '16px';
+                    spacer.style.display = 'inline-block';
+                    btn.appendChild(spacer);
+                }
+                const label = document.createElement('span');
+                label.textContent = lang.label;
+                btn.appendChild(label);
+                btn.addEventListener('click', () => selectLang(lang));
+                langMenu.appendChild(btn);
+            });
+        };
+
+        const iconGitHub = {
+            title: 'GitHub',
+            viewBox: '0 0 24 24',
+            path: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'
+        };
+
+        const langColors = {
+            d: '#B03931',
+            c: '#A8B9CC',
+            csharp: '#512BD4',
+            javascript: '#F7DF1E',
+            python: '#3776AB',
+            ruby: '#CC342D',
+            cpp: '#00599C',
+            rust: '#D34516'
+        };
+
+        const renderIcon = (icon) => {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('role', 'img');
+            svg.setAttribute('viewBox', icon.viewBox || '0 0 24 24');
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = icon.title || 'Icon';
+            svg.appendChild(title);
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', icon.path);
+            svg.appendChild(path);
+            return svg;
+        };
+
+        const renderProjects = () => {
+            if (!projectsList) return;
+            projectsList.innerHTML = '';
+            const filtered = activeLangId === 'all'
+                ? allProjects
+                : allProjects.filter(p => (p.languages || []).includes(activeLangId));
+            if (!filtered.length) {
+                projectsList.innerHTML = '<p class="subtle">No projects match this filter.</p>';
+                return;
+            }
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+
+                const h3 = document.createElement('h3');
+                if (p.github || p.url) {
+                    const a = document.createElement('a');
+                    a.href = p.github || p.url;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.textContent = p.title || '';
+                    h3.appendChild(a);
+                } else {
+                    h3.textContent = p.title || '';
+                }
+                card.appendChild(h3);
+
+                const desc = document.createElement('p');
+                const text = Array.isArray(p.description) ? p.description.join(' ') : (p.description || '');
+                renderInline(text, desc);
+                card.appendChild(desc);
+
+                const icons = document.createElement('div');
+                icons.className = 'project-icons';
+                (p.languages || []).forEach(langId => {
+                    const lang = allLanguages.find(l => l.id === langId);
+                    if (lang && lang.icon) {
+                        const a = document.createElement('a');
+                        a.href = lang.url || '#';
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.setAttribute('aria-label', lang.label || langId);
+                        a.style.color = langColors[langId] || 'var(--fg-dim)';
+                        a.appendChild(renderIcon(lang.icon));
+                        icons.appendChild(a);
+                    }
+                });
+                if (p.github) {
+                    const a = document.createElement('a');
+                    a.href = p.github;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.setAttribute('aria-label', `${p.title || 'Project'} GitHub`);
+                    a.appendChild(renderIcon(iconGitHub));
+                    icons.appendChild(a);
+                }
+                if (icons.childNodes.length) {
+                    card.classList.add('has-icons');
+                    card.appendChild(icons);
+                }
+
+                projectsList.appendChild(card);
+            });
+        };
+
+        fetch('/assets/projects.json')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                allProjects = (data && Array.isArray(data.projects)) ? data.projects : [];
+                allLanguages = (data && Array.isArray(data.languages)) ? data.languages : [];
+                buildDropdown();
+                renderProjects();
+            })
+            .catch(() => {
+                if (projectsList) projectsList.innerHTML = '<p class="subtle">Unable to load projects.</p>';
+            });
+
+        // ── Timezone label (EST/EDT) ──
+        const isEasternDst = (date) => {
+            const year = date.getFullYear();
+            const secondSunday = (m) => {
+                const d = new Date(year, m, 1);
+                return 1 + (7 - d.getDay()) % 7 + 7;
+            };
+            const firstSunday = (m) => {
+                const d = new Date(year, m, 1);
+                return 1 + (7 - d.getDay()) % 7;
+            };
+            const start = new Date(year, 2, secondSunday(2), 2, 0, 0);
+            const end = new Date(year, 10, firstSunday(10), 2, 0, 0);
+            return date >= start && date < end;
+        };
+        const tzLabel = document.getElementById('tz-label');
+        if (tzLabel) tzLabel.textContent = isEasternDst(new Date()) ? 'EDT' : 'EST';
+    })();
+    </script>
 </body>
 </html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="cetio">
+    <meta name="description" content="Building a robust Ruby Selenium automation for time-sensitive multi-page workflows.">
+    <title>Selenium I: automating multi-page workflows with Ruby and Selenium &middot; cetio</title>
+    <link rel="stylesheet" href="/assets/fonts/style.css">
+    <link rel="stylesheet" href="/assets/theme/style.css">
+    <link rel="stylesheet" href="/assets/prism-theme.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <nav class="top-nav article-back" role="navigation" aria-label="Article">
+        <a href="/" class="article-back-link">&larr; Index</a>
+    </nav>
+
+    <main>
+        <article>
+            <header class="article-header">
+                <h1>Selenium I: automating multi-page workflows with Ruby and Selenium</h1>
+                <div class="article-meta">
+                    <time>December 2, 2025</time>
+                    <a href="https://www.linkedin.com/pulse/how-i-automated-my-workflow-ruby-selenium-benjamin-johnston-siree" target="_blank" rel="noopener noreferrer" class="inline-linkedin">
+                        <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                        Original on LinkedIn
+                    </a>
+                </div>
+            </header>
+
+            <hr>
+
+            <h3>The problem</h3>
+            <p>
+                I had a repetitive, time-sensitive workflow that required switching between two browser pages, waiting for specific signals, and triggering actions at precise moments. Doing it manually meant context-switching constantly, missing timing windows, and making data entry errors. A linear Selenium script was the obvious first step, but linear scripts break the first time a page loads 500ms slower than expected.
+            </p>
+            <p>
+                This article covers the first iteration: a ~700-line Ruby script that hardened the workflow with explicit waits, DOM-driven state detection, layered retry logic, and modular page objects. <a href="dispatch-automation.html">Part II</a> upgrades the architecture to an event dispatch queue with JS-level request interception.
+            </p>
+
+            <h3>Entry point: a tight claim-submit loop</h3>
+            <p>
+                The script is a continuous loop. Each iteration claims a task from the primary dashboard, drives it through its state transitions, and submits it. There is no batching; every task is handled end-to-end before the next one is claimed.
+            </p>
+
+<pre><code class="language-ruby">#!/usr/bin/env ruby
+require 'json'
+require 'date'
+
+require_relative 'extension'
+require_relative 'project'
+require_relative 'session'
+
+VERSION = '3.4'
+
+Session.clear_log
+Session.log('INIT', '~', "AutoWorkflow v#{VERSION}")
+Session.log('INIT', '~', 'https://github.com/cetio')
+
+start_driver(false)
+Extension.cleanup!()
+project = Project.new()
+
+at_exit do
+  err = $!
+  if err && !err.is_a?(SystemExit)
+    Session.log('INIT', '!', "Unhandled: #{err.class}: #{err.message}", error: err)
+  end
+  Extension.cleanup!()
+end
+
+loop do
+  tracker = project.claim_task()
+  tracker.await_submission()
+end</code></pre>
+
+            <h3>Explicit waits with scroll-and-retry</h3>
+            <p>
+                The core interaction primitive is an <code>oriented_click</code>: scroll the element into view, check it is displayed and enabled, try a native click, and fall back to a JS click if the native one fails. It returns a boolean so the caller can decide whether to retry or abort. <code>oriented_send_keys</code> follows the same pattern for text input.
+            </p>
+
+<pre><code class="language-ruby">def oriented_click(value = nil, timeout: 1, interval: 0.3, **locator)
+  locator = locator.empty? ? nil : locator
+  element = locator ? nil : value
+
+  start = Time.now
+  while (Time.now - start) < timeout
+    begin
+      el = locator ? $driver.find_element(locator) : element
+      $driver.execute_script(
+        "arguments[0].scrollIntoView({block: 'center', inline: 'nearest'})"
+        , el) rescue nil
+
+      if el.displayed? && el.enabled?
+        el.click() rescue
+          $driver.execute_script("arguments[0].click();", el) rescue nil
+        return true
+      end
+    rescue
+    end
+    sleep interval
+  end
+
+  false
+end</code></pre>
+
+<pre><code class="language-ruby">def oriented_send_keys(keys, value = nil, timeout: 2, interval: 0.3, **locator)
+  locator = locator.empty? ? nil : locator
+  element = locator ? nil : value
+
+  start = Time.now
+  while (Time.now - start) < timeout
+    begin
+      el = locator ? $driver.find_element(locator) : element
+      $driver.execute_script(
+        "arguments[0].scrollIntoView({block: 'center', inline: 'nearest'})"
+        , el) rescue nil
+
+      if el.displayed? && el.enabled?
+        el.clear rescue nil
+        el.send_keys(keys) rescue
+          $driver.execute_script(
+            "arguments[0].value = arguments[1];", el, keys.to_s) rescue nil
+        return true
+      end
+    rescue
+    end
+    sleep interval
+  end
+
+  false
+end</code></pre>
+
+            <h3>Detect state from the DOM, not from memory</h3>
+            <p>
+                A task page has a small set of observable states. Instead of tracking state in variables, the script re-reads the DOM every time it needs to decide what to do. This makes it resilient to race conditions, refreshes, and unexpected dialogs.
+            </p>
+
+<pre><code class="language-ruby">module Controller
+  module TaskPage
+    CONTINUE_BUTTON    = "//button[@aria-label='Continue']"
+    OPEN_EXTERNAL      = "//button[contains(text(), 'Open external tool')]"
+    TIMER_BUTTONS      = [
+      "//button[contains(text(), 'Start timer')]",
+      "//button[contains(text(), 'Start task')]",
+      "//button[contains(text(), 'Resume task')]"
+    ].freeze
+    SUBMIT_TASK        = "//button[contains(text(), 'Submit task')]"
+    CONFIRM_TIME       = "//button[contains(text(), 'Confirm time')]"
+    EXIT_BUTTON        = "//button[contains(text(), 'Exit')]"
+    SKIP_BUTTON        = "//button[contains(text(), 'Skip')]"
+    NEXT_TASK          = "//button[contains(text(), 'Next task')]"
+    NUMERIC_INPUT      = "//input[@type='number']"
+    TEXT_INPUT         = "//textarea | //input[not(@type) or @type='text']"
+
+    def state!
+      loop do
+        return :error if safe_find_elements(
+          xpath: "//h2[contains(text(), 'Application error')]").any?
+        return :continue if safe_find_elements(xpath: CONTINUE_BUTTON).any?
+        return :external if safe_find_elements(xpath: OPEN_EXTERNAL).any?
+        TIMER_BUTTONS.each do |str|
+          return :timer if safe_find_elements(xpath: str).any?
+        end
+        return :submit if safe_find_elements(xpath: SUBMIT_TASK).any?
+        return :nav    if safe_find_elements(xpath: NEXT_TASK).any?
+        return :confirm if safe_find_elements(xpath: CONFIRM_TIME).any?
+        return :dialog if Controller.dialog_present?
+        safe_find_elements(xpath: "//button").each do |btn|
+          return :task if /\d{6}-/.match?(btn.text) rescue nil
+        end
+        sleep 0.1
+      end
+    end
+  end
+end</code></pre>
+
+            <p>
+                The <code>state!</code> method loops until it can definitively categorize the page. Each state maps to a concrete DOM indicator: a button with specific text, an error heading, a visible dialog. There is no guessing.
+            </p>
+
+            <h3>Drive through transient states with <code>begin_task!</code></h3>
+            <p>
+                Before the actual work starts, the page often bounces through a sequence of dialogs, timers, and continue buttons. <code>begin_task!</code> drives through all of them in order, returning only when the task is truly ready for input.
+            </p>
+
+<pre><code class="language-ruby">def begin_task!(require_dialog = false)
+  seen_dialog = false
+  loop do
+    sleep 0.3 if require_dialog
+
+    case state!
+    when :external
+      seen_dialog = true
+      shadow = safe_window_handles.dup
+      oriented_click(xpath: OPEN_EXTERNAL)
+      WAIT.until { (safe_window_handles - shadow).any? }
+      new_window = (safe_window_handles - shadow).first
+      with_window(new_window) { $driver.close() }
+
+    when :timer
+      seen_dialog = true
+      TIMER_BUTTONS.each do |str|
+        next unless safe_find_elements(xpath: str).any?
+        oriented_click(xpath: str)
+        sleep 0.3
+      end
+
+    when :dialog
+      Controller.close_dialog!()
+      sleep 0.3
+
+    when :error
+      $driver.navigate.refresh()
+      sleep 0.3
+
+    when :continue
+      continue!()
+      sleep 0.3
+
+    else
+      return if !require_dialog || seen_dialog
+    end
+  end
+end</code></pre>
+
+            <h3>Dialog handling as a shared primitive</h3>
+            <p>
+                Dialogs appear on both the primary and secondary pages. A shared controller module detects them, tries an acknowledge button first (if auto-acknowledge is enabled), and falls back to a close button.
+            </p>
+
+<pre><code class="language-ruby">module Controller
+  DIALOG        = '//div[@role="dialog"]'
+  CLOSE_DIALOG  = "//button[@aria-label='Close']"
+  ACKNOWLEDGE   = "//button[contains(text(), 'Acknowledge')]"
+
+  module_function
+
+  def dialog_present?
+    safe_find_elements(xpath: DIALOG).any?
+  end
+
+  def close_dialog!()
+    return true if acknowledge!()
+    oriented_click(xpath: CLOSE_DIALOG)
+  end
+
+  def acknowledge!()
+    return false unless safe_find_elements(xpath: ACKNOWLEDGE).any?
+    oriented_click(xpath: ACKNOWLEDGE) if Extension.auto_acknowledge?
+  end
+end</code></pre>
+
+            <h3>Claim tasks from a dashboard</h3>
+            <p>
+                The <code>Project</code> class manages the primary dashboard window. It navigates to the task list, waits for the task page to load, and retries through transient errors and dialogs.
+            </p>
+
+<pre><code class="language-ruby">class Project
+  include Controller::Project
+
+  attr_accessor :handle, :uuid
+
+  def initialize()
+    @handle = open_or_nav('https://platform.example.com/contractor/tasks')
+    $driver.switch_to.window(@handle)
+
+    Session.log('PROJECT', '~', 'Awaiting task page...')
+    until $driver.current_url.include?('/tasks')
+      sleep 0.3
+    end
+
+    @uuid = $driver.current_url.match(
+      /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/)
+  end
+end</code></pre>
+
+<pre><code class="language-ruby">module Controller
+  module Project
+    CONTINUE_TASK   = "//button[contains(text(), 'Continue task')]"
+    START_NEW_TASK  = "//button[contains(text(), 'Start new task')]"
+    INBOX_LIST      = "//div[@data-testid='task-inbox']"
+    AVAILABLE_TASKS = "//button[contains(text(), 'Available tasks')]"
+
+    def claim_task()
+      navigate_to_tasks()
+      Session.log('PROJECT', '~', 'Claiming from dashboard')
+
+      counter = 0
+      until $driver.current_url.include?('/workspace')
+        sleep 0.5
+        if Controller.dialog_present?
+          Session.log('PROJECT', '~', 'Awaiting dialog dismissal...')
+          await_dialog_dismissal!()
+        end
+
+        counter += 1
+        if safe_find_elements(xpath: CONTINUE_TASK).any?
+          counter = 0
+          oriented_click(xpath: CONTINUE_TASK)
+          break if await_workspace_page()
+        elsif safe_find_elements(xpath: START_NEW_TASK).any?
+          counter = 0
+          oriented_click(xpath: START_NEW_TASK)
+          break if await_workspace_page()
+        elsif safe_find_elements(css: '.animate-spin').any?
+          counter = 0
+        elsif counter >= 10
+          $driver.navigate.refresh()
+          counter = 0
+        end
+      end
+
+      tracker = ::Tracker.new(self)
+      Session.log('PROJECT', '+', "Claimed task #{tracker.uuid}")
+      tracker
+    end
+
+    def navigate_to_tasks()
+      $driver.switch_to.window(@handle)
+      with_retry { $driver.navigate.to(
+        "https://platform.example.com/contractor/#{@uuid}/tasks") }
+    rescue Selenium::WebDriver::Error::NoSuchWindowError
+      @handle = $driver.execute_script('window.open(arguments[0])',
+        "https://platform.example.com/contractor/#{@uuid}/tasks")
+      $driver.switch_to.window(@handle)
+    end
+
+    def await_workspace_page()
+      counter = 0
+      until $driver.current_url.include?('/workspace')
+        sleep 0.5
+        return false if (counter += 1) >= 10
+      end
+      true
+    end
+  end
+end</code></pre>
+
+            <h3>Defensive error handling and retries</h3>
+            <p>
+                Network flakiness, stale element references, and transient UI states are not edge cases; they are the norm. <code>with_retry</code> wraps every Selenium call with exponential backoff so a brief disconnect does not kill the session.
+            </p>
+
+<pre><code class="language-ruby">MAX_RETRIES = 5
+BASE_RETRY_DELAY = 1.0
+
+def with_retry(max_retries = MAX_RETRIES, base_delay = BASE_RETRY_DELAY)
+  retries = 0
+  begin
+    yield
+  rescue Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::ETIMEDOUT,
+         Net::ReadTimeout, Timeout::Error,
+         Selenium::WebDriver::Error::WebDriverError,
+         Selenium::WebDriver::Error::NoSuchDriverError,
+         Selenium::WebDriver::Error::SessionNotCreatedError => e
+    retries += 1
+    if retries <= max_retries
+      delay = base_delay * (2 ** (retries - 1))
+      Session.log('HELPERS', '~',
+        "Connection error (#{e.class}): retrying #{retries}/#{max_retries} " \
+        "after #{delay.round(2)}s...")
+      sleep delay
+      retry
+    else
+      Session.log('HELPERS', '!',
+        "Max retries exceeded: #{e.class}: #{e.message}", error: e)
+      raise
+    end
+  end
+end
+
+def safe_find_elements(locator)
+  with_retry { $driver.find_elements(locator) }
+end
+
+def safe_find_element(locator)
+  with_retry { $driver.find_element(locator) }
+end
+
+def safe_window_handles
+  handles = with_retry { $driver.window_handles }
+  Array(handles)
+end</code></pre>
+
+            <h3>Structured logging with optional sound</h3>
+            <p>
+                Every significant action is logged with a UTC timestamp, location tag, and status symbol. Logs go to both stdout and a persisted file. Sound notifications help when the script is running in the background.
+            </p>
+
+<pre><code class="language-ruby">module Session
+  AUTO_DIR = File.join(Dir.home, 'AutoWorkflow')
+  LOG_PATH = File.join(AUTO_DIR, 'output.log')
+
+  module_function
+
+  def clear_log
+    FileUtils.mkdir_p(AUTO_DIR) unless File.directory?(AUTO_DIR)
+    File.open(LOG_PATH, 'w') { |f| f.puts('') }
+  end
+
+  def log(location, symbol, message, error: nil, sound_path: nil)
+    line = "[#{Time.now.utc.iso8601}] [#{location}:#{symbol}] #{message}"
+    write_line(line)
+    log_error_details(location, error) if error
+    play_sound(sound_path) if sound_path && Extension.audio_notify?
+  end
+
+  def write_line(line)
+    puts line
+    FileUtils.mkdir_p(AUTO_DIR) unless File.directory?(AUTO_DIR)
+    File.open(LOG_PATH, 'a') { |f| f.puts(line) }
+  end
+
+  private
+
+  def play_sound(path)
+    return unless File.exist?(path)
+    case RbConfig::CONFIG['host_os']
+    when /darwin/ then spawn_detached('afplay', path)
+    else
+      return if spawn_detached('mpv', '--no-video', '--quiet', path)
+      return if spawn_detached('paplay', path)
+      return if spawn_detached('aplay', path)
+    end
+  end
+end</code></pre>
+
+            <h3>What this iteration proved</h3>
+            <ul>
+                <li>End-to-end automation is roughly 30% happy-path code and 70% handling edge cases, timing, and observability.</li>
+                <li>Re-reading the DOM for state on every decision loop eliminates an entire class of race-condition bugs that fixed sleeps can only mask.</li>
+                <li>A small state machine with concrete DOM indicators is more maintainable than a linear script, even when there are only six states.</li>
+                <li>Structured logs with timestamps and sound notifications make headless debugging possible.</li>
+                <li>Exponential-backoff retry on connection errors keeps the session alive through brief network hiccups.</li>
+            </ul>
+
+            <p>
+                <a href="dispatch-automation.html">Continue to Part II &rarr;</a> for the dispatch-oriented runtime: JS-level request interception, tab queuing, companion extensions, and treating Selenium like a runtime instead of a script.
+            </p>
+        </article>
+    </main>
+
+    <footer>
+        <p class="footer-name">Ben &middot; <span id="tz-label">EST</span></p>
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/cetio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                <span>github.com/cetio</span>
+            </a>
+            <a class="footer-link" href="https://www.linkedin.com/in/bejaunst" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                <span>linkedin.com/in/bejaunst</span>
+            </a>
+            <a class="footer-link" href="mailto:bejaunst@gmail.com" aria-label="Email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><title>Email</title><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/></svg>
+                <span>bejaunst@gmail.com</span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="/assets/prism.min.js"></script>
+    <script src="/assets/prism-ruby.min.js"></script>
+    <script>
+        (function () {
+            const isEasternDst = (date) => {
+                const year = date.getFullYear();
+                const secondSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7 + 7;
+                };
+                const firstSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7;
+                };
+                const start = new Date(year, 2, secondSunday(2), 2, 0, 0);
+                const end = new Date(year, 10, firstSunday(10), 2, 0, 0);
+                return date >= start && date < end;
+            };
+            const tzLabel = document.getElementById('tz-label');
+            if (tzLabel) tzLabel.textContent = isEasternDst(new Date()) ? 'EDT' : 'EST';
+        })();
+    </script>
+</body>
+</html>

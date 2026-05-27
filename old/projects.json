@@ -376,7 +376,7 @@
         "Systems Internals",
         "Security Research"
       ],
-      "description": "CoreCLR unsafe operations experiments on string copying, array allocation, array resizing, and GC blocking.",
+      "description": "Corrupts the GC heap as optimally as possible. Experiment on CoreCLR exposure.",
       "github": "https://github.com/cetio/GarbageCorruptor"
     },
     {
@@ -414,7 +414,7 @@
         "Reverse Engineering",
         "Systems Internals"
       ],
-      "description": "Security research on CVE-2020-36603, a vulnerability in Mihoyo's kernel driver. This CVE has been patched as of 2023 and this library is only for academic reference for vulnerable driver communication.",
+      "description": "Obsolete Mhyprot2 exploitation library capable of advanced process and memory manipulation with vulnerable IOCTL communications.",
       "github": "https://github.com/cetio/MihoyoEXP"
     },
     {

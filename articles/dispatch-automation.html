@@ -3,122 +3,605 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dispatch-oriented browser automation &middot; cetio</title>
-    <link rel="stylesheet" href="../assets/fonts/style.css">
-    <link rel="stylesheet" href="../assets/theme/style.css">
-    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <meta name="author" content="cetio">
+    <meta name="description" content="Modeling browser pages as state machines with observable states and a dispatch queue.">
+    <title>Selenium II: dispatch-oriented browser automation &middot; cetio</title>
+    <link rel="stylesheet" href="/assets/fonts/style.css">
+    <link rel="stylesheet" href="/assets/theme/style.css">
+    <link rel="stylesheet" href="/assets/prism-theme.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <pre style="margin-bottom: 0px;">
-                          s       .                
-                         :8      @88>              
-                        .88      %8P          u.   
-      .        .u      :888ooo    .     ...ue888b  
- .udR88N    ud8888.  -*8888888  .@88u   888R Y888r 
-&lt;888'888k :888'8888.   8888    ''888E`  888R I888&gt; 
-9888 'Y"  d888 '88%"   8888      888E   888R I888&gt; 
-9888      8888.+"      8888      888E   888R I888&gt; 
-9888      8888L       .8888Lu=   888E  u8888cJ888  
-?8888u../ '8888c. .+  ^%888*     888&amp;   "*888*P"   
- "8888P'   "88888%      'Y"      R888"    'Y"      
-   "P'       "YP'                 ""               
-        </pre>
-        <h2 class="fallback" style="font-size: 128px; line-height: 128px; margin: 16px; margin-bottom: 0px; font-family: 'Heraldic', serif;">cetio</h2>
-
-        <div class="left-align">
-            <h2 style="margin-bottom: 0"><a href="/index.html" title="Back to index">&larr;</a></h2>
-            <h3>Dispatch-oriented browser automation: treating Selenium like a runtime</h3>
-        </div>
-
-        <div class="left-align">
-            <span>&middot;</span>
-            <time style="padding-left: 8px;">December 9, 2025</time>
-            <a href="https://www.linkedin.com/pulse/how-i-automated-my-workflow-ruby-selenium-ii-benjamin-johnston-e09cc" target="_blank" rel="noopener noreferrer" class="inline-linkedin" style="padding-left: 12px;">
-                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
-                original on LinkedIn
-            </a>
-        </div>
-    </header>
+    <nav class="top-nav article-back" role="navigation" aria-label="Article">
+        <a href="/" class="article-back-link">&larr; Index</a>
+    </nav>
 
     <main>
-      <article>
-        <hr>
+        <article>
+            <header class="article-header">
+                <h1>Selenium II: dispatch-oriented browser automation</h1>
+                <div class="article-meta">
+                    <time>December 9, 2025</time>
+                    <a href="https://www.linkedin.com/pulse/how-i-automated-my-workflow-ruby-selenium-ii-benjamin-johnston-e09cc" target="_blank" rel="noopener noreferrer" class="inline-linkedin">
+                        <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                        Original on LinkedIn
+                    </a>
+                </div>
+            </header>
 
-        <h3>The failure mode of linear scripts</h3>
-        <p>
-            A linear automation script looks like a recipe: click, wait 2 seconds, click, wait 3 seconds, fill form, submit. It breaks the first time the page does literally anything you didn&rsquo;t expect. A background fetch delays a control by 500ms and a step fails. An A/B test injects an extra confirmation dialog and the next selector is stale. A refresh is required because state didn&rsquo;t settle and now you have to unwind whatever was mid-flight.
-        </p>
-        <p>
-            Each individual fix is a one-line patch. The cumulative effect is a fragile script nobody wants to touch.
-        </p>
+            <hr>
 
-        <h3>The page as a state machine</h3>
-        <p>
-            The reframe is to model each page as a small state machine with explicit, <em>observable</em> states: <code>idle</code>, <code>pending</code>, <code>actionable</code>, <code>completed</code>, <code>error</code>. These states are <em>derived from the DOM</em> (a spinner being present, a submit button being enabled, a specific data attribute appearing), not from a clock.
-        </p>
+            <p style="margin-top: 0;"><em>This is Part II. <a href="selenium-workflow.html">Part I</a> covers explicit waits, DOM-driven state machines, CDP hooks, and modular page objects.</em></p>
 
-        <div class="callout">
-            A state that is observable in the DOM is a state you can wait for. A state that is only implicit in the timing of your script is a state you can only guess at.
-        </div>
+            <h3>The failure mode of linear scripts</h3>
+            <p>
+                Part I gave us a reliable way to claim tasks, detect page states, and click elements safely. But the workflow still had a critical gap: the actual submission happens on a secondary page, and the primary page needs to know <em>exactly</em> when that submission is done. A naive approach would poll the secondary page&rsquo;s DOM, but the submit button disappears before the server has actually accepted the request. Waiting for the button to vanish means you think you are done when the network request is still in flight.
+            </p>
+            <p>
+                This article covers the second iteration: treating Selenium like a runtime. The script owns a tab queue, injects request-tracking JavaScript into every new page, intercepts click events at the browser level, and coordinates between two pages through a shared event loop rather than a linear script.
+            </p>
 
-        <h3>Events on a dispatch queue, not steps in a script</h3>
-        <p>
-            Once the page has observable states, actions become small composable events (<code>click</code>, <code>wait-for</code>, <code>verify</code>, <code>screenshot</code>, <code>reconcile</code>) placed on a dispatch queue. A lightweight event loop pulls the next event, checks the current page state, and decides whether to execute, re-route, cancel, or retry.
-        </p>
+            <h3>Tab queuing for the secondary page</h3>
+            <p>
+                The secondary page (a partner portal) opens in its own tab. Instead of managing one tab, the script maintains a queue of handles. When a new task needs a fresh portal tab, it is queued; when the task is done, the tab is popped and closed. This prevents the &ldquo;stale window handle&rdquo; errors that happen when you reuse a tab whose page has navigated away.
+            </p>
 
-        <pre><code>loop do
-  event = queue.next
-  state = Page.observe           # read current DOM state
+<pre><code class="language-ruby">class PortalQueue
+  include Controller::Portal
 
-  next queue.defer(event)  if event.precondition_unmet?(state)
-  next queue.drop(event)   if event.superseded_by?(state)
+  PORTAL_URL = 'https://partner.example.com/tasks'
 
-  result = event.execute(driver)
+  attr_accessor :handles
 
-  queue.enqueue(event.followups(result))
-  raise event.error_for(result) unless event.postcondition_met?(driver)
+  def initialize()
+    @handles = []
+    @last_queue_request_id = nil
+  end
+
+  def queue!(requester_page_id: nil, requester_url: nil)
+    modes = Extension.get_modes
+    active_handle = current_handle_valid? ? handle! : ($driver.window_handle rescue nil)
+    handle = queue_portal_tab(seed_url(nil, requester_url), modes)
+
+    @handles << handle unless @handles.include?(handle)
+    if active_handle && active_handle != handle &&
+       safe_window_handles.include?(active_handle)
+      $driver.switch_to.window(active_handle)
+    end
+    Session.log('PORTAL', '+', "Queued portal tab #{handle}")
+    handle
+  rescue => e
+    Session.log('PORTAL', '!', "Failed to queue tab: #{e.message}", error: e)
+    raise
+  end
+
+  def pop()
+    return nil if @handles.empty?
+    handle = @handles.shift
+
+    if safe_window_handles.include?(handle)
+      begin
+        $driver.switch_to.window(handle)
+        $driver.close()
+      rescue Selenium::WebDriver::Error::NoSuchWindowError
+      end
+    else
+      Session.log('PORTAL', '-', "Discarded stale handle #{handle}")
+    end
+  end
+
+  def handle!
+    return nil if @handles.empty?
+    @handles.first
+  end
+
+  private
+
+  def queue_portal_tab(url, modes)
+    current = $driver.window_handle rescue nil
+    last = safe_window_handles.last
+    $driver.switch_to.window(last) if last && current && last != current
+
+    $driver.switch_to.new_window(:tab)
+    handle = $driver.window_handle
+    Extension.install_persistent!(modes)
+    $driver.navigate.to(url)
+    Extension.clear_queue_request!()
+    handle
+  ensure
+    if current && safe_window_handles.include?(current)
+      $driver.switch_to.window(current)
+    end
+  end
 end</code></pre>
 
-        <p>
-            Every event carries three things: a predicate on the current state saying whether it should run right now, the action itself, and a postcondition check that confirms the action actually had the effect the caller expected. Events are idempotent by design: retrying is safe because the precondition check will either fire or skip.
-        </p>
+            <h3>Track submissions at the network layer</h3>
+            <p>
+                The portal page submits via both <code>XMLHttpRequest</code> and <code>fetch</code>. The script cannot reliably observe completion from the DOM alone because the submit button is hidden optimistically. Instead, the script injects a small JavaScript tracker that instruments <code>XHR</code> and <code>fetch</code> to count pending requests and mark them complete when the response arrives.
+            </p>
 
-        <h3>Concrete patterns</h3>
-        <ul>
-            <li><strong>Observable waits beat blind sleeps.</strong> Wait on visibility, attribute changes, network idleness, or a timestamped DOM marker, not on a wall-clock duration.</li>
-            <li><strong>Layered selectors.</strong> Prefer stable <code>data-*</code> attributes or ARIA roles, fall back to semantic paths, and only resort to positional lookup when there is no other option.</li>
-            <li><strong>Precondition / postcondition on every event.</strong> If the precondition fails, defer. If the postcondition fails, raise. No action completes silently.</li>
-            <li><strong>Throttle by queue, not by sleeping.</strong> A queue-level rate limiter adds natural variability and prevents bursts from outrunning the DOM.</li>
-            <li><strong>Instrument heavily.</strong> Attempt counts per event, median completion times, and a rolling log of the last N events make debugging timing issues much cheaper than stepping through headful sessions.</li>
-            <li><strong>Use CDP where the DOM isn&rsquo;t enough.</strong> Early script injection or network inspection sidesteps whole classes of race conditions that Selenium alone can&rsquo;t handle.</li>
-        </ul>
+<pre><code class="language-ruby">INJECT_SUBMIT_TRACKER_JS = <<~JS
+if (!window.__submitTracker) {
+  const contributionId = window.location.pathname.split('/').pop();
+  window.__submitTracker = {
+    counter: 0,
+    lastCompletedId: 0,
+    pendingCount: 0,
+    intentCount: 0,
+    lastIntentAt: 0,
+    requests: {},
+    _trimOld: function() {
+      const keep = 50;
+      const keys = Object.keys(this.requests).sort((a,b)=>b-a);
+      for (let i = keep; i < keys.length; i++) delete this.requests[keys[i]];
+    },
+    _isSubmitUrl: function(url) {
+      return url && (url.includes('submit') ||
+        (contributionId && url.includes(contributionId)));
+    },
+    _parseBody: function(body) {
+      if (body == null) return null;
+      if (typeof body === 'string') {
+        try { return JSON.parse(body); } catch (e) { return null; }
+      }
+      if (typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams) {
+        return Object.fromEntries(body.entries());
+      }
+      if (typeof FormData !== 'undefined' && body instanceof FormData) {
+        const entries = {};
+        body.forEach(function(value, key) { entries[key] = value; });
+        return entries;
+      }
+      if (typeof body === 'object') return body;
+      return null;
+    },
+    _hasFileIdPayload: function(body) {
+      const parsed = this._parseBody(body);
+      return !!(parsed && typeof parsed === 'object' &&
+        Object.prototype.hasOwnProperty.call(parsed, 'fileId'));
+    },
+    _markIntent: function() {
+      this.intentCount += 1;
+      this.lastIntentAt = Date.now();
+    }
+  };
 
-        <h3>What changed in practice</h3>
-        <p>
-            Stale-element errors dropped from &ldquo;constant&rdquo; to &ldquo;almost never&rdquo; because the dispatch layer re-reads the DOM before every action. Page refreshes disappeared because refresh was a band-aid for racing against state that was never actually observed. Adding a new task variation became a one-line enqueue or a small handler beside existing code, instead of a rewrite of the central flow.
-        </p>
-        <p>
-            Most importantly, debugging got interactive. When an event fails, its log line carries the state it observed, the precondition it checked, and the postcondition that failed. You can replay recent queue activity locally without re-running the whole session.
-        </p>
+  (function(tracker){
+    const submitLikeTarget = function(target) {
+      const button = target && target.closest ?
+        target.closest('button, [role="button"], input[type="submit"]') : null;
+      if (!button) return false;
+      const text = String(
+        button.innerText || button.textContent ||
+        button.value || button.getAttribute('aria-label') || ''
+      ).trim().toLowerCase();
+      return text.includes('submit') || text.includes('confirm submission');
+    };
 
-        <h3>Takeaways</h3>
-        <ul>
-            <li>Make state observable. If you can&rsquo;t query it from the DOM, you can&rsquo;t reliably wait for it.</li>
-            <li>Treat each action as a verifiable event with explicit preconditions and postconditions.</li>
-            <li>Keep events small, composable, and idempotent.</li>
-            <li>Put throttling and retries in the queue, not in each handler.</li>
-            <li>The script stops being a recipe and starts being a tiny runtime. That&rsquo;s the point.</li>
-        </ul>
-      </article>
+    document.addEventListener('click', function(event) {
+      try {
+        if (submitLikeTarget(event.target)) tracker._markIntent();
+      } catch (e) {}
+    }, true);
+
+    window.addEventListener('submit', function() {
+      try { tracker._markIntent(); } catch (e) {}
+    }, true);
+
+    const origOpen = XMLHttpRequest.prototype.open;
+    const origSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.open = function(method, url) {
+      this._method = method; this._url = url;
+      return origOpen.apply(this, arguments);
+    };
+    XMLHttpRequest.prototype.send = function(body) {
+      try {
+        if (this._method && this._method.toUpperCase() === 'POST' &&
+            tracker._isSubmitUrl(this._url) && !tracker._hasFileIdPayload(body)) {
+          const id = ++tracker.counter;
+          tracker.pendingCount++;
+          tracker.requests[id] = {id, method: this._method, url: this._url, t0: Date.now()};
+          const markDone = () => {
+            if (tracker.requests[id]) tracker.requests[id].t1 = Date.now();
+            tracker.lastCompletedId = Math.max(tracker.lastCompletedId, id);
+            tracker.pendingCount = Math.max(0, tracker.pendingCount - 1);
+            tracker._trimOld();
+          };
+          this.addEventListener('load', markDone);
+          this.addEventListener('error', markDone);
+          this.addEventListener('abort', markDone);
+        }
+      } catch(e) {}
+      return origSend.apply(this, arguments);
+    };
+
+    const origFetch = window.fetch;
+    window.fetch = async function(input, init) {
+      const method = (init && init.method) || 'GET';
+      const url = (typeof input === 'string') ? input : (input && input.url);
+      let body = init && Object.prototype.hasOwnProperty.call(init, 'body') ? init.body : undefined;
+      if (body === undefined && typeof Request !== 'undefined' && input instanceof Request) {
+        try { body = await input.clone().text(); } catch (e) {}
+      }
+      if (method && method.toUpperCase() === 'POST' &&
+          tracker._isSubmitUrl(url) && !tracker._hasFileIdPayload(body)) {
+        const id = ++tracker.counter;
+        tracker.pendingCount++;
+        tracker.requests[id] = {id, method, url, t0: Date.now()};
+        return origFetch.apply(this, arguments)
+          .then(res => {
+            tracker.requests[id].t1 = Date.now();
+            tracker.lastCompletedId = Math.max(tracker.lastCompletedId, id);
+            tracker.pendingCount = Math.max(0, tracker.pendingCount - 1);
+            tracker._trimOld();
+            return res;
+          })
+          .catch(err => {
+            tracker.requests[id].t1 = Date.now();
+            tracker.lastCompletedId = Math.max(tracker.lastCompletedId, id);
+            tracker.pendingCount = Math.max(0, tracker.pendingCount - 1);
+            tracker._trimOld();
+            throw err;
+          });
+      }
+      return origFetch.apply(this, arguments);
+    };
+  })(window.__submitTracker);
+}
+JS
+
+def ensure_hooks!()
+  tracker = $driver.execute_script("return !!window.__submitTracker;") rescue false
+  $driver.execute_script(INJECT_SUBMIT_TRACKER_JS) unless tracker
+  !tracker
+end</code></pre>
+
+            <p>
+                The tracker instruments both <code>XMLHttpRequest</code> and <code>fetch</code>, counts pending requests, and records timestamps. It also listens for click and submit events on the page to detect <em>intent</em> (the user clicked a submit-like button) independently of whether the network request has actually fired yet.
+            </p>
+
+            <h3>Dual-channel finalization check</h3>
+            <p>
+                With the JS tracker in place, the script can now ask two independent questions: is the UI showing a finalized state, and has the network layer finished all its requests? Only when <em>both</em> agree can the script safely switch back to the primary page and continue.
+            </p>
+
+<pre><code class="language-ruby">def has_finalized?
+  ui = submission_elements!.length <= 1 &&
+    !(submission_elements!.any? { |btn| btn.enabled? } rescue false)
+  intent = false
+
+  begin
+    t = $driver.execute_script("return window.__submitTracker || null")
+    if t
+      intent = t['intentCount'].to_i > 0
+      return :pending if ui && t['pendingCount'].to_i > 0
+      return :complete if ui && t['counter'].to_i > 0 &&
+        t['pendingCount'].to_i == 0 &&
+        t['lastCompletedId'].to_i == t['counter'].to_i
+    end
+  rescue
+  end
+
+  ui && intent ? :partial : nil
+end
+
+SUBMIT        = "//button[contains(text(), 'Submit')]"
+CONFIRM       = "//button[contains(text(), 'Confirm Submission')]"
+
+def submission_elements!
+  elements = $driver.find_elements(xpath: SUBMIT) +
+             $driver.find_elements(xpath: CONFIRM)
+  return elements if elements.any?
+  # Fallback: buttons with checkmark SVGs
+  $driver.find_elements(xpath: "//button[.//svg[contains(@class, 'check')]]")
+end</code></pre>
+
+            <h3>The companion extension</h3>
+            <p>
+                The script coordinates with a small companion browser extension that exposes modes (auto-submit, auto-skip, audio notifications, etc.) through <code>dataset</code> attributes on the <code>documentElement</code>. The Ruby side polls these attributes and reacts to queue requests and pop commands without ever touching the extension&rsquo;s internal DOM.
+            </p>
+
+<pre><code class="language-ruby">module Extension
+  READY_DATASET_KEY  = 'companionReady'
+  MODES_DATASET_KEY  = 'companionModes'
+  QUEUE_DATASET_KEY  = 'queueRequested'
+  POP_DATASET_KEY    = 'popRequested'
+
+  MODES = %w[auto_submit auto_skip auto_acknowledge audio_notify
+             sync_heartbeat unlock stereo_check].freeze
+
+  module_function
+
+  MODES.each do |mode|
+    define_method("#{mode}?") { mode_enabled?(mode) }
+  end
+
+  def ready?
+    $driver.execute_script(<<~JS)
+      return !!(document.documentElement &&
+        document.documentElement.dataset &&
+        document.documentElement.dataset.#{READY_DATASET_KEY} === '1');
+    JS
+  rescue
+    false
+  end
+
+  def state!
+    $driver.execute_script(<<~JS)
+      const data = (document.documentElement && document.documentElement.dataset) || {};
+      if (data.#{QUEUE_DATASET_KEY} === '1') {
+        return { type: :queue, pageId: data.companionPageId || null,
+                 url: window.location.href };
+      }
+      if (data.#{POP_DATASET_KEY} === '1') return :pop;
+      return null;
+    JS
+  rescue
+    nil
+  end
+
+  def install_persistent!(modes = nil)
+    @persistent_scripts ||= {}
+    handle = $driver.window_handle
+    return @persistent_scripts[handle] if @persistent_scripts[handle]
+
+    result = $driver.execute_cdp(
+      'Page.addScriptToEvaluateOnNewDocument',
+      source: preload_source(modes))
+    script_id = result.is_a?(Hash) ? (result['identifier'] || result[:identifier]) : result
+    @persistent_scripts[handle] = script_id
+    Session.log('EXTENSION', '~', "Registered preload for #{handle}")
+    script_id
+  end
+
+  def ensure_ready!
+    modes = get_modes
+    install_persistent!(modes)
+    return true if ready?
+    bootstrap!(modes)
+    Selenium::WebDriver::Wait.new(timeout: 1, interval: 0.05).until { ready? }
+    true
+  end
+end</code></pre>
+
+            <h3>The dispatch loop: <code>await_submission</code></h3>
+            <p>
+                The heart of the system is a single event loop on the portal tab. Every 100ms it checks: is the extension ready? Does the companion want a new tab queued or an old one popped? Has a new contribution appeared? Is the contribution finalized? Should we auto-submit after the handling time expires?
+            </p>
+
+<pre><code class="language-ruby">def await_submission(start)
+  $driver.switch_to.window(handle!)
+
+  mul = bell_rand()
+  handling = 0
+  idle_counter = 0
+  prev_contribution_id = nil
+
+  loop do
+    sleep 0.1
+
+    unless current_handle_valid?
+      pop()
+      return nil if @handles.empty?
+      $driver.switch_to.window(handle!)
+    end
+
+    Extension.ensure_ready!()
+
+    case Extension.state!
+    when Hash
+      request_id = state[:request_id] || [state[:page_id], state[:url]].join('|')
+      if state[:type] == :queue && request_id != @last_queue_request_id
+        queue!(requester_page_id: state[:page_id], requester_url: state[:url])
+        @last_queue_request_id = request_id
+      elsif state[:type] == :queue
+        Extension.clear_queue_request!()
+      end
+    when :pop
+      pop()
+    end
+
+    elements = submission_elements!
+    if elements.any? && (ensure_hooks!() || contribution_id! != prev_contribution_id)
+      prev_contribution_id = contribution_id!
+      Session.log('PORTAL', '+', "Registered contribution #{contribution_id!}")
+
+      if Extension.sync_heartbeat?
+        Extension.block_heartbeats!()
+        Extension.clear_heartbeat_events!()
+      end
+
+      handling = Session.max_handling_time(contribution_id!) * mul
+      minutes = handling.floor
+      seconds = ((handling - minutes) * 60).round
+      Session.log('PORTAL', '~', "Suggested handling: #{format("%02d:%02d", minutes, seconds)}")
+    end
+
+    next if handling == 0
+    state = has_finalized?
+    break if state == :complete
+
+    if Extension.auto_skip? && contribution_id!.include?('tasks')
+      idle_counter += 1
+      if idle_counter >= 300   # 30 seconds at 0.1s loop
+        Session.log('PORTAL', '-', 'Tasks page idle, skipping...')
+        return nil if @handles.length > 1
+      end
+    else
+      idle_counter = 0
+    end
+
+    handling = apply_handling_display!(handling)
+    if Extension.auto_submit? && (Time.now - start) >= handling * 60
+      Session.log('PORTAL', '~', 'Auto-submitting...')
+      submit!()
+      break
+    end
+  end
+
+  await_finalize(Extension.auto_skip?)
+end</code></pre>
+
+            <h3>Intercepting navigation clicks with JavaScript</h3>
+            <p>
+                When the user (or script) clicks a navigation button on the primary page, the default behavior immediately navigates away. The script needs to know <em>which</em> button was clicked so it can decide whether to continue to the next task or exit. Instead of racing the browser, it overrides the click handlers on both buttons and writes a signal to a global variable that Ruby can poll.
+            </p>
+
+<pre><code class="language-ruby">def await_navigation!
+  WAIT.until { safe_find_elements(xpath: GO_HOME).any? }
+
+  safe_execute_script(<<~JS)
+    const go = xp("#{GO_HOME}");
+    const next = xp("#{NEXT_TASK}");
+
+    function override(btn, signal) {
+      if (!btn) return;
+      const handler = function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        window.__navSignal = signal;
+      };
+      btn.addEventListener("click", handler, true);
+      btn.onclick = handler;
+    }
+
+    override(go, "GO_HOME");
+    override(next, "NEXT_TASK");
+  JS
+
+  loop do
+    sleep 0.1
+    sig = safe_execute_script("return window.__navSignal || null;")
+    next unless sig
+    exit() if sig == "GO_HOME"
+    break
+  end
+end</code></pre>
+
+            <h3>Putting it together: the Tracker</h3>
+            <p>
+                The <code>Tracker</code> class ties everything together. It owns the portal queue, runs the dispatch loop, reads the elapsed time from the primary page, and submits the completed task back to the dashboard.
+            </p>
+
+<pre><code class="language-ruby">class Tracker
+  include Controller::Tracker
+
+  attr_accessor :uuid, :status, :contribution_id, :project
+
+  def initialize(project)
+    @project = project
+    @portal = @project.portal_queue
+
+    if $driver.current_url.include?('?error=')
+      @status = $driver.current_url.split('?error=').last
+    else
+      @uuid = $driver.current_url.match(
+        /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/)
+      @status = 'In progress'
+      wait(true, xpath: EXIT_BUTTON)
+    end
+  end
+
+  def await_submission()
+    @portal.queue!() if @portal.handles.empty?
+    $driver.switch_to.window(@project.handle)
+    begin_task!(true)
+
+    Session.log('TRACKER', '~', 'Hand-off to portal', sound_path: SUCCESS_SOUND)
+    start = Time.now
+    @contribution_id = @portal.await_submission(start)
+
+    while @contribution_id.nil?
+      @portal.pop()
+      Session.log('TRACKER', '~', 'No contribution, retrying...')
+      @contribution_id = @portal.await_submission(start)
+    end
+
+    Session.log('TRACKER', '~', 'Autofilling...')
+    $driver.switch_to.window(@project.handle)
+
+    loop do
+      case state!
+      when :external, :timer, :dialog, :error
+        begin_task!()
+      when :continue
+        continue!()
+      when :confirm
+        oriented_click(xpath: CONFIRM_TIME)
+      when :task
+        submit_task!(@contribution_id)
+      when :submit
+        if submit_tracker!()
+          elapsed = elapsed_time!
+          Session.add_elapsed_minutes(elapsed)
+          @status = 'Completed'
+          Session.log('TRACKER', '+', "Completed #{@uuid}")
+        end
+      when :nav
+        Session.log('TRACKER', '~', 'Awaiting navigation...')
+        if @portal.handles.length > 1
+          @portal.pop()
+          return
+        else
+          await_navigation!()
+          @portal.pop()
+          return
+        end
+      end
+    end
+  end
+end</code></pre>
+
+            <h3>What this iteration proved</h3>
+            <ul>
+                <li>DOM-only observation is insufficient for pages that hide UI optimistically. Instrumenting <code>XHR</code> and <code>fetch</code> from the inside gives you ground truth.</li>
+                <li>A tab queue prevents stale-handle errors and makes cleanup deterministic.</li>
+                <li>A companion extension running inside the page can communicate with the Selenium script through dataset attributes, enabling mode toggles and queue requests without brittle DOM selectors.</li>
+                <li>Intercepting click events at the JS level lets you observe user intent without racing the browser&rsquo;s default navigation.</li>
+                <li>Treating Selenium as a runtime (with persistent script injection, heartbeat sync, and cross-tab state) is a fundamentally different architecture from treating it as a script recorder.</li>
+            </ul>
+        </article>
     </main>
 
     <footer>
-        <div class="right-align">
-            <p style="text-align: right; margin-top: 1em; font-size: 0.9em; color: #d4be98;">
-                &copy; 2026 cet
-            </p>
+        <p class="footer-name">Ben &middot; <span id="tz-label">EST</span></p>
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/cetio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                <span>github.com/cetio</span>
+            </a>
+            <a class="footer-link" href="https://www.linkedin.com/in/bejaunst" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                <span>linkedin.com/in/bejaunst</span>
+            </a>
+            <a class="footer-link" href="mailto:bejaunst@gmail.com" aria-label="Email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><title>Email</title><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/></svg>
+                <span>bejaunst@gmail.com</span>
+            </a>
         </div>
     </footer>
+
+    <script src="/assets/prism.min.js"></script>
+    <script src="/assets/prism-ruby.min.js"></script>
+    <script>
+        (function () {
+            const isEasternDst = (date) => {
+                const year = date.getFullYear();
+                const secondSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7 + 7;
+                };
+                const firstSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7;
+                };
+                const start = new Date(year, 2, secondSunday(2), 2, 0, 0);
+                const end = new Date(year, 10, firstSunday(10), 2, 0, 0);
+                return date >= start && date < end;
+            };
+            const tzLabel = document.getElementById('tz-label');
+            if (tzLabel) tzLabel.textContent = isEasternDst(new Date()) ? 'EDT' : 'EST';
+        })();
+    </script>
 </body>
 </html>

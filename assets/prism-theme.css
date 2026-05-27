@@ -1,0 +1,110 @@
+/* PrismJS Monokai theme for cetio.github.io */
+code[class*="language-"],
+pre[class*="language-"] {
+    color: #f8f8f2;
+    background: none;
+    font-family: inherit;
+    font-size: 13px;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    tab-size: 4;
+    hyphens: none;
+}
+
+pre[class*="language-"] {
+    background: #272822;
+    border: 1px solid #3e3d32;
+    padding: 14px 16px;
+    margin: 16px 0;
+    overflow: auto;
+    border-radius: 2px;
+}
+
+/* Tokens — Monokai palette */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #75715e;
+}
+
+.token.punctuation {
+    color: #f8f8f2;
+}
+
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #f92672;
+}
+
+.token.boolean,
+.token.number {
+    color: #ae81ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #a6e22e;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.token.variable {
+    color: #f8f8f2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #66d9ef;
+}
+
+.token.function,
+.token.class-name,
+.token.maybe-class-name {
+    color: #a6e22e;
+}
+
+.token.regex,
+.token.important {
+    color: #fd971f;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+/* Dark background for inline code when language class is present */
+code.language-d,
+code.language-ruby,
+code.language-csharp,
+code.language-asm,
+code.language-c,
+code.language-python,
+code.language-javascript,
+code.language-json,
+code.language-bash {
+    background: #272822;
+    padding: 1px 5px;
+    border-radius: 2px;
+}

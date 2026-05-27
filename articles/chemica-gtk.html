@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="cetio">
+    <meta name="description" content="Building a GTK4 desktop app in D for scientific compound lookup with 3D molecular viewing.">
+    <title>Chemica I: a GTK-based PubChem wiki app with 3D molecular viewing &middot; cetio</title>
+    <link rel="stylesheet" href="/assets/fonts/style.css">
+    <link rel="stylesheet" href="/assets/theme/style.css">
+    <link rel="stylesheet" href="/assets/prism-theme.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <nav class="top-nav article-back" role="navigation" aria-label="Article">
+        <a href="/" class="article-back-link">&larr; Index</a>
+    </nav>
+
+    <main>
+        <article>
+            <header class="article-header">
+                <h1>Chemica I: a GTK-based PubChem wiki app with 3D molecular viewing</h1>
+                <div class="article-meta">
+                    <time>February 26, 2026</time>
+                    <a href="https://www.linkedin.com/pulse/chemica-i-frontend-benjamin-johnston-fncsc" target="_blank" rel="noopener noreferrer" class="inline-linkedin">
+                        <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                        Original on LinkedIn
+                    </a>
+                </div>
+            </header>
+
+            <hr>
+
+            <h3>The stack</h3>
+            <p>
+                Chemica is a GTK4 desktop application written in D using <a href="https://github.com/gtkd-developers/GtkD" target="_blank" rel="noopener noreferrer">GtkD</a>. It searches PubChem by compound name, renders a 3D molecular model, surfaces chemical properties and identifiers, and pulls structured articles from Wikipedia, PsychonautWiki, PubMed, and PMC. Dosage data comes from PsychonautWiki with strict similarity-matching fallbacks. A local AI layer (Intuit) can synthesize conflicting sources into a single coherent article.
+            </p>
+            <p>
+                This article covers the frontend: GTK architecture, the 3D conformer viewer, article rendering, and dosage matching. <a href="chemica-api.html">Part II</a> covers the backend data layer (Akashi) and how five incompatible APIs become one <code>Page</code> type.
+            </p>
+
+            <h3>GTK4 application shell</h3>
+            <p>
+                The entry point is a standard <code>Gtk.Application</code> with a CSS provider for custom styling. The window uses a <code>Gtk.Stack</code> to switch between three views: home (search), article (compound details), and settings.
+            </p>
+
+<pre><code class="language-d">class ChemicaApp : Application
+{
+private:
+    CssProvider cssProvider;
+
+    void applyCss()
+    {
+        cssProvider = new CssProvider();
+        if (cssPath.exists)
+            cssProvider.loadFromString(cssPath.readText);
+        else
+            writeln("Warning: CSS file not found at " ~ cssPath);
+
+        StyleContext.addProviderForDisplay(
+            Display.getDefault(),
+            cssProvider,
+            STYLE_PROVIDER_PRIORITY_APPLICATION);
+    }
+
+    void onActivate()
+    {
+        applyCss();
+        ChemicaWindow window = new ChemicaWindow(this);
+        window.present();
+    }
+
+public:
+    this()
+    {
+        super("org.chemica.pubchem", ApplicationFlags.DefaultFlags);
+        connectActivate(&onActivate);
+    }
+}
+
+void main(string[] args)
+{
+    ChemicaApp app = new ChemicaApp();
+    app.run(args);
+}</code></pre>
+
+            <h3>Search and compound resolution</h3>
+            <p>
+                The home view is a <code>SearchEntry</code> plus a <code>ListBox</code> of results. When the user types a compound name, the app queries PubChem through Akashi and populates rows with the compound name, CID, and source label. Every search returns a primary match plus up to four structurally similar compounds so the user can pivot when a query is ambiguous.
+            </p>
+
+<pre><code class="language-d">Box buildResultRow(Compound compound, bool isPrimary = false)
+{
+    Box row = new Box(Orientation.Horizontal, 8);
+    row.addCssClass("search-result-row");
+    if (!isPrimary)
+        row.addCssClass("similar-result");
+
+    Label title = new Label(compound.name);
+    title.addCssClass("search-result-title");
+    title.halign = Align.Start;
+    title.hexpand = true;
+    row.append(title);
+
+    Label cid = new Label(compound.cid.to!string);
+    cid.addCssClass("search-result-source");
+    cid.halign = Align.End;
+    row.append(cid);
+
+    Label src = new Label("PUBCHEM");
+    src.addCssClass("search-result-source");
+    src.halign = Align.End;
+    src.marginStart = 8;
+    row.append(src);
+
+    return row;
+}</code></pre>
+
+            <h3>The 3D molecular viewer</h3>
+            <p>
+                The viewer is a custom <code>DrawingArea</code> that renders a PubChem 3D conformer with Cairo. It supports mouse drag to rotate, scroll to zoom, and hover tooltips that identify the atom under the cursor. The camera is a simple orbit model.
+            </p>
+
+<pre><code class="language-d">class MoleculeView : DrawingArea
+{
+package:
+    Compound compound;
+    Camera camera;
+    double lastDragX;
+    double lastDragY;
+
+    void onDraw(CairoContext ctx, int width, int height)
+    {
+        drawBackground(ctx);
+        drawGrid(this, ctx);
+        if (compound !is null && compound.conformer3D !is null)
+            drawMolecule(this, ctx, compound.conformer3D, camera);
+    }
+
+public:
+    this()
+    {
+        addCssClass("molecule-viewer");
+        setContentWidth(400);
+        setContentHeight(300);
+        hexpand = true;
+        camera = Camera();
+        setDrawFunc(&onDraw);
+
+        GestureDrag drag = new GestureDrag();
+        drag.connectDragBegin(&onDragBegin);
+        drag.connectDragUpdate(&onDragUpdate);
+        addController(drag);
+
+        EventControllerScroll scroll = new EventControllerScroll(
+            EventControllerScrollFlags.Vertical);
+        scroll.connectScroll(&onScroll);
+        addController(scroll);
+    }
+}</code></pre>
+
+            <p>
+                Rendering happens in painter-order by depth. Atom colors follow the CPK convention and radii scale by van der Waals approximation:
+            </p>
+
+<pre><code class="language-d">double[3] getColor(Element elem)
+{
+    switch (cast(int)elem)
+    {
+        case 1:  return [1.0, 1.0, 1.0];  // H - White
+        case 6:  return [0.3, 0.3, 0.3];  // C - Dark gray
+        case 7:  return [0.2, 0.4, 1.0];  // N - Blue
+        case 8:  return [1.0, 0.2, 0.2];  // O - Red
+        case 15: return [1.0, 0.5, 0.0]; // P - Orange
+        case 16: return [1.0, 0.9, 0.2]; // S - Yellow
+        default: return [0.7, 0.5, 0.7]; // Light purple
+    }
+}
+
+void drawMolecule(MoleculeView view, CairoContext ctx,
+                  Conformer3D conformer, Camera camera)
+{
+    Atom3D[] atoms = conformer.atoms;
+    Bond3D[] bonds = conformer.bonds;
+
+    foreach (atom; atoms)
+    {
+        double[3] projected = camera.project(atom.x, atom.y, atom.z);
+        double radius = getRadius(atom.element) * camera.zoom;
+        drawAtom(ctx, projected[0], projected[1], radius,
+                 getColor(atom.element));
+    }
+
+    foreach (bond; bonds)
+    {
+        double[3] a = camera.project(
+            atoms[bond.atomA].x, atoms[bond.atomA].y, atoms[bond.atomA].z);
+        double[3] b = camera.project(
+            atoms[bond.atomB].x, atoms[bond.atomB].y, atoms[bond.atomB].z);
+        drawBond(ctx, a[0], a[1], b[0], b[1], camera.zoom);
+    }
+}</code></pre>
+
+            <h3>Article rendering with collapsible panels</h3>
+            <p>
+                Below the viewer, the article view renders fetched text with full Wikitext parsing. Headings are sorted into collapsible panels so the user can navigate dense articles without scrolling through walls of text. The parser is built on Akashi&rsquo;s <code>Page</code> type, which lazily fetches and exposes structured sections:
+            </p>
+
+<pre><code class="language-d">void renderArticle(Page page)
+{
+    foreach (section; page.sections)
+    {
+        Expander expander = new Expander(section.heading);
+        expander.addCssClass("article-panel");
+
+        Label body = new Label(section.fulltext);
+        body.wrap = true;
+        body.halign = Align.Start;
+        expander.child = body;
+
+        articleBox.append(expander);
+    }
+
+    // Preamble (lead paragraph) stays expanded above the panels
+    Label preamble = new Label(page.preamble);
+    preamble.wrap = true;
+    preamble.addCssClass("article-preamble");
+    articleBox.prepend(preamble);
+}</code></pre>
+
+            <h3>Dosage similarity matching</h3>
+            <p>
+                For psychoactive compounds, dosage data comes from PsychonautWiki. When a compound lacks its own dosage page, Chemica falls back to structural similarity scoring. The match must satisfy all three criteria:
+            </p>
+            <ul>
+                <li>Tanimoto coefficient for structural similarity &gt; 0.7</li>
+                <li>XLogP variance within &pm;0.5 units</li>
+                <li>Molecular weight within &pm;50 Daltons</li>
+            </ul>
+
+<pre><code class="language-d">struct SimilarityResult
+{
+    double tanimoto;
+    double xlogpDelta;
+    double weightDelta;
+    bool acceptable;
+}
+
+SimilarityResult scoreSimilarity(Compound target, Compound candidate)
+{
+    double tanimoto = tanimotoFingerprint(target.fingerprint,
+                                         candidate.fingerprint);
+    double xlogpDelta = abs(target.properties.xlogp -
+                              candidate.properties.xlogp);
+    double weightDelta = abs(target.properties.weight -
+                             candidate.properties.weight);
+
+    return SimilarityResult(
+        tanimoto,
+        xlogpDelta,
+        weightDelta,
+        tanimoto > 0.7 &&
+        xlogpDelta <= 0.5 &&
+        weightDelta <= 50.0
+    );
+}</code></pre>
+
+            <div class="callout">
+                The similarity layer is intentionally conservative. Every inferred dosage value is flagged in the UI with the source compound&rsquo;s name so the user knows where it came from.
+            </div>
+
+            <h3>Local AI synthesis</h3>
+            <p>
+                When multiple sources overlap partially or contradict, Chemica can route the text through a local LLM via Intuit. The prompt is deterministic and structured: it receives the overlapping excerpts, their sources, and instructions to produce a single coherent paragraph with inline citations. This runs entirely on-device, so no data leaves the machine.
+            </p>
+
+<pre><code class="language-d">string synthesize(Page[] pages, string compoundName)
+{
+    EaseConfig config;
+    config.system = "You are a scientific editor. Merge the " ~
+                    "provided excerpts into one coherent paragraph. " ~
+                    "Preserve formatting. Cite sources inline.";
+
+    EaseRequest request;
+    request.prompt = buildSynthesisPrompt(pages, compoundName);
+
+    auto response = intuit.ease(request, config);
+    return response.text;
+}</code></pre>
+
+            <h3>What the frontend proved</h3>
+            <ul>
+                <li>GTK4 in D is viable for complex desktop apps if you keep the widget layer thin and push state into plain D classes.</li>
+                <li>A custom Cairo renderer is enough for molecular visualization; you do not need WebGL for simple 3D.</li>
+                <li>Lazy fetching at the library layer means the UI never blocks on network.</li>
+                <li>Separating the GUI from the data layer (Akashi) made it trivial to add a CLI mode later without code duplication.</li>
+            </ul>
+
+            <p>
+                <a href="chemica-api.html">Continue to Part II &rarr;</a> for the Akashi library design: identity resolution, the shared <code>Page</code> type, and how five incompatible APIs become one code path.
+            </p>
+        </article>
+    </main>
+
+    <footer>
+        <p class="footer-name">Ben &middot; <span id="tz-label">EST</span></p>
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/cetio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                <span>github.com/cetio</span>
+            </a>
+            <a class="footer-link" href="https://www.linkedin.com/in/bejaunst" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                <span>linkedin.com/in/bejaunst</span>
+            </a>
+            <a class="footer-link" href="mailto:bejaunst@gmail.com" aria-label="Email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><title>Email</title><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/></svg>
+                <span>bejaunst@gmail.com</span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="/assets/prism.min.js"></script>
+    <script src="/assets/prism-d.min.js"></script>
+    <script>
+        (function () {
+            const isEasternDst = (date) => {
+                const year = date.getFullYear();
+                const secondSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7 + 7;
+                };
+                const firstSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7;
+                };
+                const start = new Date(year, 2, secondSunday(2), 2, 0, 0);
+                const end = new Date(year, 10, firstSunday(10), 2, 0, 0);
+                return date >= start && date < end;
+            };
+            const tzLabel = document.getElementById('tz-label');
+            if (tzLabel) tzLabel.textContent = isEasternDst(new Date()) ? 'EDT' : 'EST';
+        })();
+    </script>
+</body>
+</html>
