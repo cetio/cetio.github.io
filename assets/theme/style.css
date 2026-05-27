@@ -123,16 +123,16 @@ main {
 
 .tab-panel {
     display: none;
-    animation: fadeIn 0.2s ease;
 }
 
 .tab-panel.active {
     display: block;
+    animation: slideIn 0.25s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0); }
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
 }
 
 /* ── Panels ── */
@@ -462,6 +462,7 @@ main {
 }
 
 .article-entry {
+    position: relative;
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-left: 2px solid var(--border-light);
@@ -469,6 +470,24 @@ main {
     padding: 16px;
     border-radius: var(--radius);
     transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.article-lang-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+}
+
+.article-lang-icon path {
+    fill: currentColor;
+}
+
+.article-entry:hover .article-lang-icon {
+    opacity: 1;
 }
 
 .article-entry:hover {
@@ -524,44 +543,177 @@ main {
     border-radius: var(--radius);
 }
 
-/* ── About Focus Cards ── */
-.focus-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-    margin-top: 20px;
+/* ── Skill Badges ── */
+.skill-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
 }
 
-.focus-card {
+.skill-badge {
+    background: transparent;
+    color: var(--fg-muted);
+    border: 1px solid #3a6ea5;
+    padding: 4px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1;
+    transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.skill-badge:hover {
+    color: var(--fg);
+    border-color: #66b3ff;
+}
+
+/* ── Highlights Carousel ── */
+.highlights {
+    margin: 10px 0 18px 0;
+}
+
+.highlights-viewport {
+    overflow: hidden;
+}
+
+.highlights-track {
+    display: flex;
+    transition: transform 0.35s ease;
+    will-change: transform;
+}
+
+.highlights-page {
+    flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.highlight-card {
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-top: 1px solid var(--border-light);
     box-shadow: var(--shadow-raised);
-    padding: 16px;
+    padding: 14px 16px;
     border-radius: var(--radius);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-sizing: border-box;
 }
 
-.focus-card h4 {
-    margin: 0 0 8px 0;
+.highlight-card h3 {
+    margin: 0;
     color: var(--fg);
     font-size: 14px;
 }
 
-.focus-card p {
+.highlight-card p {
     margin: 0;
     color: var(--fg-muted);
     font-size: 13px;
     line-height: 1.5;
 }
 
-.focus-card a {
+.highlight-card a {
     color: var(--fg-muted);
     text-decoration: underline;
     text-decoration-color: var(--border-light);
 }
 
-.focus-card a:hover {
+.highlight-card a:hover {
     color: var(--fg);
+}
+
+.highlight-card code {
+    font-size: 12px;
+}
+
+.highlights-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.highlights-nav {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--fg-dim);
+    padding: 2px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: var(--radius);
+    transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.highlights-nav:hover,
+.highlights-nav:focus {
+    color: var(--fg);
+    border-color: var(--fg-muted);
+    outline: none;
+}
+
+.highlights-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.highlights-dot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.highlights-dot.is-active {
+    background: var(--fg-muted);
+    border-color: var(--fg-muted);
+}
+
+.highlights-dot-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--fg-muted);
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+.highlights-dot.is-next .highlights-dot-fill {
+    animation: highlights-dot-fill 15s linear forwards;
+}
+
+.highlights.is-paused .highlights-dot.is-next .highlights-dot-fill {
+    animation-play-state: paused;
+}
+
+@keyframes highlights-dot-fill {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .highlights-dot.is-next .highlights-dot-fill {
+        animation: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .highlights-page {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ── Certificates ── */
