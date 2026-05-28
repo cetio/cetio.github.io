@@ -1,0 +1,56 @@
+{
+    "jobs": [
+        {
+            "title": "AI Trainer",
+            "company": "Handshake",
+            "type": "Contract",
+            "date": "November 2025 – Present",
+            "logo": "assets/logos/team_handshake_logo.jpg",
+            "bullets": [
+                "Train and evaluate multimodal AI agents using generalist data to improve response quality, reasoning, and understanding across domains.",
+                "Developed AutoHandshake!, a Selenium automation suite that streamlined contractor workflows and significantly reduced manual overhead.",
+                "Assisted fellows in clarifying guidelines and platform operations."
+            ]
+        },
+        {
+            "title": "Search Quality Evaluator",
+            "company": "RWS Group",
+            "type": "Contract",
+            "date": "April 2025 – August 2025",
+            "logo": "assets/logos/rws_group_logo.jpg",
+            "bullets": [
+                "Evaluated search relevance and LLM responses to improve result quality and UX across Google query simulations and third-party models."
+            ]
+        },
+        {
+            "title": "Freelance Software Engineer",
+            "company": "",
+            "type": "",
+            "date": "July 2021 – Present",
+            "logo": "",
+            "bullets": [
+                "Built SDKs and tooling for device I/O and web API integration, enabling real-time control and data synchronization across hardware and web interfaces in a team of 6.",
+                "Designed an AI-assisted grading platform with LMS OAuth integration, achieving ~95% accuracy in real-world classroom use."
+            ]
+        }
+    ],
+    "education": {
+        "institution": "Columbus State Community College",
+        "degree": "AAS — Software Development",
+        "expectedGraduation": "December 2026"
+    },
+    "certifications": [
+        { "issuer": "NASBA", "name": "MS Career Essentials Generative AI" },
+        { "issuer": "NASBA", "name": "MS Career Essentials Software Development" },
+        { "issuer": "NASBA", "name": "MS Generative AI for Customer Service..." },
+        { "issuer": "NASBA", "name": "MS Azure AI Essentials" },
+        { "issuer": "NASBA", "name": "MS Security Essentials" },
+        { "issuer": "NASBA", "name": "KNIME Data Science" },
+        { "issuer": "NASBA", "name": "Zendesk Customer Service" },
+        { "issuer": "NASBA", "name": "SQL Programming" },
+        { "issuer": "NASBA", "name": "SQL Essential Training" },
+        { "issuer": "PMI", "name": "Career Essentials in GitHub" },
+        { "issuer": "PMI", "name": "Cybersecurity Awareness" },
+        { "issuer": "Handshake", "name": "Model Validation 2 - Expert" }
+    ]
+}

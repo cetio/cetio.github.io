@@ -42,7 +42,6 @@ a {
 a:hover,
 a:focus {
     color: #99ccff;
-    text-decoration: underline;
 }
 
 /* ── Navigation ── */
