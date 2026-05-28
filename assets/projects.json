@@ -90,9 +90,9 @@
       "starred": true,
       "sortOrder": 1,
       "description": [
-        "D library for language and embedding model endpoints that replaces fragile JSON shims with strongly typed native structures, covering OpenAI-compatible APIs and Claude.",
+        "D library for language and embedding model endpoints that replaces fragile JSON shims with strongly typed native structures.",
         "Chat completions with streaming, batch embeddings, tool usage, and persistent per-model configuration for production inference workflows.",
-        "SIMD-optimized vector math using AVX intrinsics and compile-time metaprogramming for zero-overhead type-safe serialization."
+        "Supports most model vendors, with a focus on OpenAI and Qwen endpoints."
       ],
       "github": "https://github.com/cetio/intuit"
     },
