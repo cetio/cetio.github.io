@@ -146,7 +146,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 3,
+      "sortOrder": 4,
       "description": "Finance SDK in D with strongly typed market data and multi-market account access across equities, options, crypto, and futures. HMAC-SHA1 request signing, MFA token flows, and automatic session refresh for autonomous authentication.",
       "github": "https://github.com/cetio/webull-sdk",
       "demoImage": {
@@ -288,6 +288,7 @@
       "languages": [
         "d"
       ],
+      "sortOrder": 20,
       "description": "Challenge library for high-entropy encryption algorithms optimized with SIMD vectorization for maximum throughput.",
       "github": "https://github.com/cetio/challenge02",
       "year": 2024
@@ -333,7 +334,7 @@
       "languages": [
         "cpp"
       ],
-      "sortOrder": 20,
+      "sortOrder": 3,
       "description": "Reverse analysis and documentation for VEX Robotics internal firmware and control APIs.",
       "github": "https://github.com/cetio/VEXAPI",
       "year": 2024
