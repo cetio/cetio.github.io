@@ -327,7 +327,7 @@
       ],
       "description": "Security research on CVE-2020-36603, a kernel driver vulnerability in Mihoyo's anti-cheat system, producing an academic reference for vulnerable driver communication patterns. Patched as of 2023.",
       "github": "https://github.com/cetio/MihoyoEXP",
-      "year": 2025
+      "year": 2022
     },
     {
       "title": "VEXAPI",
