@@ -526,6 +526,10 @@ details[open] > summary {
     color: inherit;
 }
 
+.github { color: #FFFFFF !important; }
+.linkedin { color: #0A66C2 !important; }
+.email { color: #FFFFFF !important; }
+
 /* Scrollbar styling for modern browsers */
 ::-webkit-scrollbar {
     width: 8px;

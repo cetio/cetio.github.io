@@ -785,6 +785,10 @@ footer {
     fill: currentColor;
 }
 
+.github { color: #FFFFFF !important; }
+.linkedin { color: #0A66C2 !important; }
+.email { color: #FFFFFF !important; }
+
 footer p {
     color: var(--fg-dim);
     margin: 0;
