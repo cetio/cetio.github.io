@@ -855,6 +855,7 @@ footer p {
 /* ── Article Pages ── */
 .article-back {
     justify-content: flex-start;
+    align-items: center;
     padding-left: 24px;
     gap: 16px;
 }
@@ -1061,10 +1062,15 @@ code {
         width: 100%;
         text-align: left;
         margin-bottom: 6px;
+        border-left-color: var(--border);
     }
 
     .tab-btn:last-child {
         margin-bottom: 0;
+    }
+
+    .tab-btn.active + .tab-btn {
+        border-left-color: var(--border);
     }
 
     main {
