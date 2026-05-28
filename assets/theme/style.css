@@ -216,12 +216,8 @@ main {
 }
 
 .highlight-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-top: 1px solid var(--border-light);
-    box-shadow: var(--shadow-raised);
     padding: 16px;
-    border-radius: var(--radius);
+    margin-bottom: 0;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -260,23 +256,6 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-}
-
-.skill-chip {
-    display: inline-block;
-    border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.02);
-    padding: 4px 10px;
-    border-radius: var(--radius);
-    color: var(--fg-muted);
-    box-shadow: var(--shadow-inset);
-    transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
-}
-
-.skill-chip:hover {
-    border-color: var(--border-light);
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--fg);
 }
 
 /* ── Projects ── */
@@ -435,7 +414,6 @@ main {
     box-shadow: var(--shadow-raised);
     padding: 16px;
     border-radius: var(--radius);
-    box-sizing: border-box;
     min-width: 0;
     transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -673,6 +651,7 @@ main {
 }
 
 /* ── Badges ── */
+.skill-chip,
 .article-tag,
 .skill-badge {
     display: inline-block;
@@ -695,6 +674,7 @@ main {
     box-shadow: 0 4px 16px rgba(102, 179, 255, 0.08);
 }
 
+.skill-chip:hover,
 .article-tag:hover,
 .skill-badge:hover {
     border-color: var(--border-light);
@@ -883,9 +863,10 @@ main {
     margin-top: 8px;
 }
 
-.github { color: #FFFFFF !important; }
-.linkedin { color: #0A66C2 !important; }
+.github,
 .email { color: #FFFFFF !important; }
+
+.linkedin { color: #0A66C2 !important; }
 
 /* ── Copyright ── */
 .copyright {
@@ -1128,7 +1109,7 @@ code {
     margin-bottom: 0;
 }
 
-.experience-col .panel h3 {
+.panel > h3 {
     margin: 0 0 16px 0;
     font-size: 16px;
     color: var(--fg);
