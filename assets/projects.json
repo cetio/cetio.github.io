@@ -94,7 +94,8 @@
         "Chat completions with streaming, batch embeddings, tool usage, and persistent per-model configuration for production inference workflows.",
         "Supports most model vendors, with a focus on OpenAI and Qwen endpoints."
       ],
-      "github": "https://github.com/cetio/intuit"
+      "github": "https://github.com/cetio/intuit",
+      "year": 2026
     },
     {
       "title": "Akashi",
@@ -108,7 +109,8 @@
         "Lazy content fetching with structured text parsing from wikitext and XML into compact ASTs for rendering and extraction.",
         "Cross-source resolution between scientific databases, similarity search on compound identifiers, and reusable HTTP rate-limiting primitives for building new adapters."
       ],
-      "github": "https://github.com/cetio/akashi"
+      "github": "https://github.com/cetio/akashi",
+      "year": 2026
     },
     {
       "title": "Chemica",
@@ -126,7 +128,8 @@
       "demoVideo": {
         "type": "video",
         "url": "/assets/demos/chemica.mp4"
-      }
+      },
+      "year": 2026
     },
     {
       "title": "Multidasm",
@@ -135,7 +138,8 @@
       ],
       "sortOrder": 4,
       "description": "Dynamic assembler with deep compile-time integration for the D language.",
-      "github": "https://github.com/cetio/multidasm"
+      "github": "https://github.com/cetio/multidasm",
+      "year": 2026
     },
     {
       "title": "Webull-SDK",
@@ -148,7 +152,8 @@
       "demoImage": {
         "url": "/assets/demos/webull-sdk.png",
         "alt": "Webull-SDK terminal dashboard demo"
-      }
+      },
+      "year": 2026
     },
     {
       "title": "Jitsort",
@@ -157,7 +162,8 @@
       ],
       "sortOrder": 10,
       "description": "Just-in-time sorting algorithm that generates specialized machine code to achieve constant-time performance.",
-      "github": "https://github.com/cetio/jitsort"
+      "github": "https://github.com/cetio/jitsort",
+      "year": 2025
     },
     {
       "title": "AutoHandshake!",
@@ -171,7 +177,8 @@
         "Ruby and JavaScript workflow automation suite for Handshake AI that replaces repetitive manual annotation and triage work with scripted, auditable runs for contractor teams at scale.",
         "Selenium-based browser automation with injected monitoring hooks, multi-tab coordination, and automatic recovery from UI stalls for reliable long-running sessions.",
         "HTML parsing and context-aware quality-of-life tooling that gives workers fine-grained control while maintaining full auditability."
-      ]
+      ],
+      "year": 2026
     },
     {
       "title": "LinkedIn",
@@ -180,7 +187,8 @@
       ],
       "sortOrder": 5,
       "description": "Ruby CLI and library for scraping and aggregating LinkedIn Learning course and path data using Selenium and Nokogiri.",
-      "github": "https://github.com/cetio/linkedin"
+      "github": "https://github.com/cetio/linkedin",
+      "year": 2026
     },
     {
       "title": "Nimbus",
@@ -189,7 +197,8 @@
       ],
       "sortOrder": 7,
       "description": "Lightweight Linux CLI for unified display configuration controlling brightness, contrast, gamma, color temperature, and monitor-specific VCP features. Human-friendly command labels alongside raw hardware codes with auto-detection and intelligent backlight preference.",
-      "github": "https://github.com/cetio/nimbus"
+      "github": "https://github.com/cetio/nimbus",
+      "year": 2025
     },
     {
       "title": "Mobster",
@@ -199,7 +208,8 @@
       ],
       "sortOrder": 6,
       "description": "BitTorrent protocol implementation in D with Python streaming support for terminal-based media playback with cover art and quality selection.",
-      "github": "https://github.com/cetio/mobster"
+      "github": "https://github.com/cetio/mobster",
+      "year": 2025
     },
     {
       "title": "Intel Intrinsics",
@@ -209,7 +219,8 @@
       "sortOrder": 7,
       "description": "AVX-512 support and additional intrinsics for the D language SIMD library, with changes merged upstream.",
       "forked": true,
-      "github": "https://github.com/cetio/intel-intrinsics"
+      "github": "https://github.com/cetio/intel-intrinsics",
+      "year": 2024
     },
     {
       "title": "Cassowary",
@@ -219,7 +230,8 @@
       "starred": true,
       "sortOrder": 2,
       "description": "Managed C# library for deep runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code. No longer actively maintained; succeeded by Godwit.",
-      "github": "https://github.com/cetio/Cassowary"
+      "github": "https://github.com/cetio/Cassowary",
+      "year": 2024
     },
     {
       "title": "Godwit",
@@ -228,7 +240,8 @@
       ],
       "sortOrder": 8,
       "description": "Comprehensive D library for reverse analysis and exposure of CoreCLR internals, serving as the successor to Cassowary with complete runtime structure modeling.",
-      "github": "https://github.com/cetio/godwit"
+      "github": "https://github.com/cetio/godwit",
+      "year": 2024
     },
     {
       "title": "Tern",
@@ -237,7 +250,8 @@
       ],
       "sortOrder": 1,
       "description": "High-performance standard library extension for D with compile-time tooling and object manipulation primitives. Under active maintenance with a focused rewrite in progress.",
-      "github": "https://github.com/cetio/tern"
+      "github": "https://github.com/cetio/tern",
+      "year": 2025
     },
     {
       "title": "Pipit",
@@ -246,7 +260,8 @@
       ],
       "sortOrder": 9,
       "description": "High-performance terminal text editor using AVX2 and AVX-512 SIMD instructions for speed-critical text operations under tight resource constraints.",
-      "github": "https://github.com/cetio/pipit"
+      "github": "https://github.com/cetio/pipit",
+      "year": 2026
     },
     {
       "title": "Depcat",
@@ -255,7 +270,8 @@
       ],
       "sortOrder": 14,
       "description": "Terraria mod using TModLoader that enables dynamic dependency injection of unmanaged code at runtime.",
-      "github": "https://github.com/cetio/Depcat"
+      "github": "https://github.com/cetio/Depcat",
+      "year": 2023
     },
     {
       "title": "Swaypaper",
@@ -264,7 +280,8 @@
       ],
       "sortOrder": 15,
       "description": "Minimal wrapper for the SWWW wallpaper daemon enabling slideshow backgrounds from multiple source directories.",
-      "github": "https://github.com/cetio/swaypaper"
+      "github": "https://github.com/cetio/swaypaper",
+      "year": 2025
     },
     {
       "title": "Challenge 02",
@@ -272,7 +289,8 @@
         "d"
       ],
       "description": "Challenge library for high-entropy encryption algorithms optimized with SIMD vectorization for maximum throughput.",
-      "github": "https://github.com/cetio/challenge02"
+      "github": "https://github.com/cetio/challenge02",
+      "year": 2024
     },
     {
       "title": "GarbageCorruptor",
@@ -280,7 +298,8 @@
         "csharp"
       ],
       "description": "Low-level CoreCLR research exploring unsafe string copying, dynamic array allocation and resizing, and garbage collection blocking mechanisms.",
-      "github": "https://github.com/cetio/GarbageCorruptor"
+      "github": "https://github.com/cetio/GarbageCorruptor",
+      "year": 2023
     },
     {
       "title": "UndeadInterop",
@@ -288,7 +307,8 @@
         "csharp"
       ],
       "description": "C# syscall library using shellcode injection and export table walking to dynamically resolve, execute, and detect hooks on system calls.",
-      "github": "https://github.com/cetio/UndeadInterop"
+      "github": "https://github.com/cetio/UndeadInterop",
+      "year": 2023
     },
     {
       "title": "Rio",
@@ -296,7 +316,8 @@
         "csharp"
       ],
       "description": "Assembly-like dynamic scripting language for C# targeting virtual code obfuscation and macro system integration.",
-      "github": "https://github.com/cetio/Rio"
+      "github": "https://github.com/cetio/Rio",
+      "year": 2023
     },
     {
       "title": "MihoyoEXP",
@@ -304,7 +325,8 @@
         "csharp"
       ],
       "description": "Security research on CVE-2020-36603, a kernel driver vulnerability in Mihoyo's anti-cheat system, producing an academic reference for vulnerable driver communication patterns. Patched as of 2023.",
-      "github": "https://github.com/cetio/MihoyoEXP"
+      "github": "https://github.com/cetio/MihoyoEXP",
+      "year": 2025
     },
     {
       "title": "VEXAPI",
@@ -313,7 +335,8 @@
       ],
       "sortOrder": 20,
       "description": "Reverse analysis and documentation for VEX Robotics internal firmware and control APIs.",
-      "github": "https://github.com/cetio/VEXAPI"
+      "github": "https://github.com/cetio/VEXAPI",
+      "year": 2024
     },
     {
       "title": "Mutagen",
@@ -322,7 +345,8 @@
       ],
       "sortOrder": 11,
       "description": "Audio format support for FLAC, MP4, and MP3 with full catalog parsing for tracks, albums, and artists.",
-      "github": "https://github.com/cetio/mutagen"
+      "github": "https://github.com/cetio/mutagen",
+      "year": 2026
     },
     {
       "title": "Git-Around",
@@ -331,7 +355,8 @@
       ],
       "sortOrder": 12,
       "description": "Configurable Python utility for Git housekeeping and maintenance of local repositories and modules.",
-      "github": "https://github.com/cetio/git-around"
+      "github": "https://github.com/cetio/git-around",
+      "year": 2025
     },
     {
       "title": "Sim-D",
@@ -340,7 +365,8 @@
       ],
       "sortOrder": 13,
       "description": "SIMD vector library in D using static arrays to achieve near-native performance.",
-      "github": "https://github.com/cetio/sim-d"
+      "github": "https://github.com/cetio/sim-d",
+      "year": 2024
     },
     {
       "title": "Insurgent",
@@ -356,11 +382,11 @@
         "Developed under the purview of Twin Harbor."
       ],
       "starred": true,
-      "github": "https://github.com/cetio/insurgent",
       "demoVideo": {
         "type": "video",
         "url": "/assets/demos/insurgent.mp4"
-      }
+      },
+      "year": 2026
     },
     {
       "title": "Nosferatu",
@@ -368,7 +394,8 @@
         "csharp"
       ],
       "sortOrder": 19,
-      "description": "Efficient object-oriented HTML and JavaScript parser with a GDI-based rendering engine."
+      "description": "Efficient object-oriented HTML and JavaScript parser with a GDI-based rendering engine.",
+      "year": 2022
     },
     {
       "title": "SMBIOSReader",
@@ -376,7 +403,8 @@
         "csharp"
       ],
       "sortOrder": 17,
-      "description": "Full-featured SMBIOS system information reader and DSP interpreter with an interactive data interface."
+      "description": "Full-featured SMBIOS system information reader and DSP interpreter with an interactive data interface.",
+      "year": 2022
     },
     {
       "title": "Google-SDK",
@@ -390,7 +418,8 @@
         "Unified file interface covering login, identity, folder and file listing, upload, download, save, delete, and text extraction.",
         "Focused modules for Google Docs and Sheets MIME detection and lightweight plain-text or CSV export, built on a reusable OAuth and HTTP foundation."
       ],
-      "github": "https://github.com/cetio/google-sdk"
+      "github": "https://github.com/cetio/google-sdk",
+      "year": 2026
     },
     {
       "title": "Conductor",
@@ -402,7 +431,8 @@
         "HTTP, OAuth, and network orchestration utilities in D that eliminate boilerplate when connecting applications to external services.",
         "Typed request building, automatic token refresh, JSON and form serialization, connection pooling, and resilience patterns including retry and circuit breaking."
       ],
-      "github": "https://github.com/cetio/conductor"
+      "github": "https://github.com/cetio/conductor",
+      "year": 2026
     },
     {
       "title": "Warbler",
@@ -411,7 +441,7 @@
       ],
       "sortOrder": 3,
       "description": "D CLI backend for academic institutions with a git-inspired command structure for grading, rubric generation, and classroom organization. Institutional plugin model mapping domain commands to arbitrary LMS backends with per-school configuration and OAuth authentication.",
-      "github": "https://github.com/cetio/warbler"
+      "year": 2026
     },
     {
       "title": "Selenium-SDK",
@@ -426,7 +456,8 @@
         "Element querying via CSS selector, XPath, and ID locators with click, form input, screenshot, and attribute inspection, plus JavaScript execution and structured logging."
       ],
       "forked": true,
-      "github": "https://github.com/cetio/selenium-sdk"
+      "github": "https://github.com/cetio/selenium-sdk",
+      "year": 2026
     },
     {
       "title": "Cilk",
@@ -435,7 +466,8 @@
       ],
       "sortOrder": 10,
       "description": "Common Intermediate Language disassembler and assembler for D with compile-time integration and minimal-allocation parsing.",
-      "github": "https://github.com/cetio/cilk"
+      "github": "https://github.com/cetio/cilk",
+      "year": 2024
     },
     {
       "title": "Head",
@@ -444,7 +476,8 @@
       ],
       "sortOrder": 11,
       "description": "PE and ELF binary format support in D for parsing executables, object files, and core dumps into structured types for analysis.",
-      "github": "https://github.com/cetio/head"
+      "github": "https://github.com/cetio/head",
+      "year": 2024
     },
     {
       "title": "Regex",
@@ -453,7 +486,8 @@
       ],
       "sortOrder": 12,
       "description": "Alternative regex matching engines and compile-time pattern compilation in D for zero-runtime-overhead text scanning.",
-      "github": "https://github.com/cetio/regex"
+      "github": "https://github.com/cetio/regex",
+      "year": 2024
     },
     {
       "title": "Soundcore A3954 Dump",
@@ -462,7 +496,8 @@
       ],
       "sortOrder": 21,
       "description": "Reverse-engineered BLE state packets for the Soundcore Liberty 4 Pro and decoded raw protocol captures into structured definitions. Archived; served as the foundational reference for the OpenSCQ30 cross-platform tool.",
-      "github": "https://github.com/cetio/soundcore-a3954-dump"
+      "github": "https://github.com/cetio/soundcore-a3954-dump",
+      "year": 2026
     },
     {
       "title": "OpenSCQ30",
@@ -472,7 +507,8 @@
       "sortOrder": 10,
       "description": "Cross-platform application for controlling Soundcore audio device settings across desktop and Android. Liberty 4 Pro configuration protocol, exposing EQ profiles, ANC modes, and firmware metadata through a unified interface.",
       "forked": true,
-      "github": "https://github.com/cetio/OpenSCQ30"
+      "github": "https://github.com/cetio/OpenSCQ30",
+      "year": 2026
     }
   ]
 }

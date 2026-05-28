@@ -204,15 +204,6 @@
             const card = document.createElement('div');
             card.className = 'project-card' + (project.starred ? ' starred' : '');
 
-            if (project.forked) {
-                const forkBadge = document.createElement('span');
-                forkBadge.className = 'project-fork';
-                forkBadge.setAttribute('aria-label', 'Forked project');
-                forkBadge.setAttribute('title', 'Forked project');
-                forkBadge.appendChild(renderIcon(iconFork));
-                card.appendChild(forkBadge);
-            }
-
             const hasDemo = !!(project.demoImage?.url || project.demoVideo?.url);
             if (hasDemo)
                 card.classList.add('has-demo');
@@ -221,7 +212,30 @@
             info.className = 'project-info';
 
             const heading = document.createElement('h3');
-            heading.textContent = project.title || '';
+
+            const titleGroup = document.createElement('span');
+            titleGroup.className = 'project-title-group';
+
+            if (project.forked) {
+                const forkBadge = document.createElement('span');
+                forkBadge.className = 'project-fork';
+                forkBadge.setAttribute('aria-label', 'Forked project');
+                forkBadge.setAttribute('title', 'Forked project');
+                forkBadge.appendChild(renderIcon(iconFork));
+                titleGroup.appendChild(forkBadge);
+            }
+
+            const titleSpan = document.createElement('span');
+            titleSpan.textContent = project.title || '';
+            titleGroup.appendChild(titleSpan);
+            heading.appendChild(titleGroup);
+
+            if (project.year) {
+                const yearSpan = document.createElement('span');
+                yearSpan.className = 'project-year';
+                yearSpan.textContent = project.year;
+                heading.appendChild(yearSpan);
+            }
             info.appendChild(heading);
 
             const desc = document.createElement('p');

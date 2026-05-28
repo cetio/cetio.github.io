@@ -457,6 +457,22 @@ main {
 .project-card h3 {
     margin: 0 0 8px 0;
     color: var(--fg);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.project-year {
+    color: var(--fg-dim);
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.project-title-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .project-card h3 a {
@@ -505,9 +521,8 @@ main {
 }
 
 .project-fork {
-    position: absolute;
-    top: 12px;
-    right: 16px;
+    display: inline-flex;
+    align-items: center;
     color: #ffffff;
     pointer-events: none;
 }
@@ -1157,6 +1172,10 @@ code {
     .lang-dropdown-menu {
         left: auto;
         right: 0;
+    }
+
+    .project-fork {
+        display: none;
     }
 
 }
