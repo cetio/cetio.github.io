@@ -61,8 +61,8 @@ a:focus {
 }
 
 .tab-btn {
-    background: transparent;
-    color: var(--fg-dim);
+    background: var(--bg-surface);
+    color: var(--fg);
     border: 1px solid var(--border);
     border-right: none;
     padding: 10px 24px;
@@ -97,6 +97,38 @@ a:focus {
 
 .tab-btn.active + .tab-btn {
     border-left-color: var(--fg);
+}
+
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.hamburger-line {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--fg);
+    border-radius: 1px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+}
+
+.nav-watermark {
+    display: none;
 }
 
 /* ── Watermark ── */
@@ -925,16 +957,61 @@ code {
 /* ── Responsive ── */
 @media (max-width: 640px) {
     .top-nav {
-        padding: 8px;
-        overflow-x: auto;
-        justify-content: flex-start;
+        padding: 8px 16px;
+        justify-content: space-between;
+        align-items: center;
+        overflow: visible;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-top: none;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        padding: 6px 16px 12px;
+        gap: 0;
+        z-index: 99;
+    }
+
+    .nav-menu.is-open {
+        display: flex;
+    }
+
+    .nav-watermark {
+        display: block;
+        font-family: 'Heraldic', serif;
+        font-size: 32px;
+        color: #FFFFFF;
+        user-select: none;
+        pointer-events: none;
+        line-height: 1;
+        margin-top: 6px;
+    }
+
+    .watermark {
+        display: none;
     }
 
     .tab-btn {
-        padding: 8px 14px;
-        font-size: 14px;
-        line-height: 14px;
-        white-space: nowrap;
+        padding: 10px 14px;
+        border-radius: var(--radius);
+        width: 100%;
+        text-align: left;
+        margin-bottom: 6px;
+    }
+
+    .tab-btn:last-child {
+        margin-bottom: 0;
     }
 
     main {
