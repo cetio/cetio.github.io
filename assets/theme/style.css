@@ -582,12 +582,17 @@ main {
     transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
+.article-entry:hover {
+    border-color: var(--border-light);
+    border-left-color: var(--fg-muted);
+    transform: translateY(-1px);
+}
+
 .article-lang-icon {
-    position: absolute;
-    top: 12px;
-    right: 12px;
+    float: right;
     width: 22px;
     height: 22px;
+    margin: 0 0 8px 8px;
     opacity: 0.6;
     transition: opacity 0.15s ease;
 }
@@ -598,12 +603,6 @@ main {
 
 .article-entry:hover .article-lang-icon {
     opacity: 1;
-}
-
-.article-entry:hover {
-    border-color: var(--border-light);
-    border-left-color: var(--fg-muted);
-    transform: translateY(-1px);
 }
 
 .article-entry h3 {
@@ -648,24 +647,31 @@ main {
 .article-tag,
 .skill-badge {
     display: inline-block;
-    background: transparent;
-    color: var(--fg-muted);
     border: 1px solid var(--border);
-    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 4px 10px;
     border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1;
-    transition: color 0.12s ease, border-color 0.12s ease;
+    color: var(--fg-muted);
+    box-shadow: var(--shadow-inset);
+    transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 
 .skill-badge {
     border-color: #3a6ea5;
     cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.article-tag:hover,
+.skill-badge:hover {
+    border-color: var(--border-light);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--fg);
 }
 
 .skill-badge:hover {
-    color: var(--fg);
     border-color: var(--link);
 }
 

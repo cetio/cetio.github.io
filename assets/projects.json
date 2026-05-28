@@ -422,7 +422,7 @@
       "starred": true,
       "sortOrder": 8,
       "description": [
-        "Modern Selenium SDK for D, overhauled from selenium.d with W3C WebDriver compliance and Ruby-inspired API conventions.",
+        "D Selenium library overhauled from selenium.d with W3C WebDriver compliance and Ruby-inspired API conventions.",
         "Strongly typed interface for browser automation with auto-detection of major browser drivers, implicit wait synchronization, and full session lifecycle management.",
         "Element querying via CSS selector, XPath, and ID locators with click, form input, screenshot, and attribute inspection, plus JavaScript execution and structured logging."
       ],
