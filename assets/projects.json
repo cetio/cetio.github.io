@@ -216,7 +216,8 @@
       "languages": [
         "csharp"
       ],
-      "sortOrder": 6,
+      "starred": true,
+      "sortOrder": 2,
       "description": "Managed C# library for deep runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code. No longer actively maintained; succeeded by Godwit.",
       "github": "https://github.com/cetio/Cassowary"
     },
@@ -396,12 +397,10 @@
       "languages": [
         "d"
       ],
-      "starred": true,
       "sortOrder": 2,
       "description": [
         "HTTP, OAuth, and network orchestration utilities in D that eliminate boilerplate when connecting applications to external services.",
-        "Typed request building, automatic token refresh, JSON and form serialization, connection pooling, and resilience patterns including retry and circuit breaking.",
-        "Powers the transport layer for four production libraries including Intuit, Akashi, Google-SDK, and Warbler."
+        "Typed request building, automatic token refresh, JSON and form serialization, connection pooling, and resilience patterns including retry and circuit breaking."
       ],
       "github": "https://github.com/cetio/conductor"
     },
