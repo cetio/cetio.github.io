@@ -13,7 +13,12 @@
 </head>
 <body>
     <nav class="top-nav article-back" role="navigation" aria-label="Article">
-        <a href="/#articles" class="article-back-link">&larr; Index</a>
+        <a href="/#articles" class="article-back-link">&larr; Back</a>
+        <span class="article-series-nav">
+            Series:
+            <a href="selenium-workflow.html" class="series-btn active">I</a>
+            <a href="dispatch-automation.html" class="series-btn">II</a>
+        </span>
     </nav>
 
     <main>
@@ -36,7 +41,7 @@
                 I had a repetitive, time-sensitive workflow that required switching between two browser pages, waiting for specific signals, and triggering actions at precise moments. Doing it manually meant context-switching constantly, missing timing windows, and making data entry errors. A linear Selenium script was the obvious first step, but linear scripts break the first time a page loads 500ms slower than expected.
             </p>
             <p>
-                This article covers the first iteration: a ~700-line Ruby script that hardened the workflow with explicit waits, DOM-driven state detection, layered retry logic, and modular page objects. <a href="dispatch-automation.html">Part II</a> upgrades the architecture to an event dispatch queue with JS-level request interception.
+                This article covers the first iteration: a ~700-line Ruby script that hardened the workflow with explicit waits, DOM-driven state detection, layered retry logic, and modular page objects.
             </p>
 
             <h3>Entry point: a tight claim-submit loop</h3>

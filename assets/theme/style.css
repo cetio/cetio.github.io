@@ -62,6 +62,9 @@ a:focus {
 }
 
 .tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     background: var(--bg-surface);
     color: var(--fg);
     border: 1px solid var(--border);
@@ -72,6 +75,18 @@ a:focus {
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.tab-btn .tab-icon-filled {
+    display: none;
+}
+
+.tab-btn.active .tab-icon {
+    display: none;
+}
+
+.tab-btn.active .tab-icon-filled {
+    display: inline-block;
 }
 
 .tab-btn:first-child {
@@ -841,22 +856,59 @@ footer p {
 .article-back {
     justify-content: flex-start;
     padding-left: 24px;
+    gap: 16px;
 }
 
 .article-back-link {
-    color: var(--fg-muted);
+    color: var(--link);
     font-size: 14px;
-    transition: color 0.12s ease;
 }
 
-.article-back-link:hover {
-    color: var(--fg);
+.article-series-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--fg-muted);
+    font-size: 14px;
+}
+
+.series-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    color: var(--fg-muted);
+    font-size: 12px;
     text-decoration: none;
+    transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.series-btn:hover {
+    border-color: var(--border-light);
+    color: var(--fg);
+}
+
+.series-btn.active {
+    border-color: var(--fg);
+    color: var(--fg);
 }
 
 article {
     max-width: 760px;
     margin: 0 auto;
+}
+
+article a {
+    color: var(--link);
+}
+
+article a:hover {
+    color: #99ccff;
 }
 
 .article-header h1 {
@@ -1003,6 +1055,7 @@ code {
     }
 
     .tab-btn {
+        display: flex;
         padding: 10px 14px;
         border-radius: var(--radius);
         width: 100%;

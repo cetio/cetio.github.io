@@ -13,7 +13,12 @@
 </head>
 <body>
     <nav class="top-nav article-back" role="navigation" aria-label="Article">
-        <a href="/#articles" class="article-back-link">&larr; Index</a>
+        <a href="/#articles" class="article-back-link">&larr; Back</a>
+        <span class="article-series-nav">
+            Series:
+            <a href="chemica-gtk.html" class="series-btn active">I</a>
+            <a href="chemica-api.html" class="series-btn">II</a>
+        </span>
     </nav>
 
     <main>
@@ -36,7 +41,7 @@
                 Chemica is a GTK4 desktop application written in D using <a href="https://github.com/gtkd-developers/GtkD" target="_blank" rel="noopener noreferrer">GtkD</a>. It searches PubChem by compound name, renders a 3D molecular model, surfaces chemical properties and identifiers, and pulls structured articles from Wikipedia, PsychonautWiki, PubMed, and PMC. Dosage data comes from PsychonautWiki with strict similarity-matching fallbacks. A local AI layer (Intuit) can synthesize conflicting sources into a single coherent article.
             </p>
             <p>
-                This article covers the frontend: GTK architecture, the 3D conformer viewer, article rendering, and dosage matching. <a href="chemica-api.html">Part II</a> covers the backend data layer (Akashi) and how five incompatible APIs become one <code>Page</code> type.
+                This article covers the frontend: GTK architecture, the 3D conformer viewer, article rendering, and dosage matching.
             </p>
 
             <h3>GTK4 application shell</h3>
