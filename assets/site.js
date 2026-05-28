@@ -290,6 +290,8 @@
     let allProjects = [];
     let allLanguages = [];
     let activeLangId = 'all';
+    let showStarredOnly = true;
+    const starToggle = document.getElementById('star-toggle');
 
     const makeIconSvg = (icon) => {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -372,6 +374,12 @@
         path: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'
     };
 
+    const iconFork = {
+        title: 'Fork',
+        viewBox: '0 0 16 16',
+        path: 'M11.5 4.5a1 1 0 1 0 0-2a1 1 0 0 0 0 2m2.5-1a2.5 2.5 0 0 1-1.872 2.42A3.5 3.5 0 0 1 8.75 8.5h-1.5a2 2 0 0 0-1.965 1.626a2.501 2.501 0 1 1-1.535-.011v-4.23a2.501 2.501 0 1 1 1.5 0v1.742a3.5 3.5 0 0 1 2-.627h1.5a2 2 0 0 0 1.823-1.177A2.5 2.5 0 1 1 14 3.5m-8.5 9a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-9a1 1 0 1 1-2 0a1 1 0 0 1 2 0'
+    };
+
     const ICONS = {
         d: { color: '#B03931', viewBox: '0 0 24 24', path: 'M22.635 3.883a1.364 1.25 0 0 0-1.363 1.25 1.364 1.25 0 0 0 1.363 1.25A1.364 1.25 0 0 0 24 5.133a1.364 1.25 0 0 0-1.365-1.25zm-16.004.418-6.027.008c-.026 0-.051-.003-.076 0-.296.036-.527.273-.528.558l.018 14.574c0 .22.06.676.682.676l5.58-.021c1.595-.003 2.664-.031 3.3-.112h.016a11.43 11.43 0 0 0 1.955-.469c1.22-.38 2.3-.944 3.23-1.697a7.854 7.854 0 0 0 2.114-2.562 6.716 6.716 0 0 0 .646-1.987 4.244 3.89 0 0 0 .26.028 4.244 3.89 0 0 0 4.244-3.89 4.244 3.89 0 0 0-4.244-3.89 4.244 3.89 0 0 0-2.9 1.082 8.838 8.838 0 0 0-2.25-1.355c-1.536-.65-3.536-.948-6.02-.943zm-.262 3.004c1.215-.003 2.079.034 2.569.101a7.32 7.32 0 0 1 1.617.436c.57.218 1.068.483 1.496.814 1.177.915 1.732 1.999 1.734 3.432.003 1.468-.534 2.611-1.68 3.57a5.582 5.582 0 0 1-1.177.742c-.409.19-.942.355-1.615.496-.636.128-1.6.2-2.856.202l-2.673.004-.012-9.793 2.598-.004z' },
         c: { color: '#A8B9CC', viewBox: '0 0 24 24', path: 'M16.5921 9.1962s-.354-3.298-3.627-3.39c-3.2741-.09-4.9552 2.474-4.9552 6.14 0 3.6651 1.858 6.5972 5.0451 6.5972 3.184 0 3.5381-3.665 3.5381-3.665l6.1041.365s.36 3.31-2.196 5.836c-2.552 2.5241-5.6901 2.9371-7.8762 2.9201-2.19-.017-5.2261.034-8.1602-2.97-2.938-3.0101-3.436-5.9302-3.436-8.8002 0-2.8701.556-6.6702 4.047-9.5502C7.444.72 9.849 0 12.254 0c10.0422 0 10.7172 9.2602 10.7172 9.2602z' },
@@ -399,9 +407,12 @@
     const renderProjects = () => {
         if (!projectsList) return;
         projectsList.innerHTML = '';
-        const filtered = activeLangId === 'all'
+        let filtered = activeLangId === 'all'
             ? allProjects
             : allProjects.filter(p => (p.languages || []).includes(activeLangId));
+        if (showStarredOnly) {
+            filtered = filtered.filter(p => p.starred);
+        }
         filtered.sort((a, b) => {
             if (a.starred && !b.starred) return -1;
             if (!a.starred && b.starred) return 1;
@@ -414,6 +425,15 @@
         filtered.forEach(p => {
             const card = document.createElement('div');
             card.className = 'project-card' + (p.starred ? ' starred' : '');
+
+            if (p.forked) {
+                const forkBadge = document.createElement('span');
+                forkBadge.className = 'project-fork';
+                forkBadge.setAttribute('aria-label', 'Forked project');
+                forkBadge.setAttribute('title', 'Forked project');
+                forkBadge.appendChild(renderIcon(iconFork));
+                card.appendChild(forkBadge);
+            }
 
             const h3 = document.createElement('h3');
             h3.textContent = p.title || '';
@@ -456,12 +476,36 @@
         });
     };
 
+    const updateStarToggle = () => {
+        if (!starToggle) return;
+        if (showStarredOnly) {
+            starToggle.classList.add('is-active');
+            starToggle.setAttribute('aria-pressed', 'true');
+            starToggle.setAttribute('aria-label', 'Show starred projects only');
+            starToggle.setAttribute('title', 'Show starred projects only');
+        } else {
+            starToggle.classList.remove('is-active');
+            starToggle.setAttribute('aria-pressed', 'false');
+            starToggle.setAttribute('aria-label', 'Show all projects');
+            starToggle.setAttribute('title', 'Show all projects');
+        }
+    };
+
+    if (starToggle) {
+        starToggle.addEventListener('click', () => {
+            showStarredOnly = !showStarredOnly;
+            updateStarToggle();
+            renderProjects();
+        });
+    }
+
     fetch('/assets/projects.json')
         .then(r => r.ok ? r.json() : null)
         .then(data => {
             allProjects = (data && Array.isArray(data.projects)) ? data.projects : [];
             allLanguages = (data && Array.isArray(data.languages)) ? data.languages : [];
             buildDropdown();
+            updateStarToggle();
             renderProjects();
         })
         .catch(() => {
