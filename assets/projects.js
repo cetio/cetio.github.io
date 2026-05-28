@@ -111,7 +111,7 @@
     let allProjects = [];
     let allLanguages = [];
     let activeLangId = 'all';
-    let showStarredOnly = true;
+    let showStarredOnly = false;
     const starToggle = document.getElementById('star-toggle');
 
     const closeDropdown = () => {
