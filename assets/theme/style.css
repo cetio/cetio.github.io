@@ -12,6 +12,7 @@
     --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.6);
     --shadow-inset: inset 0 2px 6px rgba(0, 0, 0, 0.7);
     --radius: 2px;
+    --link: #66b3ff;
 }
 
 *,
@@ -242,7 +243,7 @@ main {
 }
 
 .skills-grid dt {
-    color: var(--fg-dim);
+    color: var(--fg);
     text-transform: uppercase;
     letter-spacing: 1px;
     padding-top: 4px;
@@ -574,39 +575,37 @@ main {
     flex-wrap: wrap;
 }
 
-.article-tag {
-    font-size: 11px;
-    color: var(--fg-dim);
-    background: var(--bg-inset);
-    border: 1px solid var(--border-dark);
-    padding: 2px 8px;
-    border-radius: var(--radius);
-}
-
-/* ── Skill Badges ── */
-.skill-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-}
-
+/* ── Badges ── */
+.badge,
+.article-tag,
 .skill-badge {
+    display: inline-block;
     background: transparent;
     color: var(--fg-muted);
-    border: 1px solid #3a6ea5;
+    border: 1px solid var(--border);
     padding: 4px 12px;
     border-radius: var(--radius);
-    cursor: pointer;
     font-family: inherit;
     font-size: 13px;
     line-height: 1;
     transition: color 0.12s ease, border-color 0.12s ease;
 }
 
+.skill-badge {
+    border-color: #3a6ea5;
+    cursor: pointer;
+}
+
 .skill-badge:hover {
     color: var(--fg);
-    border-color: #66b3ff;
+    border-color: var(--link);
+}
+
+.skill-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
 }
 
 /* ── Highlights Carousel ── */
@@ -660,13 +659,14 @@ main {
 }
 
 .highlight-card a {
-    color: var(--fg-muted);
+    color: var(--link);
     text-decoration: underline;
     text-decoration-color: var(--border-light);
+    font-size: inherit;
 }
 
 .highlight-card a:hover {
-    color: var(--fg);
+    color: #99ccff;
 }
 
 .highlight-card code {
