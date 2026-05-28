@@ -87,17 +87,12 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "AI / LLM Integration",
-        "API & SDK Engineering",
-        "Performance Engineering"
-      ],
       "starred": true,
       "sortOrder": 1,
       "description": [
-        "A D library for talking to language and embedding model endpoints through native D structures instead of thin JSON shims, currently covering both OpenAI-compatible APIs (including local LMStudio-style servers, Qwen, Deepseek, Phi) and Claude.",
-        "Provides chat completions with streaming, single and batch embeddings, tool usage, and per-model configuration of temperature, max tokens, top-p, and presence/frequency penalties via a persistent Model object.",
-        "Ships SIMD-optimized vector operations in `intuit.space` (cosine similarity, dot product, Euclidean distance, L2 norm, in-place normalization, normalized mean) using AVX intrinsics, and leans on D's compile-time metaprogramming for type-safe JSON serialization."
+        "D library for language and embedding model endpoints that replaces fragile JSON shims with strongly typed native structures, covering OpenAI-compatible APIs and Claude.",
+        "Chat completions with streaming, batch embeddings, tool usage, and persistent per-model configuration for production inference workflows.",
+        "SIMD-optimized vector math using AVX intrinsics and compile-time metaprogramming for zero-overhead type-safe serialization."
       ],
       "github": "https://github.com/cetio/intuit"
     },
@@ -106,17 +101,12 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Data Parsing / Retrieval",
-        "API & SDK Engineering",
-        "Networking & Protocols"
-      ],
       "starred": true,
       "sortOrder": 2,
       "description": [
-        "Corpus for PubChem, Wikipedia, Psychonaut Wiki, PubMed, and PMC \u2014 a D library for chemistry-aware retrieval, source resolution, and text parsing across public scientific and knowledge sources.",
-        "Unifies these behind a shared `Page` type that lazily fetches content and exposes `raw`, `document`, `sections`, `preamble`, and `fulltext`, with `akashi.text` parsing wikitext and XML into a compact AST for rendering or plain-text extraction.",
-        "Includes cross-source resolution (e.g. resolving a PubChem compound to its Wikipedia or PsychonautWiki page), similarity search on PubChem CIDs, and reusable HTTP + rate-limiting primitives via the `conductor` library for building new source adapters. Designed to pair with Intuit but fully standalone."
+        "Chemistry-aware data retrieval library in D that unifies PubChem, Wikipedia, Psychonaut Wiki, PubMed, and PMC into a single queryable interface.",
+        "Lazy content fetching with structured text parsing from wikitext and XML into compact ASTs for rendering and extraction.",
+        "Cross-source resolution between scientific databases, similarity search on compound identifiers, and reusable HTTP rate-limiting primitives for building new adapters."
       ],
       "github": "https://github.com/cetio/akashi"
     },
@@ -125,17 +115,12 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "AI / LLM Integration",
-        "Data Parsing / Retrieval",
-        "Tooling & Applications"
-      ],
       "starred": true,
       "sortOrder": 3,
       "description": [
-        "A GTK-based PubChem wiki app for compounds with a 3D molecular view (small and expanded) featuring atomic tooltips and full bond visualization, alongside chemical properties (XLogP, MW, formula, charge, energy) and identifiers (SMILES, InChI, InChIKey, CAS).",
-        "Automatically aggregates dosage data (route of administration, bioavailability, thresholds) and performs similarity matching using structural scoring combined with XLogP and MW to locate analogous compounds and fill gaps in dosage information.",
-        "Builds on Akashi to pull in Wikipedia, PsychonautWiki/Erowid, PubMed, and PMC, with an `infer` layer (`ease`, `config`, `resolve`) that uses local AI synthesis to blend overlapping sources into coherent entries."
+        "GTK-based desktop application for exploring chemical compounds with interactive 3D molecular visualization, property tracking, and standard identifier lookup.",
+        "Automated dosage aggregation and similarity matching using structural scoring to identify analogous compounds and fill knowledge gaps.",
+        "Multi-source data pipelines from scientific and knowledge databases, with a local AI synthesis layer that resolves and merges overlapping content into unified entries."
       ],
       "github": "https://github.com/cetio/chemica",
       "demoVideo": {
@@ -148,12 +133,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Code Generation",
-        "Systems Internals"
-      ],
       "sortOrder": 4,
-      "description": "Dynamic assembler built from the ground up for D comptime integration.",
+      "description": "Dynamic assembler with deep compile-time integration for the D language.",
       "github": "https://github.com/cetio/multidasm"
     },
     {
@@ -161,17 +142,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "API & SDK Engineering",
-        "Networking & Protocols",
-        "Data Parsing / Retrieval"
-      ],
       "sortOrder": 3,
-      "description": [
-        "Webull SDK for D with native-feeling finance types: typed market data (OHLCV, snapshots, L2 depth, ticks, footprint) and account access across US/HK/CN equities, options, crypto, and futures.",
-        "Handles full HMAC-SHA1 request signing, MFA token flows, and session refresh so integrations stay authenticated without manual intervention.",
-        "Designed for algorithmic strategies and dashboards that need real-time data without wrestling the wire format directly."
-      ],
+      "description": "Finance SDK in D with strongly typed market data and multi-market account access across equities, options, crypto, and futures. HMAC-SHA1 request signing, MFA token flows, and automatic session refresh for autonomous authentication.",
       "github": "https://github.com/cetio/webull-sdk",
       "demoImage": {
         "url": "/assets/demos/webull-sdk.png",
@@ -183,13 +155,8 @@
       "languages": [
         "c"
       ],
-      "badges": [
-        "Code Generation",
-        "Performance Engineering",
-        "Systems Internals"
-      ],
       "sortOrder": 10,
-      "description": "Just-In-Time sorting algorithm that dynamically generates code to sort data in O(1)!",
+      "description": "Just-in-time sorting algorithm that generates specialized machine code to achieve constant-time performance.",
       "github": "https://github.com/cetio/jitsort"
     },
     {
@@ -198,18 +165,12 @@
         "ruby",
         "javascript"
       ],
-      "badges": [
-        "Workflow Automation",
-        "Browser Automation",
-        "Data Parsing / Retrieval",
-        "Tooling & Applications"
-      ],
       "starred": true,
       "sortOrder": 4,
       "description": [
-        "A Ruby + JavaScript workflow automation suite for Handshake AI that replaces repetitive manual annotation and triage work with scripted, auditable runs designed to support contractors at scale.",
-        "Uses Selenium alongside injected JavaScript hooks to monitor page state, coordinate multi-tab workflows, recover from UI stalls, and keep long-running sessions reliable even as the interface shifts underneath it.",
-        "Parses HTML for workflow context and quality-of-life helpers, giving workers fine-grained control while still cutting manual effort by up to 95%."
+        "Ruby and JavaScript workflow automation suite for Handshake AI that replaces repetitive manual annotation and triage work with scripted, auditable runs for contractor teams at scale.",
+        "Selenium-based browser automation with injected monitoring hooks, multi-tab coordination, and automatic recovery from UI stalls for reliable long-running sessions.",
+        "HTML parsing and context-aware quality-of-life tooling that gives workers fine-grained control while maintaining full auditability."
       ]
     },
     {
@@ -217,12 +178,8 @@
       "languages": [
         "ruby"
       ],
-      "badges": [
-        "Browser Automation",
-        "Data Parsing / Retrieval"
-      ],
       "sortOrder": 5,
-      "description": "CLI and library for interacting with LinkedIn Learning and aggregating course and path data using Selenium and Nokogiri.",
+      "description": "Ruby CLI and library for scraping and aggregating LinkedIn Learning course and path data using Selenium and Nokogiri.",
       "github": "https://github.com/cetio/linkedin"
     },
     {
@@ -230,17 +187,8 @@
       "languages": [
         "c"
       ],
-      "badges": [
-        "Tooling & Applications",
-        "Systems Internals"
-      ],
-      "starred": true,
       "sortOrder": 7,
-      "description": [
-        "Wayland tool for unified display configuration \u2014 a lightweight Linux CLI for controlling display brightness, contrast, gamma, color temperature, and arbitrary VCP features.",
-        "Supports human-friendly labels (`light`, `brightness`, `backlight`, `contrast`, `gamma`, `temperature`) as well as raw hex VCP codes, with percentage or absolute values and multi-value commands like `nimbus set light=80%, contrast=60`.",
-        "Auto-detects connected displays and their capabilities (`nimbus list`), prefers backlight control over DDC brightness when both are available, and supports range queries such as `nimbus get min/light/max` for scripting use."
-      ],
+      "description": "Lightweight Linux CLI for unified display configuration controlling brightness, contrast, gamma, color temperature, and monitor-specific VCP features. Human-friendly command labels alongside raw hardware codes with auto-detection and intelligent backlight preference.",
       "github": "https://github.com/cetio/nimbus"
     },
     {
@@ -249,13 +197,8 @@
         "python",
         "d"
       ],
-      "badges": [
-        "Networking & Protocols",
-        "Tooling & Applications",
-        "Media & File Formats"
-      ],
       "sortOrder": 6,
-      "description": "Alternative to Lobster (lobster.sh) for watching movies, shows, etc. from the terminal with support for cover art and quality. Implementation of the BitTorrent protocol in D as well as Python streaming support for torrent providers.",
+      "description": "BitTorrent protocol implementation in D with Python streaming support for terminal-based media playback with cover art and quality selection.",
       "github": "https://github.com/cetio/mobster"
     },
     {
@@ -263,12 +206,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Performance Engineering",
-        "Systems Internals"
-      ],
       "sortOrder": 7,
-      "description": "The Dlang SIMD library \u2014 fork of intel-intrinsics adding AVX-512 and a dozen-plus additional intrinsics; merged upstream.",
+      "description": "AVX-512 support and additional intrinsics for the D language SIMD library, with changes merged upstream.",
       "github": "https://github.com/cetio/intel-intrinsics"
     },
     {
@@ -276,18 +215,8 @@
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Systems Internals",
-        "Reverse Engineering"
-      ],
-      "starred": true,
       "sortOrder": 6,
-      "description": [
-        "Managed CoreCLR exposure and reflection library inspired by Novus \u2014 a managed-C# library that exposes CoreCLR internals directly, positioned as an alternative to Son of Strike for code that needs to reach past the BCL into the runtime itself.",
-        "Models the core CLR structures as first-class C# types: `MethodTable`, `EEClass` (including `ArrayClass`, `DelegateEEClass`, `LayoutEEClass`), `MethodDesc` / `MethodDescChunk`, `FieldDesc`, `Stub`, `UMThunkMarshInfo`, `NativeCodeVersion`, `WriteableData`, `CCWTemplate`, `GuidInfo`, `SparseVTableMap`, and related metadata.",
-        "Enables reflection-like operations on top of those structures: object allocation, instance construction, initialization, casts, boxing, and VTable/layout inspection, without dropping into native code."
-      ],
-      "note": "No longer maintained; succeeded by Godwit.",
+      "description": "Managed C# library for deep runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code. No longer actively maintained; succeeded by Godwit.",
       "github": "https://github.com/cetio/Cassowary"
     },
     {
@@ -295,12 +224,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Systems Internals",
-        "Reverse Engineering"
-      ],
       "sortOrder": 8,
-      "description": "Comprehensive reverse analysis and exposure of CoreCLR internals from D. Successor to Cassowary: all CLR structures modeled, serving as a reference implementation while the behavior layer is ported over.",
+      "description": "Comprehensive D library for reverse analysis and exposure of CoreCLR internals, serving as the successor to Cassowary with complete runtime structure modeling.",
       "github": "https://github.com/cetio/godwit"
     },
     {
@@ -308,13 +233,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Code Generation",
-        "Performance Engineering"
-      ],
       "sortOrder": 1,
-      "description": "Comprehensive and efficient standard library extension for D's Phobos, specializing in compile-time tooling and object manipulation. Extensive standard library expansion focusing on performance and comptime features.",
-      "note": "The project is maintained, but current effort is focused on a rewrite tailored to newer needs.",
+      "description": "High-performance standard library extension for D with compile-time tooling and object manipulation primitives. Under active maintenance with a focused rewrite in progress.",
       "github": "https://github.com/cetio/tern"
     },
     {
@@ -322,12 +242,8 @@
       "languages": [
         "c"
       ],
-      "badges": [
-        "Tooling & Applications",
-        "Performance Engineering"
-      ],
       "sortOrder": 9,
-      "description": "Pipit is an exceedingly fast terminal text editor designed for simplicity, performance, and tight constraints. Blazingly fast terminal editor leveraging AVX2 and AVX-512.",
+      "description": "High-performance terminal text editor using AVX2 and AVX-512 SIMD instructions for speed-critical text operations under tight resource constraints.",
       "github": "https://github.com/cetio/pipit"
     },
     {
@@ -335,12 +251,8 @@
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Systems Internals",
-        "Code Generation"
-      ],
       "sortOrder": 14,
-      "description": "TModLoader (Terraria) mod for dynamic dependency injection of unmanaged code.",
+      "description": "Terraria mod using TModLoader that enables dynamic dependency injection of unmanaged code at runtime.",
       "github": "https://github.com/cetio/Depcat"
     },
     {
@@ -348,11 +260,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Tooling & Applications"
-      ],
       "sortOrder": 15,
-      "description": "Minimal SWWW wrapper for slideshow wallpapers from multiple directories.",
+      "description": "Minimal wrapper for the SWWW wallpaper daemon enabling slideshow backgrounds from multiple source directories.",
       "github": "https://github.com/cetio/swaypaper"
     },
     {
@@ -360,11 +269,7 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Security Research",
-        "Performance Engineering"
-      ],
-      "description": "Challenge library for SIMD high entropy encryption algorithms, CAHS 2024.",
+      "description": "Challenge library for high-entropy encryption algorithms optimized with SIMD vectorization for maximum throughput.",
       "github": "https://github.com/cetio/challenge02"
     },
     {
@@ -372,11 +277,7 @@
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Systems Internals",
-        "Security Research"
-      ],
-      "description": "CoreCLR unsafe operations experiments on string copying, array allocation, array resizing, and GC blocking.",
+      "description": "Low-level CoreCLR research exploring unsafe string copying, dynamic array allocation and resizing, and garbage collection blocking mechanisms.",
       "github": "https://github.com/cetio/GarbageCorruptor"
     },
     {
@@ -384,12 +285,7 @@
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Security Research",
-        "Systems Internals",
-        "Code Generation"
-      ],
-      "description": "Syscall library for C#, using shellcode and exports to resolve and execute syscalls as well as detect hooks on functions.",
+      "description": "C# syscall library using shellcode injection and export table walking to dynamically resolve, execute, and detect hooks on system calls.",
       "github": "https://github.com/cetio/UndeadInterop"
     },
     {
@@ -397,11 +293,7 @@
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Code Generation",
-        "Systems Internals"
-      ],
-      "description": "Assembly-like dynamic scripting language for C#. Currently not being worked on, since Cassowary needs to be completed first.",
+      "description": "Assembly-like dynamic scripting language for C# targeting virtual code obfuscation and macro system integration.",
       "github": "https://github.com/cetio/Rio"
     },
     {
@@ -409,12 +301,7 @@
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Security Research",
-        "Reverse Engineering",
-        "Systems Internals"
-      ],
-      "description": "Security research on CVE-2020-36603, a vulnerability in Mihoyo's kernel driver. This CVE has been patched as of 2023 and this library is only for academic reference for vulnerable driver communication.",
+      "description": "Security research on CVE-2020-36603, a kernel driver vulnerability in Mihoyo's anti-cheat system, producing an academic reference for vulnerable driver communication patterns. Patched as of 2023.",
       "github": "https://github.com/cetio/MihoyoEXP"
     },
     {
@@ -422,12 +309,8 @@
       "languages": [
         "cpp"
       ],
-      "badges": [
-        "Reverse Engineering",
-        "Systems Internals"
-      ],
       "sortOrder": 20,
-      "description": "Reverse analysis and documentation of VEX Robotics internal firmware and APIs.",
+      "description": "Reverse analysis and documentation for VEX Robotics internal firmware and control APIs.",
       "github": "https://github.com/cetio/VEXAPI"
     },
     {
@@ -435,12 +318,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Media & File Formats",
-        "Data Parsing / Retrieval"
-      ],
       "sortOrder": 11,
-      "description": "Format support for Flac, Mp4, and Mp3 as well as full catalog parsing for tracks, albums, and artists.",
+      "description": "Audio format support for FLAC, MP4, and MP3 with full catalog parsing for tracks, albums, and artists.",
       "github": "https://github.com/cetio/mutagen"
     },
     {
@@ -448,12 +327,8 @@
       "languages": [
         "python"
       ],
-      "badges": [
-        "Tooling & Applications",
-        "Workflow Automation"
-      ],
       "sortOrder": 12,
-      "description": "Configurable Python Git housekeeping utility for maintaining local repositories and modules.",
+      "description": "Configurable Python utility for Git housekeeping and maintenance of local repositories and modules.",
       "github": "https://github.com/cetio/git-around"
     },
     {
@@ -461,12 +336,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Performance Engineering",
-        "Systems Internals"
-      ],
       "sortOrder": 13,
-      "description": "D SIMD implementation using static arrays for near-native vectors.",
+      "description": "SIMD vector library in D using static arrays to achieve near-native performance.",
       "github": "https://github.com/cetio/sim-d"
     },
     {
@@ -475,16 +346,15 @@
         "d",
         "javascript"
       ],
-      "badges": [
-        "Browser Automation",
-        "Data Parsing / Retrieval",
-        "Tooling & Applications"
-      ],
       "sortOrder": 3,
-      "description": "Insurgent is a companion client for Supremacy WW3 which runs alongside the game in Chrome. It supports a dashboard which allows for quick-lookup of unit stacks, a full catalog containing in-depth data on all units, research, and buildings, and live match data on all nations and stacks visible on the map. All data is collected live and aims to be minimally invasive and lightweight.",
+      "description": [
+        "Full-stack companion client for a real-time strategy game using Selenium Chrome integration, featuring authentication, live dashboards, and WebSocket data feeds.",
+        "Quick-lookup dashboard for unit stacks and a full catalog with in-depth data on units, research, and buildings for competitive gameplay.",
+        "Live match tracking with minimal overhead using WebSocket connections to collect real-time data on all visible nations and map positions.",
+        "Developed under the purview of Twin Harbor."
+      ],
       "starred": true,
       "github": "https://github.com/cetio/insurgent",
-      "note": "Under the purview of Twin Harbor",
       "demoVideo": {
         "type": "video",
         "url": "/assets/demos/insurgent.mp4"
@@ -495,40 +365,28 @@
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Data Parsing / Retrieval",
-        "Tooling & Applications"
-      ],
       "sortOrder": 19,
-      "description": "OOP-native, efficient HTML and JavaScript parser and GDI renderer."
+      "description": "Efficient object-oriented HTML and JavaScript parser with a GDI-based rendering engine."
     },
     {
       "title": "SMBIOSReader",
       "languages": [
         "csharp"
       ],
-      "badges": [
-        "Systems Internals",
-        "Data Parsing / Retrieval"
-      ],
       "sortOrder": 17,
-      "description": "Fully featured SMBIOS reader and DSP interpreter."
+      "description": "Full-featured SMBIOS system information reader and DSP interpreter with an interactive data interface."
     },
     {
       "title": "Google-SDK",
       "languages": [
         "d"
       ],
-      "badges": [
-        "API & SDK Engineering",
-        "Networking & Protocols"
-      ],
       "starred": true,
       "sortOrder": 5,
       "description": [
-        "Google Drive API with support for OAuth, accounts, and full file system with metadata \u2014 a D library for Google Drive with pragmatic Docs and Sheets text export helpers.",
-        "Exposes a Drive-first API (`Session`, `Identity`, `Folder`, `File`, `IFile`) covering OAuth login, account identity, folder and file listing, metadata refresh, upload, download, save, and delete, with a shared `IFile` surface unifying metadata plus `read`, `write`, `save`, and `text`.",
-        "Adds focused `google.docs` and `google.sheets` modules for MIME detection and lightweight plain-text / CSV export from Google-native files, with `File.text` dispatching to them automatically. Built on `conductor` for OAuth and HTTP primitives."
+        "D library for Google Drive integration with OAuth authentication, full file system operations, and metadata management.",
+        "Unified file interface covering login, identity, folder and file listing, upload, download, save, delete, and text extraction.",
+        "Focused modules for Google Docs and Sheets MIME detection and lightweight plain-text or CSV export, built on a reusable OAuth and HTTP foundation."
       ],
       "github": "https://github.com/cetio/google-sdk"
     },
@@ -537,15 +395,12 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "API & SDK Engineering",
-        "Networking & Protocols"
-      ],
+      "starred": true,
       "sortOrder": 2,
       "description": [
-        "HTTP, OAuth, serialization, and network orchestration utilities for API integrations, designed to remove boilerplate when wiring D applications to external services.",
-        "Covers request building with typed parameter maps, token refresh flows, JSON and form serialization, connection pooling, and retry/circuit helpers.",
-        "Powers the transport layer for Intuit, Akashi, Google-SDK, and Warbler."
+        "HTTP, OAuth, and network orchestration utilities in D that eliminate boilerplate when connecting applications to external services.",
+        "Typed request building, automatic token refresh, JSON and form serialization, connection pooling, and resilience patterns including retry and circuit breaking.",
+        "Powers the transport layer for four production libraries including Intuit, Akashi, Google-SDK, and Warbler."
       ],
       "github": "https://github.com/cetio/conductor"
     },
@@ -554,18 +409,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Tooling & Applications",
-        "API & SDK Engineering",
-        "Workflow Automation"
-      ],
-      "starred": true,
       "sortOrder": 3,
-      "description": [
-        "A D CLI interface backend for academic institutions, providing a git-esque command structure for grading papers, generating rubrics, and organizing classrooms through configurable endpoints.",
-        "Defines an institutional plugin model that maps commands like `warbler grade`, `warbler rubric`, and `warbler roster` to arbitrary LMS backends, with per-school configuration files and OAuth-based authentication.",
-        "Built on Conductor for HTTP and OAuth primitives, designed to be scriptable, auditable, and composable into larger academic workflows."
-      ],
+      "description": "D CLI backend for academic institutions with a git-inspired command structure for grading, rubric generation, and classroom organization. Institutional plugin model mapping domain commands to arbitrary LMS backends with per-school configuration and OAuth authentication.",
       "github": "https://github.com/cetio/warbler"
     },
     {
@@ -573,12 +418,9 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Browser Automation",
-        "API & SDK Engineering"
-      ],
+      "starred": true,
       "sortOrder": 8,
-      "description": "Modern Selenium SDK for D, inspired by Ruby's Selenium \u2014 provides a clean, typed interface for browser automation, element queries, and session management.",
+      "description": "Modern Selenium SDK for D with a clean, strongly typed interface for browser automation, element queries, and session management.",
       "github": "https://github.com/cetio/selenium-sdk"
     },
     {
@@ -586,12 +428,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Code Generation",
-        "Systems Internals"
-      ],
       "sortOrder": 10,
-      "description": "CIL disassembler and assembler for D \u2014 reads and writes Common Intermediate Language bytecode with a focus on comptime integration and low-allocation parsing.",
+      "description": "Common Intermediate Language disassembler and assembler for D with compile-time integration and minimal-allocation parsing.",
       "github": "https://github.com/cetio/cilk"
     },
     {
@@ -599,12 +437,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Systems Internals",
-        "Reverse Engineering"
-      ],
       "sortOrder": 11,
-      "description": "PE and ELF format support for D \u2014 parses executables, object files, and core dumps into structured types suitable for analysis and manipulation.",
+      "description": "PE and ELF binary format support in D for parsing executables, object files, and core dumps into structured types for analysis.",
       "github": "https://github.com/cetio/head"
     },
     {
@@ -612,12 +446,8 @@
       "languages": [
         "d"
       ],
-      "badges": [
-        "Performance Engineering",
-        "Tooling & Applications"
-      ],
       "sortOrder": 12,
-      "description": "D regex library experimenting with alternative matching engines and compile-time pattern compilation for zero-runtime-overhead text scanning.",
+      "description": "Alternative regex matching engines and compile-time pattern compilation in D for zero-runtime-overhead text scanning.",
       "github": "https://github.com/cetio/regex"
     },
     {
@@ -625,32 +455,17 @@
       "languages": [
         "rust"
       ],
-      "badges": [
-        "Reverse Engineering",
-        "Networking & Protocols"
-      ],
       "sortOrder": 21,
-      "description": "Reverse-engineered state packets for the Soundcore Liberty 4 Pro (Model A3954). Raw BLE protocol captures decoded into structured packet definitions for downstream tooling.",
-      "github": "https://github.com/cetio/soundcore-a3954-dump",
-      "note": "Archived; served as the reference for OpenSCQ30 integration."
+      "description": "Reverse-engineered BLE state packets for the Soundcore Liberty 4 Pro and decoded raw protocol captures into structured definitions. Archived; served as the foundational reference for the OpenSCQ30 cross-platform tool.",
+      "github": "https://github.com/cetio/soundcore-a3954-dump"
     },
     {
       "title": "OpenSCQ30",
       "languages": [
         "rust"
       ],
-      "badges": [
-        "Tooling & Applications",
-        "Reverse Engineering",
-        "Networking & Protocols"
-      ],
-      "starred": true,
       "sortOrder": 10,
-      "description": [
-        "Cross platform application for controlling settings of Soundcore headphones, earbuds, and speakers. Supports desktop (CLI and GUI) and Android.",
-        "Implements the Soundcore Liberty 4 Pro (Model A3954) configuration protocol on top of the OpenSCQ30 open-source framework, exposing EQ profiles, ANC modes, and firmware metadata through a unified interface.",
-        "Built on the reverse-engineered packet definitions from soundcore-a3954-dump, bridging raw BLE captures to a usable cross-platform configuration tool."
-      ],
+      "description": "Cross-platform application for controlling Soundcore audio device settings across desktop and Android. Liberty 4 Pro configuration protocol, exposing EQ profiles, ANC modes, and firmware metadata through a unified interface.",
       "github": "https://github.com/cetio/OpenSCQ30"
     }
   ]

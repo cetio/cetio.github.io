@@ -387,6 +387,15 @@ main {
     padding-bottom: 44px;
 }
 
+.project-card.starred {
+    border-color: #c9a227;
+}
+
+.project-card.starred:hover {
+    border-color: #e5c158;
+    box-shadow: 0 8px 24px rgba(201, 162, 39, 0.15);
+}
+
 .project-card:hover {
     border-color: var(--border-light);
     transform: translateY(-2px);
@@ -396,9 +405,6 @@ main {
 .project-card h3 {
     margin: 0 0 8px 0;
     color: var(--fg);
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .project-card h3 a {

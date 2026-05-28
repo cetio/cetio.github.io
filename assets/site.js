@@ -402,25 +402,21 @@
         const filtered = activeLangId === 'all'
             ? allProjects
             : allProjects.filter(p => (p.languages || []).includes(activeLangId));
+        filtered.sort((a, b) => {
+            if (a.starred && !b.starred) return -1;
+            if (!a.starred && b.starred) return 1;
+            return (a.sortOrder || 0) - (b.sortOrder || 0);
+        });
         if (!filtered.length) {
             projectsList.innerHTML = '<p class="subtle">No projects match this filter.</p>';
             return;
         }
         filtered.forEach(p => {
             const card = document.createElement('div');
-            card.className = 'project-card';
+            card.className = 'project-card' + (p.starred ? ' starred' : '');
 
             const h3 = document.createElement('h3');
-            if (p.github || p.url) {
-                const a = document.createElement('a');
-                a.href = p.github || p.url;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                a.textContent = p.title || '';
-                h3.appendChild(a);
-            } else {
-                h3.textContent = p.title || '';
-            }
+            h3.textContent = p.title || '';
             card.appendChild(h3);
 
             const desc = document.createElement('p');
