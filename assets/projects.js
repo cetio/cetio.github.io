@@ -213,16 +213,23 @@
                 card.appendChild(forkBadge);
             }
 
+            const hasDemo = !!(project.demoImage?.url || project.demoVideo?.url);
+            if (hasDemo)
+                card.classList.add('has-demo');
+
+            const info = document.createElement('div');
+            info.className = 'project-info';
+
             const heading = document.createElement('h3');
             heading.textContent = project.title || '';
-            card.appendChild(heading);
+            info.appendChild(heading);
 
             const desc = document.createElement('p');
             const text = Array.isArray(project.description)
                 ? project.description.join(' ')
                 : (project.description || '');
             renderInline(text, desc);
-            card.appendChild(desc);
+            info.appendChild(desc);
 
             const icons = document.createElement('div');
             icons.className = 'project-icons';
@@ -251,7 +258,32 @@
             }
             if (icons.childNodes.length) {
                 card.classList.add('has-icons');
-                card.appendChild(icons);
+                if (hasDemo)
+                    info.appendChild(icons);
+                else
+                    card.appendChild(icons);
+            }
+
+            card.appendChild(info);
+
+            if (hasDemo) {
+                const demo = document.createElement('div');
+                demo.className = 'project-demo';
+
+                if (project.demoImage && project.demoImage.url) {
+                    const image = document.createElement('img');
+                    image.src = project.demoImage.url;
+                    image.alt = project.demoImage.alt || `${project.title} demo`;
+                    image.loading = 'lazy';
+                    demo.appendChild(image);
+                } else if (project.demoVideo && project.demoVideo.url) {
+                    const video = document.createElement('video');
+                    video.controls = true;
+                    video.src = project.demoVideo.url;
+                    demo.appendChild(video);
+                }
+
+                card.appendChild(demo);
             }
 
             projectsList.appendChild(card);
