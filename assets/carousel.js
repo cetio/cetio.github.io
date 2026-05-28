@@ -8,15 +8,13 @@
     if (!track || !dotsContainer || !prevBtn || !nextBtn)
         return;
 
-    const MOBILE_BREAKPOINT = 640;
-
     const carouselState = {
         cards: [],
         currentPage: 0,
-        cardsPerPage: 2
+        cardsPerPage: 3
     };
 
-    const computeCardsPerPage = () => window.innerWidth <= MOBILE_BREAKPOINT ? 1 : 2;
+    const computeCardsPerPage = () => 3;
 
     const totalPages = () => {
         if (!carouselState.cards.length)

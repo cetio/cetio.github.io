@@ -28,9 +28,13 @@
         });
     });
 
-    const hashTab = window.location.hash.replace('#', '');
-    if (hashTab && document.getElementById('tab-' + hashTab))
-        activateTab(hashTab);
+    const routeFromHash = () => {
+        const hashTab = window.location.hash.replace('#', '');
+        if (hashTab && document.getElementById('tab-' + hashTab))
+            activateTab(hashTab);
+    };
+    routeFromHash();
+    window.addEventListener('hashchange', routeFromHash);
 
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.getElementById('nav-menu');
@@ -73,7 +77,7 @@
             closeNavMenu();
     });
 
-    document.querySelectorAll('.skill-badge').forEach(button => {
+    document.querySelectorAll('.skill-badge, .quick-link-btn').forEach(button => {
         button.addEventListener('click', () => {
             const target = button.dataset.tabTarget;
             activateTab(target);

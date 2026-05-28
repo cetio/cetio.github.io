@@ -53,25 +53,40 @@
         <!-- About -->
         <section id="tab-about" class="tab-panel active" role="tabpanel">
             <div class="panel">
-                <p class="intro-line intro-lead">Welcome! I'm Ben. I build tools, libraries, and automation that reduce friction, simplify complex workflows, and make systems easier to extend and rely on.</p>
-                <p class="intro-line">My work spans native and managed environments, with a strong focus on turning messy or repetitive processes into clean, durable products.</p>
+                <p class="intro-line intro-lead">Welcome! I'm Ben. I specialize in systems engineering, workflow automation, and tooling. I build automation frameworks, reverse-engineer platforms into clean SDKs, and craft robust solutions to difficult problems.</p>
+                <p class="intro-line">My work spans native and managed environments, with a strong focus on turning messy or repetitive processes into rule-based, durable products.</p>
 
                 <div class="skill-badges">
-                    <button class="skill-badge" type="button" data-tab-target="skills">D</button>
                     <button class="skill-badge" type="button" data-tab-target="skills">Systems Internals</button>
                     <button class="skill-badge" type="button" data-tab-target="skills">Performance Engineering</button>
                     <button class="skill-badge" type="button" data-tab-target="skills">Workflow Automation</button>
                 </div>
+                <div class="quick-links">
+                    <button class="quick-link-btn is-featured" type="button" data-tab-target="projects">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.114 8.063V7.9c1.005-.102 1.497-.615 1.497-1.6V4.503c0-1.094.39-1.538 1.354-1.538h.273V2h-.376C3.25 2 2.49 2.759 2.49 4.352v1.524c0 1.094-.376 1.456-1.49 1.456v1.299c1.114 0 1.49.362 1.49 1.456v1.524c0 1.593.759 2.352 2.372 2.352h.376v-.964h-.273c-.964 0-1.354-.444-1.354-1.538V9.663c0-.984-.492-1.497-1.497-1.6M13.886 7.9v.163c-1.005.103-1.497.616-1.497 1.6v1.798c0 1.094-.39 1.538-1.354 1.538h-.273v.964h.376c1.613 0 2.372-.759 2.372-2.352v-1.524c0-1.094.376-1.456 1.49-1.456v-1.3c-1.114 0-1.49-.362-1.49-1.456V4.352C13.51 2.759 12.75 2 11.138 2h-.376v.964h.273c.964 0 1.354.444 1.354 1.538V6.3c0 .984.492 1.497 1.497 1.6"/></svg>
+                        Projects
+                    </button>
+                    <button class="quick-link-btn" type="button" data-tab-target="articles">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/></svg>
+                        Articles
+                    </button>
+                </div>
             </div>
 
             <div class="highlights">
-                <div class="highlights-viewport">
-                    <div id="highlights-track" class="highlights-track"></div>
-                </div>
-                <div class="highlights-controls">
-                    <button class="highlights-nav highlights-prev" type="button" aria-label="Previous highlight">&lt;</button>
-                    <div id="highlights-dots" class="highlights-dots"></div>
-                    <button class="highlights-nav highlights-next" type="button" aria-label="Next highlight">&gt;</button>
+                <div class="highlights-page">
+                    <article class="highlight-card">
+                        <h3>Eliminated 95% of manual annotation work at Handshake AI</h3>
+                        <p>Built <a href="#projects">AutoHandshake</a> — unattended Selenium automation with failure recovery and full audit trails. Recognized with Handshake's <a href="#certs">Model Validation 2 — Expert</a> credential.</p>
+                    </article>
+                    <article class="highlight-card">
+                        <h3>Reverse-engineered a trading platform into a production SDK</h3>
+                        <p><a href="#projects">Webull-SDK</a> delivers real-time stock, options, and crypto market data with secure authentication. Ready for algorithmic strategies without wrestling the wire format.</p>
+                    </article>
+                    <article class="highlight-card">
+                        <h3>Replaced fragile JSON shims with strongly typed LLM endpoints</h3>
+                        <p><a href="#projects">Intuit</a> brings chat completions with streaming, batch embeddings, and tool usage into one native D API with per-model configuration. Supports most vendors, focused on OpenAI and Qwen endpoints.</p>
+                    </article>
                 </div>
             </div>
         </section>
@@ -249,7 +264,6 @@
         <!-- Certificates -->
         <section id="tab-certs" class="tab-panel" role="tabpanel">
             <div class="panel">
-                <p class="subtle" style="margin-top: 0;">Representative sample shown. Contact me for a complete, up-to-date tally.</p>
                 <table class="cert-table">
                     <tbody>
                         <tr><td class="cert-nasba">NASBA</td><td>MS Career Essentials Generative AI</td></tr>
@@ -257,14 +271,12 @@
                         <tr><td class="cert-nasba">NASBA</td><td>MS Generative AI for Customer Service...</td></tr>
                         <tr><td class="cert-nasba">NASBA</td><td>MS Azure AI Essentials</td></tr>
                         <tr><td class="cert-nasba">NASBA</td><td>MS Security Essentials</td></tr>
-                        <tr><td class="cert-nasba">NASBA</td><td>Accounting Foundations</td></tr>
                         <tr><td class="cert-nasba">NASBA</td><td>KNIME Data Science</td></tr>
                         <tr><td class="cert-nasba">NASBA</td><td>Zendesk Customer Service</td></tr>
                         <tr><td class="cert-nasba">NASBA</td><td>SQL Programming</td></tr>
                         <tr><td class="cert-nasba">NASBA</td><td>SQL Essential Training</td></tr>
                         <tr><td class="cert-pmi">PMI</td><td>Career Essentials in GitHub</td></tr>
                         <tr><td class="cert-pmi">PMI</td><td>Cybersecurity Awareness</td></tr>
-                        <tr><td class="cert-comptia">CompTIA</td><td>Full-Stack Web Dev</td></tr>
                         <tr><td class="cert-handshake">Handshake</td><td>Model Validation 2 - Expert</td></tr>
                     </tbody>
                 </table>
@@ -292,7 +304,6 @@
 
     <script src="assets/site.js"></script>
     <script src="assets/projects.js"></script>
-    <script src="assets/carousel.js"></script>
     <script src="assets/timezone.js"></script>
 </body>
 </html>
