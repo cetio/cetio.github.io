@@ -53,7 +53,7 @@
                     const company = document.createElement('p');
                     company.className = 'timeline-company';
                     company.textContent = job.type
-                        ? `${job.company} · ${job.type}`
+                        ? `${job.company} - ${job.type}`
                         : job.company;
                     content.appendChild(company);
                 }
