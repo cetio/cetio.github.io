@@ -137,7 +137,11 @@
         "d"
       ],
       "sortOrder": 4,
-      "description": "D dynamic assembler with deep compile-time integration. Supports CIL, Mips V, and x86 instruction sets.",
+      "description": [
+        "Multi-target compile-time assembler in D generating CIL, MIPS IV, x86, and x86_64 machine code from a fluent instruction API with zero runtime overhead.",
+        "Uses D templates for compile-time instruction encoding, label resolution, and bytecode finalization via Block containers per architecture.",
+        "Covers SSE2 through SSE4.2, SSSE3, and core integer instructions for AMD64 with planned AVX-512, ARM, and z80 backends."
+      ],
       "github": "https://github.com/cetio/multidasm",
       "year": 2026
     },
@@ -161,8 +165,16 @@
         "c"
       ],
       "sortOrder": 10,
-      "description": "Just-in-time sorting algorithm that generates specialized machine code to achieve constant-time performance.",
+      "description": [
+        "JIT sorting algorithm in C that analyzes input arrays and emits customized x86_64 assembly into executable memory, returning a function pointer that produces the sorted result.",
+        "Uses array values as direct memory indexes for a novel approach to constant-time sorting with inline Make builds and no external dependencies.",
+        "Supports custom element-size callbacks for variable-length data with a minimal C API suitable for embedding."
+      ],
       "github": "https://github.com/cetio/jitsort",
+      "demoVideo": {
+        "type": "video",
+        "url": "/assets/demos/jitsort.mp4"
+      },
       "year": 2025
     },
     {
@@ -186,7 +198,11 @@
         "ruby"
       ],
       "sortOrder": 5,
-      "description": "Ruby CLI and library for scraping and aggregating LinkedIn Learning course and path data using Selenium and Nokogiri.",
+      "description": [
+        "Ruby CLI tool and pseudo-library that fetches LinkedIn Learning completed history and extracts course and learning path metadata into cacheable JSON aggregates.",
+        "Uses Selenium for browser automation with rate-limit tolerance and responsible throttling, supporting Chromium profile reuse and credential-based login.",
+        "Aggregates course details including duration, difficulty, ratings, CPE/PDU credits, and certification status with per-item JSON output."
+      ],
       "github": "https://github.com/cetio/linkedin",
       "year": 2026
     },
@@ -198,6 +214,10 @@
       "sortOrder": 7,
       "description": "Lightweight Linux CLI for unified display configuration controlling brightness, contrast, gamma, color temperature, and monitor-specific VCP features. Human-friendly command labels alongside raw hardware codes with auto-detection and intelligent backlight preference.",
       "github": "https://github.com/cetio/nimbus",
+      "demoVideo": {
+        "type": "video",
+        "url": "/assets/demos/nimbus.mp4"
+      },
       "year": 2025
     },
     {
@@ -207,7 +227,11 @@
         "d"
       ],
       "sortOrder": 6,
-      "description": "BitTorrent protocol implementation in D with Python streaming support for terminal-based media playback with cover art and quality selection.",
+      "description": [
+        "Modular terminal streaming tool in D with a Python fallback script, supporting fuzzy search across multiple torrent providers with quality filtering.",
+        "Implements BitTorrent protocol messaging, bencode parsing, and peer communication for educational networking exploration with zero external D dependencies.",
+        "Planned features include libtorrent integration, watched-progress tracking, cover art rendering, and Rofi launcher support."
+      ],
       "github": "https://github.com/cetio/mobster",
       "year": 2025
     },
@@ -217,7 +241,11 @@
         "d"
       ],
       "sortOrder": 7,
-      "description": "AVX-512 support and additional intrinsics for the D language SIMD library, with changes merged upstream.",
+      "description": [
+        "Contributions to the D language SIMD library enabling AVX-512 intrinsics, BMI2 operations, and AArch64 cross-compilation support.",
+        "Implements x86 Intel Intrinsics API compatibility across LDC, DMD, and GDC compilers with semantics-preserving code generation.",
+        "Targets full-speed Apple Silicon execution without code changes, following the simd-everywhere philosophy with optimal-instruction guarantees."
+      ],
       "forked": true,
       "github": "https://github.com/cetio/intel-intrinsics",
       "year": 2024
@@ -239,7 +267,11 @@
         "d"
       ],
       "sortOrder": 8,
-      "description": "Comprehensive D library for reverse analysis and exposure of CoreCLR internals, serving as the successor to Cassowary with complete runtime structure modeling.",
+      "description": [
+        "D-CoreCLR interop library translating .NET runtime structures into D for direct cross-language interaction without marshalling overhead.",
+        "Models AppDomain, Assembly, MethodTable, MethodDesc, FieldDesc, and CIL execution internals with PE/metadata reading capabilities.",
+        "Maps C# reflection types to D equivalents including assembly loading, type allocation, boxing, casting, and method invocation through raw CLR structure access."
+      ],
       "github": "https://github.com/cetio/godwit",
       "year": 2024
     },
@@ -249,7 +281,11 @@
         "d"
       ],
       "sortOrder": 1,
-      "description": "High-performance standard library extension for D with compile-time tooling and object manipulation primitives. Under active maintenance with a focused rewrite in progress.",
+      "description": [
+        "High-performance D standard library extension providing compile-time vectorized algorithms, automated memory management primitives, and type introspection utilities.",
+        "Includes compile-time accessor generation, smart pointers (Unique, Scoped, RefCounted, Tracked), and serialization frameworks for JSON and flat formats.",
+        "Functional programming constructs with SIMD-optimized batch processing, custom allocators, timing-attack-resistant type wrappers, and variant type support."
+      ],
       "github": "https://github.com/cetio/tern",
       "year": 2025
     },
@@ -259,7 +295,11 @@
         "c"
       ],
       "sortOrder": 9,
-      "description": "High-performance terminal text editor using AVX2 and AVX-512 SIMD instructions for speed-critical text operations under tight resource constraints.",
+      "description": [
+        "Terminal text editor built from scratch in C using SIMD-accelerated hashmaps for batch processing, virtual buffers for minimal heap allocation, and rapidhash for backend efficiency.",
+        "Designed for ultra-low latency real-time editing on massive files with a familiar minimal command set similar to nano for accessibility across all platforms.",
+        "Features a custom Myzomela allocator, zero external dependencies, and planned D/C# plugin sandboxing with syntax tree support."
+      ],
       "github": "https://github.com/cetio/pipit",
       "year": 2026
     },
@@ -279,19 +319,12 @@
         "d"
       ],
       "sortOrder": 15,
-      "description": "Minimal wrapper for the SWWW wallpaper daemon enabling slideshow backgrounds from multiple source directories.",
+      "description": [
+        "Lightweight D wrapper for the SWWW wallpaper daemon managing slideshow backgrounds across multiple source directories.",
+        "Provides simple CLI controls for wallpaper rotation, daemon state management, and directory-based image collections."
+      ],
       "github": "https://github.com/cetio/swaypaper",
       "year": 2025
-    },
-    {
-      "title": "Challenge 02",
-      "languages": [
-        "d"
-      ],
-      "sortOrder": 20,
-      "description": "Challenge library for high-entropy encryption algorithms optimized with SIMD vectorization for maximum throughput.",
-      "github": "https://github.com/cetio/challenge02",
-      "year": 2024
     },
     {
       "title": "GarbageCorruptor",
@@ -307,7 +340,10 @@
       "languages": [
         "csharp"
       ],
-      "description": "C# syscall library using shellcode injection and export table walking to dynamically resolve, execute, and detect hooks on system calls.",
+      "description": [
+        "Windows syscall research library in C# using manual export table walking and dynamic shellcode generation to invoke native APIs without static imports.",
+        "Includes hook detection for (effectively) all hook variants and syscall analysis."
+      ],
       "github": "https://github.com/cetio/UndeadInterop",
       "year": 2023
     },
@@ -335,7 +371,11 @@
         "cpp"
       ],
       "sortOrder": 3,
-      "description": "Reverse analysis and documentation for VEX Robotics internal firmware and control APIs.",
+      "description": [
+        "Reverse-engineered headers and documentation for the VEX Robotics V5 private API covering firmware jump tables, device drawing functions, and competition mode overrides.",
+        "Based on ARM64 disassembly of VEXos system_0.elf with structured signature recovery for display rendering, sensor reading, and motor control.",
+        "Documents apijump thunk functions, double-buffered graphics, and firmware offset tables enabling low-level robot programming beyond the official SDK."
+      ],
       "github": "https://github.com/cetio/VEXAPI",
       "year": 2024
     },
@@ -345,7 +385,11 @@
         "d"
       ],
       "sortOrder": 11,
-      "description": "Audio format support for FLAC, MP4, and MP3 with full catalog parsing for tracks, albums, and artists.",
+      "description": [
+        "Audio metadata parsing library in D supporting FLAC, MP3, M4A, MP4, and AAC formats with a unified Track interface for read/write operations.",
+        "Provides tag access via array indexing, embedded album art extraction with type detection, and playback statistics tracking for library management.",
+        "Includes catalog types for Album, Artist, and Image with format-specific parsers dispatching through a common core for multi-format applications."
+      ],
       "github": "https://github.com/cetio/mutagen",
       "year": 2026
     },
@@ -355,7 +399,10 @@
         "python"
       ],
       "sortOrder": 12,
-      "description": "Configurable Python utility for Git housekeeping and maintenance of local repositories and modules.",
+      "description": [
+        "Python automation tool for Git repository housekeeping with YAML-based per-repo configuration and systemd timer integration.",
+        "Supports auto-pull, auto-push, submodule updates, stale repo scanning, custom shell commands, wildcard path matching, and dry-run mode."
+      ],
       "github": "https://github.com/cetio/git-around",
       "year": 2025
     },
@@ -365,7 +412,10 @@
         "d"
       ],
       "sortOrder": 13,
-      "description": "SIMD vector library in D using static arrays to achieve near-native performance.",
+      "description": [
+        "D SIMD vector library using static arrays and template metaprogramming to expose portable vector types across x86 and AArch64 targets.",
+        "Provides mask operations, vector arithmetic, and cross-platform abstractions for compiler-agnostic SIMD development without external dependencies."
+      ],
       "github": "https://github.com/cetio/sim-d",
       "year": 2024
     },
@@ -395,7 +445,10 @@
         "csharp"
       ],
       "sortOrder": 19,
-      "description": "Efficient object-oriented HTML and JavaScript parser with a GDI-based rendering engine.",
+      "description": [
+        "C# HTML and JavaScript parser with an object-oriented DOM model and GDI-based rendering engine for lightweight document visualization.",
+        "Implements lexical analysis, token streaming, and visual layout computation enabling script interpretation and structured page rendering."
+      ],
       "year": 2022
     },
     {
@@ -404,7 +457,11 @@
         "csharp"
       ],
       "sortOrder": 17,
-      "description": "Full-featured SMBIOS system information reader and DSP interpreter with an interactive data interface.",
+      "description": [
+        "C# SMBIOS system information reader parsing firmware tables for hardware enumeration, BIOS details, processor info, and memory configuration.",
+        "Includes DSP interpreter support and interactive data browsing for system diagnostics, hardware auditing, and firmware analysis.",
+        "Exposes structured access to DMI types covering system, baseboard, chassis, processor, memory, and port information with cross-platform table parsing."
+      ],
       "year": 2022
     },
     {
@@ -461,32 +518,16 @@
       "year": 2026
     },
     {
-      "title": "Cilk",
-      "languages": [
-        "d"
-      ],
-      "sortOrder": 10,
-      "description": "Common Intermediate Language disassembler and assembler, superseded by Multidasm.",
-      "github": "https://github.com/cetio/cilk",
-      "year": 2024
-    },
-    {
-      "title": "Head",
-      "languages": [
-        "d"
-      ],
-      "sortOrder": 11,
-      "description": "PE and ELF binary format support in D for parsing executables, object files, and core dumps into structured types for analysis.",
-      "github": "https://github.com/cetio/head",
-      "year": 2024
-    },
-    {
       "title": "Regex",
       "languages": [
         "d"
       ],
       "sortOrder": 12,
-      "description": "Alternative regex matching engines and compile-time pattern compilation in D for zero-runtime-overhead text scanning.",
+      "description": [
+        "D regex library providing alternative matching engines with compile-time pattern compilation for zero-runtime-overhead text scanning.",
+        "Emphasizes CTFE-based regex construction, custom matching strategies, and D-specific optimizations beyond the standard library.",
+        "Targets embedded and performance-critical scenarios where regex initialization cost must be eliminated through compile-time evaluation."
+      ],
       "github": "https://github.com/cetio/regex",
       "year": 2024
     },
@@ -509,6 +550,10 @@
       "description": "Cross-platform application for controlling Soundcore audio device settings across desktop and Android. Liberty 4 Pro configuration protocol, exposing EQ profiles, ANC modes, and firmware metadata through a unified interface.",
       "forked": true,
       "github": "https://github.com/cetio/OpenSCQ30",
+      "demoImage": {
+        "url": "/assets/demos/openscq30.png",
+        "alt": "OpenSCQ30 desktop application controlling Soundcore earbuds"
+      },
       "year": 2026
     }
   ]
