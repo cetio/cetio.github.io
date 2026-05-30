@@ -512,6 +512,10 @@
         "Strongly typed interface for browser automation with auto-detection of major browser drivers, implicit wait synchronization, and full session lifecycle management.",
         "Element querying via CSS selector, XPath, and ID locators with click, form input, screenshot, and attribute inspection, plus JavaScript execution and structured logging."
       ],
+      "demoVideo": {
+        "type": "video",
+        "url": "/assets/demos/selenium-sdk.mp4"
+      },
       "forked": true,
       "github": "https://github.com/cetio/selenium-sdk",
       "year": 2026

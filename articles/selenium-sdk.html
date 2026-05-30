@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="cetio">
+    <meta name="description" content="Reviving D's browser automation ecosystem by overhauling a 2018 JsonWire library into a W3C-compliant WebDriver SDK.">
+    <title>Selenium-SDK: from JsonWire to W3C in D &middot; cetio</title>
+    <link rel="stylesheet" href="/assets/fonts/style.css">
+    <link rel="stylesheet" href="/assets/theme/style.css">
+    <link rel="stylesheet" href="/assets/prism-theme.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <nav class="top-nav article-back" role="navigation" aria-label="Article">
+        <a href="/#articles" class="article-back-link">&larr; Back</a>
+    </nav>
+
+    <main>
+        <article>
+            <header class="article-header">
+                <h1>Selenium-SDK: from JsonWire to W3C in D</h1>
+                <div class="article-meta">
+                    <time>May 2026</time>
+                </div>
+            </header>
+
+            <hr>
+
+            <h3>The problem: a dead dependency on a dead protocol</h3>
+            <p>
+                After two months building <a href="/">Insurgent</a> around WebKit GTK, I learned the hard way that it does not run on Windows. The library is Linux-only, and the Windows port had been abandoned years ago. The project needed a cross-platform browser engine, and the obvious choice was Chrome via Selenium.
+            </p>
+            <p>
+                The obstacle was that D had no working Selenium bindings. The only existing option was <code>selenium.d</code>, last updated in 2018, built on the JsonWire protocol that Selenium had already deprecated. Modern ChromeDriver speaks W3C WebDriver. JsonWire requests were being ignored or rejected outright.
+            </p>
+
+            <h3>What JsonWire to W3C actually means</h3>
+            <p>
+                JsonWire and W3C WebDriver are not just different JSON wrappers around the same commands. The endpoint layout changed, the desired capabilities format changed, and the error response schema changed. In JsonWire, you POST to <code>/session</code> with a flat <code>desiredCapabilities</code> object. In W3C, the same endpoint expects a nested <code>capabilities</code> object with <code>alwaysMatch</code> and <code>firstMatch</code> arrays. A JsonWire session request against a modern ChromeDriver returns a 500 with no session ID, and every subsequent command fails.
+            </p>
+
+            <div class="callout">
+                The protocol gap was not a version mismatch. It was a different wire format, different capability negotiation, and different error handling. Every request path and every payload shape had to be revisited.
+            </div>
+
+            <h3>Session negotiation: the first W3C hurdle</h3>
+            <p>
+                The fix started at the entry point. Session creation now builds a W3C-compliant capabilities payload and parses the standardized response shape:
+            </p>
+
+<pre><code class="language-d">Session startSession(string browser = "chrome")
+{
+    JSONValue capabilities;
+    capabilities["alwaysMatch"] = [
+        "browserName": browser,
+        "acceptInsecureCerts": true,
+    ];
+
+    JSONValue payload;
+    payload["capabilities"] = capabilities;
+
+    auto response = request("/session", RequestMethod.POST, payload);
+    string sessionId = response["value"]["sessionId"].str;
+    return Session(sessionId, response["value"]["capabilities"]);
+}</code></pre>
+
+            <p>
+                The response parser had to handle both the old JsonWire <code>sessionId</code> top-level field and the new W3C <code>value.sessionId</code> nested field. Auto-detection lets the library tolerate legacy drivers without a hard fork:
+            </p>
+
+<pre><code class="language-d">string extractSessionId(JSONValue response)
+{
+    if (auto p = "sessionId" in response)
+        return p.str;
+    if (auto p = "value" in response)
+        if (auto id = "sessionId" in *p)
+            return id.str;
+    throw new Exception("No session ID in response");
+}</code></pre>
+
+            <h3>Modeling the API after Ruby</h3>
+            <p>
+                I had spent a lot of time with Ruby's Selenium bindings while building AutoHandshake, and the API felt natural. The D version follows the same conventions: a <code>Driver</code> owns the session, <code>WebElement</code> wraps node references, and locators are strongly typed instead of raw strings.
+            </p>
+
+<pre><code class="language-d">struct By
+{
+    string strategy;
+    string value;
+
+    static By cssSelector(string value)
+    {
+        return By("css selector", value);
+    }
+
+    static By xpath(string value)
+    {
+        return By("xpath", value);
+    }
+
+    static By id(string value)
+    {
+        return By("id", value);
+    }
+}</code></pre>
+
+            <p>
+                Element lookup returns a <code>WebElement</code> that carries its own element ID, so the caller never manages opaque UUID strings directly:
+            </p>
+
+<pre><code class="language-d">class WebElement
+{
+    private string _elementId;
+    private Session _session;
+
+    this(Session session, string elementId)
+    {
+        _session = session;
+        _elementId = elementId;
+    }
+
+    void click()
+    {
+        _session.request(
+            "/element/" ~ _elementId ~ "/click", RequestMethod.POST);
+    }
+
+    void sendKeys(string keys)
+    {
+        JSONValue payload;
+        payload["text"] = keys;
+        _session.request(
+            "/element/" ~ _elementId ~ "/value", RequestMethod.POST, payload);
+    }
+
+    string text()
+    {
+        auto response = _session.request(
+            "/element/" ~ _elementId ~ "/text", RequestMethod.GET);
+        return response["value"].str;
+    }
+}</code></pre>
+
+            <h3>Driver auto-detection and lifecycle management</h3>
+            <p>
+                One quality-of-life feature from the Ruby ecosystem is that the bindings often find the driver executable for you. The D port replicates that with a path search across platform conventions:
+            </p>
+
+<pre><code class="language-d">string findDriver(string name)
+{
+    version (Windows)
+        name ~= ".exe";
+
+    foreach (dir; environment.get("PATH").split(pathSeparator))
+    {
+        string candidate = buildPath(dir, name);
+        if (exists(candidate))
+            return candidate;
+    }
+
+    throw new Exception("Driver not found: " ~ name);
+}</code></pre>
+
+            <p>
+                The <code>Driver</code> struct manages the child process and shuts it down cleanly on scope exit. A <code>scope(exit)</code> in the calling code is enough to guarantee cleanup, which fits D's RAII patterns:
+            </p>
+
+<pre><code class="language-d">struct Driver
+{
+    Pid process;
+    string executable;
+    ushort port;
+
+    static Driver start(string name = "chromedriver")
+    {
+        string exe = findDriver(name);
+        ushort port = findFreePort();
+        Pid pid = spawnProcess([exe, "--port=" ~ to!string(port)]);
+        // Wait for the port to accept connections
+        waitForPort(port);
+        return Driver(pid, exe, port);
+    }
+
+    void stop()
+    {
+        if (process !is Pid.init)
+        {
+            kill(process, SIGTERM);
+            wait(process);
+        }
+    }
+}</code></pre>
+
+            <h3>Implicit waits and synchronization</h3>
+            <p>
+                A raw Selenium script without waits breaks immediately on slow-loading pages. The library exposes implicit-wait configuration on the session and wraps common patterns in retry loops with configurable timeouts:
+            </p>
+
+<pre><code class="language-d">void setImplicitWait(Duration timeout)
+{
+    JSONValue payload;
+    payload["ms"] = timeout.total!"msecs";
+    request("/timeouts", RequestMethod.POST, payload);
+}
+
+WebElement findElement(By by, Duration timeout = 10.seconds)
+{
+    auto start = MonoTime.currTime;
+    while (MonoTime.currTime - start < timeout)
+    {
+        try
+            return findElementImpl(by);
+        catch (Exception e)
+            sleep(100.msecs);
+    }
+    throw new Exception("Element not found: " ~ by.value);
+}</code></pre>
+
+            <h3>JavaScript execution and screenshot capture</h3>
+            <p>
+                Two features that Insurgent needed heavily were script injection and screenshot capture for debugging. Both map cleanly to W3C endpoints. <code>executeScript</code> takes a raw string and a variadic argument list, serializing each argument into the W3C element-reference format when needed:
+            </p>
+
+<pre><code class="language-d">JSONValue executeScript(string script, JSONValue[] args ...)
+{
+    JSONValue payload;
+    payload["script"] = script;
+    payload["args"] = args;
+    auto response = request(
+        "/execute/sync", RequestMethod.POST, payload);
+    return response["value"];
+}
+
+ubyte[] screenshot()
+{
+    auto response = request(
+        "/screenshot", RequestMethod.GET);
+    return Base64.decode(response["value"].str);
+}</code></pre>
+
+            <h3>What is still missing</h3>
+            <p>
+                The library covers the core WebDriver surface that Insurgent needed: navigation, element interaction, form input, script execution, screenshots, and session management. It does not yet implement the Actions API for low-level mouse and keyboard input, nor does it support BiDi (WebDriver Bidi) for network interception or console log streaming. Remote Grid support and mobile WebDriverApp endpoints are also absent.
+            </p>
+            <p>
+                Those gaps are acceptable for now. The goal was not parity with the Java or Python bindings. The goal was a working W3C foundation in a language that had none.
+            </p>
+
+            <h3>What this project proved</h3>
+            <ul>
+                <li>A language without ecosystem coverage for "obvious" tools like browser automation becomes a hard sell for real-world projects the moment you need cross-platform UI interaction.</li>
+                <li>Protocol migration is tedious but mechanical. The hard part is deciding which legacy behavior to preserve and which to drop.</li>
+                <li>API ergonomics matter more than endpoint coverage. A clean <code>findElement(By.css("..."))</code> surface is worth more than every obscure WebDriver endpoint exposed raw.</li>
+                <li>D's compile-time metaprogramming and RAII patterns make for a very pleasant binding: zero-cost abstractions, deterministic cleanup, and no garbage-collection surprises during long-lived browser sessions.</li>
+                <li>One working library can unblock an entire category of projects. Insurgent could not have shipped on Windows without this.</li>
+            </ul>
+        </article>
+    </main>
+
+    <footer>
+        <p class="footer-name">Ben &middot; <span id="tz-label">EST</span></p>
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/cetio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg class="github" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                <span class="github">github.com/cetio</span>
+            </a>
+            <a class="footer-link" href="https://www.linkedin.com/in/bejaunst" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg class="linkedin" role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                <span class="linkedin">linkedin.com/in/bejaunst</span>
+            </a>
+            <a class="footer-link" href="mailto:bejaunst@gmail.com" aria-label="Email">
+                <svg class="email" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><title>Email</title><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/></svg>
+                <span class="email">bejaunst@gmail.com</span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="/assets/prism.min.js"></script>
+    <script src="/assets/prism-d.min.js"></script>
+    <script>
+        (function () {
+            const isEasternDst = (date) => {
+                const year = date.getFullYear();
+                const secondSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7 + 7;
+                };
+                const firstSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7;
+                };
+                const start = new Date(year, 2, secondSunday(2), 2, 0, 0);
+                const end = new Date(year, 10, firstSunday(10), 2, 0, 0);
+                return date >= start && date < end;
+            };
+            const tzLabel = document.getElementById('tz-label');
+            if (tzLabel) tzLabel.textContent = isEasternDst(new Date()) ? 'EDT' : 'EST';
+        })();
+    </script>
+</body>
+</html>
