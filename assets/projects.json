@@ -88,7 +88,7 @@
         "d"
       ],
       "starred": true,
-      "sortOrder": 1,
+      "sortOrder": 2,
       "description": [
         "D library for language and embedding model endpoints that replaces fragile JSON shims with strongly typed native structures.",
         "Chat completions with streaming, batch embeddings, tool usage, and persistent per-model configuration for production inference workflows.",
@@ -103,7 +103,7 @@
         "d"
       ],
       "starred": true,
-      "sortOrder": 2,
+      "sortOrder": 7,
       "description": [
         "Chemistry-aware data retrieval library in D that unifies PubChem, Wikipedia, Psychonaut Wiki, PubMed, and PMC into a single queryable interface.",
         "Lazy content fetching with structured text parsing from wikitext and XML into compact ASTs for rendering and extraction.",
@@ -136,7 +136,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 4,
+      "sortOrder": 12,
       "description": [
         "Multi-target compile-time assembler in D generating CIL, MIPS IV, x86, and x86_64 machine code from a fluent instruction API with zero runtime overhead.",
         "Uses D templates for compile-time instruction encoding, label resolution, and bytecode finalization via Block containers per architecture.",
@@ -150,7 +150,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 4,
+      "sortOrder": 15,
       "description": "Finance SDK in D with strongly typed market data and multi-market account access across equities, options, crypto, and futures. HMAC-SHA1 request signing, MFA token flows, and automatic session refresh for autonomous authentication.",
       "github": "https://github.com/cetio/webull-sdk",
       "demoImage": {
@@ -164,7 +164,7 @@
       "languages": [
         "c"
       ],
-      "sortOrder": 10,
+      "sortOrder": 12,
       "description": [
         "JIT sorting algorithm in C that analyzes input arrays and emits customized x86_64 assembly into executable memory, returning a function pointer that produces the sorted result.",
         "Uses array values as direct memory indexes for a novel approach to constant-time sorting with inline Make builds and no external dependencies.",
@@ -184,10 +184,10 @@
         "javascript"
       ],
       "starred": true,
-      "sortOrder": 4,
+      "sortOrder": 1,
       "description": [
-        "Ruby and JavaScript workflow automation suite for Handshake AI that replaces repetitive manual annotation and triage work with scripted, auditable runs for contractor teams at scale.",
-        "Selenium-based browser automation with injected monitoring hooks, multi-tab coordination, and automatic recovery from UI stalls for reliable long-running sessions.",
+        "Ruby and JavaScript workflow automation suite for Handshake AI that reduced manual annotation and triage effort by 95% across 400+ contractor hours of proven runtime.",
+        "Selenium-based browser automation with injected monitoring hooks, multi-tab coordination, and automatic recovery from UI stalls for reliable long-running sessions across Windows, macOS, and Linux.",
         "HTML parsing and context-aware quality-of-life tooling that gives workers fine-grained control while maintaining full auditability."
       ],
       "year": 2026
@@ -197,7 +197,7 @@
       "languages": [
         "ruby"
       ],
-      "sortOrder": 5,
+      "sortOrder": 18,
       "description": [
         "Ruby CLI tool and pseudo-library that fetches LinkedIn Learning completed history and extracts course and learning path metadata into cacheable JSON aggregates.",
         "Uses Selenium for browser automation with rate-limit tolerance and responsible throttling, supporting Chromium profile reuse and credential-based login.",
@@ -211,7 +211,7 @@
       "languages": [
         "c"
       ],
-      "sortOrder": 7,
+      "sortOrder": 16,
       "description": "Lightweight Linux CLI for unified display configuration controlling brightness, contrast, gamma, color temperature, and monitor-specific VCP features. Human-friendly command labels alongside raw hardware codes with auto-detection and intelligent backlight preference.",
       "github": "https://github.com/cetio/nimbus",
       "demoVideo": {
@@ -226,11 +226,9 @@
         "python",
         "d"
       ],
-      "sortOrder": 6,
+      "sortOrder": 32,
       "description": [
-        "Modular terminal streaming tool in D with a Python fallback script, supporting fuzzy search across multiple torrent providers with quality filtering.",
-        "Implements BitTorrent protocol messaging, bencode parsing, and peer communication for educational networking exploration with zero external D dependencies.",
-        "Planned features include libtorrent integration, watched-progress tracking, cover art rendering, and Rofi launcher support."
+        "Terminal Python torrenting script supporting fuzzy search across multiple torrent providers with quality filtering."
       ],
       "github": "https://github.com/cetio/mobster",
       "year": 2025
@@ -240,7 +238,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 7,
+      "sortOrder": 25,
       "description": [
         "Contributions to the D language SIMD library enabling AVX-512 intrinsics, BMI2 operations, and AArch64 cross-compilation support.",
         "Implements x86 Intel Intrinsics API compatibility across LDC, DMD, and GDC compilers with semantics-preserving code generation.",
@@ -256,7 +254,7 @@
         "csharp"
       ],
       "starred": true,
-      "sortOrder": 2,
+      "sortOrder": 8,
       "description": "Managed C# library for deep runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code. No longer actively maintained; succeeded by Godwit.",
       "github": "https://github.com/cetio/Cassowary",
       "year": 2024
@@ -266,21 +264,20 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 8,
+      "sortOrder": 11,
       "description": [
-        "D-CoreCLR interop library translating .NET runtime structures into D for direct cross-language interaction without marshalling overhead.",
-        "Models AppDomain, Assembly, MethodTable, MethodDesc, FieldDesc, and CIL execution internals with PE/metadata reading capabilities.",
+        "D -> C# interop library translating .NET runtime structures into D for direct cross-language interaction without marshalling overhead.",
         "Maps C# reflection types to D equivalents including assembly loading, type allocation, boxing, casting, and method invocation through raw CLR structure access."
       ],
       "github": "https://github.com/cetio/godwit",
-      "year": 2024
+      "year": 2026
     },
     {
       "title": "Tern",
       "languages": [
         "d"
       ],
-      "sortOrder": 1,
+      "sortOrder": 9,
       "description": [
         "High-performance D standard library extension providing compile-time vectorized algorithms, automated memory management primitives, and type introspection utilities.",
         "Includes compile-time accessor generation, smart pointers (Unique, Scoped, RefCounted, Tracked), and serialization frameworks for JSON and flat formats.",
@@ -294,11 +291,10 @@
       "languages": [
         "c"
       ],
-      "sortOrder": 9,
+      "sortOrder": 18,
       "description": [
-        "Terminal text editor built from scratch in C using SIMD-accelerated hashmaps for batch processing, virtual buffers for minimal heap allocation, and rapidhash for backend efficiency.",
-        "Designed for ultra-low latency real-time editing on massive files with a familiar minimal command set similar to nano for accessibility across all platforms.",
-        "Features a custom Myzomela allocator, zero external dependencies, and planned D/C# plugin sandboxing with syntax tree support."
+        "C terminal editor built from scratch in C using SIMD-accelerated hashmaps for batch processing, virtual buffers for minimal heap allocation, and rapidhash for backend efficiency.",
+        "Designed for ultra-low latency real-time editing on massive files with a familiar minimal command set similar to nano for accessibility across all platforms."
       ],
       "github": "https://github.com/cetio/pipit",
       "year": 2026
@@ -308,7 +304,7 @@
       "languages": [
         "csharp"
       ],
-      "sortOrder": 14,
+      "sortOrder": 26,
       "description": "Terraria mod using TModLoader that enables dynamic dependency injection of unmanaged code at runtime.",
       "github": "https://github.com/cetio/Depcat",
       "year": 2023
@@ -318,7 +314,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 15,
+      "sortOrder": 27,
       "description": [
         "Lightweight D wrapper for the SWWW wallpaper daemon managing slideshow backgrounds across multiple source directories.",
         "Provides simple CLI controls for wallpaper rotation, daemon state management, and directory-based image collections."
@@ -331,6 +327,7 @@
       "languages": [
         "csharp"
       ],
+      "sortOrder": 33,
       "description": "Low-level CoreCLR research exploring unsafe string copying, dynamic array allocation and resizing, and garbage collection blocking mechanisms.",
       "github": "https://github.com/cetio/GarbageCorruptor",
       "year": 2023
@@ -340,9 +337,10 @@
       "languages": [
         "csharp"
       ],
+      "sortOrder": 31,
       "description": [
         "Windows syscall research library in C# using manual export table walking and dynamic shellcode generation to invoke native APIs without static imports.",
-        "Includes hook detection for (effectively) all hook variants and syscall analysis."
+        "Includes hook detection for all hook variants both in both user-mode and kernel functions and syscall analysis."
       ],
       "github": "https://github.com/cetio/UndeadInterop",
       "year": 2023
@@ -352,6 +350,7 @@
       "languages": [
         "csharp"
       ],
+      "sortOrder": 34,
       "description": "Assembly-like dynamic scripting language for C# targeting virtual code obfuscation and macro system integration.",
       "github": "https://github.com/cetio/Rio",
       "year": 2023
@@ -361,6 +360,7 @@
       "languages": [
         "csharp"
       ],
+      "sortOrder": 30,
       "description": "Security research on CVE-2020-36603, a kernel driver vulnerability in Mihoyo's anti-cheat system, producing an academic reference for vulnerable driver communication patterns. Patched as of 2023.",
       "github": "https://github.com/cetio/MihoyoEXP",
       "year": 2022
@@ -370,7 +370,7 @@
       "languages": [
         "cpp"
       ],
-      "sortOrder": 3,
+      "sortOrder": 23,
       "description": [
         "Reverse-engineered headers and documentation for the VEX Robotics V5 private API covering firmware jump tables, device drawing functions, and competition mode overrides.",
         "Based on ARM64 disassembly of VEXos system_0.elf with structured signature recovery for display rendering, sensor reading, and motor control.",
@@ -384,10 +384,9 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 11,
+      "sortOrder": 19,
       "description": [
-        "Audio metadata parsing library in D supporting FLAC, MP3, M4A, MP4, and AAC formats with a unified Track interface for read/write operations.",
-        "Provides tag access via array indexing, embedded album art extraction with type detection, and playback statistics tracking for library management.",
+        "D Mutagen encoding library supporting FLAC, MP3, M4A, MP4, and AAC formats with a unified Track interface for read/write operations.",
         "Includes catalog types for Album, Artist, and Image with format-specific parsers dispatching through a common core for multi-format applications."
       ],
       "github": "https://github.com/cetio/mutagen",
@@ -398,7 +397,7 @@
       "languages": [
         "python"
       ],
-      "sortOrder": 12,
+      "sortOrder": 20,
       "description": [
         "Python automation tool for Git repository housekeeping with YAML-based per-repo configuration and systemd timer integration.",
         "Supports auto-pull, auto-push, submodule updates, stale repo scanning, custom shell commands, wildcard path matching, and dry-run mode."
@@ -411,7 +410,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 13,
+      "sortOrder": 22,
       "description": [
         "D SIMD vector library using static arrays and template metaprogramming to expose portable vector types across x86 and AArch64 targets.",
         "Provides mask operations, vector arithmetic, and cross-platform abstractions for compiler-agnostic SIMD development without external dependencies."
@@ -425,12 +424,12 @@
         "d",
         "javascript"
       ],
-      "sortOrder": 3,
+      "sortOrder": 4,
       "description": [
         "Full-stack companion client for a real-time strategy game using Selenium Chrome integration, featuring authentication, live dashboards, and WebSocket data feeds.",
         "Quick-lookup dashboard for unit stacks and a full catalog with in-depth data on units, research, and buildings for competitive gameplay.",
         "Live match tracking with minimal overhead using WebSocket connections to collect real-time data on all visible nations and map positions.",
-        "Developed under the purview of Twin Harbor."
+        "Developed under the purview of Twin Harbor (company owns the game.)"
       ],
       "starred": true,
       "demoVideo": {
@@ -444,7 +443,7 @@
       "languages": [
         "csharp"
       ],
-      "sortOrder": 19,
+      "sortOrder": 29,
       "description": [
         "C# HTML and JavaScript parser with an object-oriented DOM model and GDI-based rendering engine for lightweight document visualization.",
         "Implements lexical analysis, token streaming, and visual layout computation enabling script interpretation and structured page rendering."
@@ -456,7 +455,7 @@
       "languages": [
         "csharp"
       ],
-      "sortOrder": 17,
+      "sortOrder": 28,
       "description": [
         "C# SMBIOS system information reader parsing firmware tables for hardware enumeration, BIOS details, processor info, and memory configuration.",
         "Includes DSP interpreter support and interactive data browsing for system diagnostics, hardware auditing, and firmware analysis.",
@@ -484,7 +483,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 2,
+      "sortOrder": 10,
       "description": [
         "HTTP, OAuth, and network orchestration utilities in D that eliminate boilerplate when connecting applications to external services.",
         "Typed request building, automatic token refresh, JSON and form serialization, connection pooling, and resilience patterns including retry and circuit breaking."
@@ -497,7 +496,7 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 3,
+      "sortOrder": 24,
       "description": "D CLI backend for academic institutions with a git-inspired command structure for grading, rubric generation, and classroom organization. Institutional plugin model mapping domain commands to arbitrary LMS backends with per-school configuration and OAuth authentication.",
       "year": 2026
     },
@@ -507,7 +506,7 @@
         "d"
       ],
       "starred": true,
-      "sortOrder": 8,
+      "sortOrder": 6,
       "description": [
         "D Selenium library overhauled from selenium.d with W3C WebDriver compliance and Ruby-inspired API conventions.",
         "Strongly typed interface for browser automation with auto-detection of major browser drivers, implicit wait synchronization, and full session lifecycle management.",
@@ -522,11 +521,10 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 12,
+      "sortOrder": 21,
       "description": [
         "D regex library providing alternative matching engines with compile-time pattern compilation for zero-runtime-overhead text scanning.",
-        "Emphasizes CTFE-based regex construction, custom matching strategies, and D-specific optimizations beyond the standard library.",
-        "Targets embedded and performance-critical scenarios where regex initialization cost must be eliminated through compile-time evaluation."
+        "Designed to allow for the entire engine, rather than just the constructor, to run at compile-time, allowing for matching at compile-time."
       ],
       "github": "https://github.com/cetio/regex",
       "year": 2024
@@ -536,7 +534,7 @@
       "languages": [
         "rust"
       ],
-      "sortOrder": 21,
+      "sortOrder": 35,
       "description": "Reverse-engineered BLE state packets for the Soundcore Liberty 4 Pro and decoded raw protocol captures into structured definitions. Archived; served as the foundational reference for the OpenSCQ30 cross-platform tool.",
       "github": "https://github.com/cetio/soundcore-a3954-dump",
       "year": 2026
@@ -546,7 +544,7 @@
       "languages": [
         "rust"
       ],
-      "sortOrder": 10,
+      "sortOrder": 17,
       "description": "Cross-platform application for controlling Soundcore audio device settings across desktop and Android. Liberty 4 Pro configuration protocol, exposing EQ profiles, ANC modes, and firmware metadata through a unified interface.",
       "forked": true,
       "github": "https://github.com/cetio/OpenSCQ30",
