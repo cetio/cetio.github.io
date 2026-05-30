@@ -665,6 +665,7 @@ main {
 }
 
 .skill-badge {
+    background: var(--bg-surface);
     border-color: var(--link);
     cursor: pointer;
     font-family: inherit;
