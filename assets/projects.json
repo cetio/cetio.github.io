@@ -469,7 +469,7 @@
         "d"
       ],
       "starred": true,
-      "sortOrder": 5,
+      "sortOrder": 2,
       "description": [
         "D library for Google Drive integration with OAuth authentication, full file system operations, and metadata management.",
         "Unified file interface covering login, identity, folder and file listing, upload, download, save, delete, and text extraction.",
