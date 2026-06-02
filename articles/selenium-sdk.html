@@ -19,7 +19,7 @@
     <main>
         <article>
             <header class="article-header">
-                <h1>Selenium-SDK: from JsonWire to W3C in D</h1>
+                <h1>Modernizing Selenium Support in D</h1>
                 <div class="article-meta">
                     <time>May 2026</time>
                 </div>
@@ -27,234 +27,332 @@
 
             <hr>
 
-            <h3>The problem: a dead dependency on a dead protocol</h3>
+            <h3>WebKit GTK on Windows: it doesn't exist</h3>
             <p>
-                After two months building <a href="/">Insurgent</a> around WebKit GTK, I learned the hard way that it does not run on Windows. The library is Linux-only, and the Windows port had been abandoned years ago. The project needed a cross-platform browser engine, and the obvious choice was Chrome via Selenium.
+                I spent about a month building <a href="/">Insurgent</a>, a companion app for a real-time strategy game that provides active monitoring of matches and an in-depth catalog of game data. The frontend was built around WebKit GTK because it ships with D's GtkD bindings and was the obvious choice on Linux and macOS. It allowed the game to run in a separate window where I could hook WebSockets and inject JavaScript. Then I tried to build on Windows.
             </p>
             <p>
-                The obstacle was that D had no working Selenium bindings. The only existing option was <code>selenium.d</code>, last updated in 2018, built on the JsonWire protocol that Selenium had already deprecated. Modern ChromeDriver speaks W3C WebDriver. JsonWire requests were being ignored or rejected outright.
+                The Windows port was abandoned years ago. Not buggy. Abandoned. There is no path forward. I needed a cross-platform browser engine, and I needed it without rewriting the project in another language.
             </p>
 
-            <h3>What JsonWire to W3C actually means</h3>
+            <h3>Selenium was the replacement candidate</h3>
             <p>
-                JsonWire and W3C WebDriver are not just different JSON wrappers around the same commands. The endpoint layout changed, the desired capabilities format changed, and the error response schema changed. In JsonWire, you POST to <code>/session</code> with a flat <code>desiredCapabilities</code> object. In W3C, the same endpoint expects a nested <code>capabilities</code> object with <code>alwaysMatch</code> and <code>firstMatch</code> arrays. A JsonWire session request against a modern ChromeDriver returns a 500 with no session ID, and every subsequent command fails.
+                ChromeDriver is maintained by Google and runs everywhere the project needs to ship. I also have experience with Selenium from my work on LinkedIn Learning scraping and workflow automation, so the protocol and API patterns were already familiar.
+            </p>
+            <p>
+                The obstacle was that D had no working Selenium bindings at all.
+            </p>
+
+            <h3>The only option was from 2018</h3>
+            <p>
+                The existing library, <code>selenium.d</code>, targeted the old JsonWire protocol. Selenium deprecated JsonWire in favor of W3C WebDriver years ago, and modern ChromeDriver simply rejects JsonWire session requests outright. Every endpoint path, every payload shape, and every error response format had changed.
+            </p>
+            <p>
+                In JsonWire, you POST to <code>/session</code> with a flat <code>desiredCapabilities</code> object. In W3C, the same endpoint expects a nested <code>capabilities</code> object with <code>alwaysMatch</code> and <code>firstMatch</code> arrays. A JsonWire session request against a modern ChromeDriver returns a 500 with no session ID, and every subsequent command fails.
             </p>
 
             <div class="callout">
                 The protocol gap was not a version mismatch. It was a different wire format, different capability negotiation, and different error handling. Every request path and every payload shape had to be revisited.
             </div>
 
-            <h3>Session negotiation: the first W3C hurdle</h3>
+            <h3>This is not my first time with WebDriver</h3>
             <p>
-                The fix started at the entry point. Session creation now builds a W3C-compliant capabilities payload and parses the standardized response shape:
+                The Ruby automation I wrote for AutoHandshake was a dispatch-oriented runtime with tab queuing, JavaScript-level request interception, and companion browser extensions. That experience mattered here because I did not have to learn what good bindings feel like while also learning the W3C protocol. I already knew what the surface should look like.
+            </p>
+            <p>
+                Ruby's metaprogramming also excellently complements D's metaprogramming. Both languages reward building small, composable abstractions, and that shaped how I structured the API.
             </p>
 
-<pre><code class="language-d">Session startSession(string browser = "chrome")
+            <h3>Session negotiation</h3>
+            <p>
+                Session creation was the big one. The fix started at the entry point. The <code>Bridge</code> now builds a W3C-compliant capabilities payload and parses the standardized response shape:
+            </p>
+
+<pre><code class="language-d">void start(Options options)
 {
-    JSONValue capabilities;
-    capabilities["alwaysMatch"] = [
-        "browserName": browser,
-        "acceptInsecureCerts": true,
-    ];
+    if (!running)
+        throw new WebDriverConnectionError("Bridge is not running.");
 
-    JSONValue payload;
-    payload["capabilities"] = capabilities;
+    JSONValue payload = JSONValue.emptyObject;
+    payload["capabilities"] = options.toJSONValue();
 
-    auto response = request("/session", RequestMethod.POST, payload);
-    string sessionId = response["value"]["sessionId"].str;
-    return Session(sessionId, response["value"]["capabilities"]);
+    HTTP http = HTTP();
+    Response response = send(http, HTTP.Method.post, serverUrl~"/session", payload);
+    JSONValue json = checkAndParse(response);
+
+    if ("sessionId" in json)
+        sessionId = json["sessionId"].str;
+    else if ("value" in json && "sessionId" in json["value"])
+        sessionId = json["value"]["sessionId"].str;
 }</code></pre>
 
             <p>
-                The response parser had to handle both the old JsonWire <code>sessionId</code> top-level field and the new W3C <code>value.sessionId</code> nested field. Auto-detection lets the library tolerate legacy drivers without a hard fork:
+                The response parser had to handle both the old JsonWire <code>sessionId</code> top-level field and the new W3C <code>value.sessionId</code> nested field. The same dual-protocol handling applies to element references. W3C uses a constant key, <code>element-6066-11e4-a52e-4f735466cecf</code>, while legacy drivers use <code>ELEMENT</code>:
             </p>
 
-<pre><code class="language-d">string extractSessionId(JSONValue response)
+<pre><code class="language-d">static string parseElementId(JSONValue json)
 {
-    if (auto p = "sessionId" in response)
-        return p.str;
-    if (auto p = "value" in response)
-        if (auto id = "sessionId" in *p)
-            return id.str;
-    throw new Exception("No session ID in response");
+    enum W3C_KEY = "element-6066-11e4-a52e-4f735466cecf";
+    JSONValue value = ("value" in json) ? json["value"] : json;
+
+    if (value.type == JSONType.object)
+    {
+        if (W3C_KEY in value && value[W3C_KEY].type == JSONType.string)
+            return value[W3C_KEY].str;
+        if ("ELEMENT" in value && value["ELEMENT"].type == JSONType.string)
+            return value["ELEMENT"].str;
+    }
+
+    return null;
 }</code></pre>
 
             <h3>Modeling the API after Ruby</h3>
             <p>
-                I had spent a lot of time with Ruby's Selenium bindings while building AutoHandshake, and the API felt natural. The D version follows the same conventions: a <code>Driver</code> owns the session, <code>WebElement</code> wraps node references, and locators are strongly typed instead of raw strings.
+                The D version follows the same conventions as Ruby's Selenium bindings: a <code>Driver</code> owns the session, <code>Element</code> wraps node references, and locators are strongly typed instead of raw strings.
             </p>
 
-<pre><code class="language-d">struct By
+<pre><code class="language-d">enum Locator : string
 {
-    string strategy;
-    string value;
-
-    static By cssSelector(string value)
-    {
-        return By("css selector", value);
-    }
-
-    static By xpath(string value)
-    {
-        return By("xpath", value);
-    }
-
-    static By id(string value)
-    {
-        return By("id", value);
-    }
+    ClassName = "class name",
+    CssSelector = "css selector",
+    Id = "id",
+    Name = "name",
+    LinkText = "link text",
+    PartialLinkText = "partial link text",
+    TagName = "tag name",
+    XPath = "xpath"
 }</code></pre>
 
             <p>
-                Element lookup returns a <code>WebElement</code> that carries its own element ID, so the caller never manages opaque UUID strings directly:
+                Element lookup returns an <code>Element</code> that carries its own element ID, so the caller never manages opaque UUID strings directly:
             </p>
 
-<pre><code class="language-d">class WebElement
+<pre><code class="language-d">class Element
 {
-    private string _elementId;
-    private Session _session;
+    Bridge bridge;
+    string id;
 
-    this(Session session, string elementId)
+    this(Bridge bridge, string id)
     {
-        _session = session;
-        _elementId = elementId;
+        this.bridge = bridge;
+        this.id = id;
     }
 
     void click()
     {
-        _session.request(
-            "/element/" ~ _elementId ~ "/click", RequestMethod.POST);
+        bridge.request(HTTP.Method.post, path("/click"));
+    }
+
+    void sendKeys(string[] keys)
+    {
+        bridge.request(HTTP.Method.post, path("/value"), ["text": keys.join()]);
     }
 
     void sendKeys(string keys)
     {
-        JSONValue payload;
-        payload["text"] = keys;
-        _session.request(
-            "/element/" ~ _elementId ~ "/value", RequestMethod.POST, payload);
+        sendKeys([keys]);
     }
 
     string text()
-    {
-        auto response = _session.request(
-            "/element/" ~ _elementId ~ "/text", RequestMethod.GET);
-        return response["value"].str;
-    }
-}</code></pre>
+        => bridge.request!string(HTTP.Method.get, path("/text"));
 
-            <h3>Driver auto-detection and lifecycle management</h3>
-            <p>
-                One quality-of-life feature from the Ruby ecosystem is that the bindings often find the driver executable for you. The D port replicates that with a path search across platform conventions:
-            </p>
+    string attribute(string name)
+        => bridge.request!string(HTTP.Method.get, path("/attribute/"~name));
 
-<pre><code class="language-d">string findDriver(string name)
-{
-    version (Windows)
-        name ~= ".exe";
+    bool displayed()
+        => bridge.request!bool(HTTP.Method.get, path("/displayed"));
 
-    foreach (dir; environment.get("PATH").split(pathSeparator))
-    {
-        string candidate = buildPath(dir, name);
-        if (exists(candidate))
-            return candidate;
-    }
-
-    throw new Exception("Driver not found: " ~ name);
+private:
+    string path(string suffix)
+        => "/element/"~id~suffix;
 }</code></pre>
 
             <p>
-                The <code>Driver</code> struct manages the child process and shuts it down cleanly on scope exit. A <code>scope(exit)</code> in the calling code is enough to guarantee cleanup, which fits D's RAII patterns:
+                The API surface is small and intentionally familiar if you have used Selenium in another language:
             </p>
 
-<pre><code class="language-d">struct Driver
-{
-    Pid process;
-    string executable;
-    ushort port;
+<pre><code class="language-d">auto driver = Driver.start();
+driver.navigate("https://example.com");
+auto element = driver.find(Locator.CssSelector, "input[name='q']");
+element.sendKeys("query");</code></pre>
 
-    static Driver start(string name = "chromedriver")
+            <h3>Driver auto-detection and lifecycle</h3>
+            <p>
+                One quality-of-life feature from the Ruby ecosystem is that the bindings often find the driver executable for you. The D port replicates that with a path search and executable inference from the filename:
+            </p>
+
+<pre><code class="language-d">static string autoDetectExecutable(DriverType type = DriverType.Any)
+{
+    string[] candidates;
+    switch (type)
     {
-        string exe = findDriver(name);
-        ushort port = findFreePort();
-        Pid pid = spawnProcess([exe, "--port=" ~ to!string(port)]);
-        // Wait for the port to accept connections
-        waitForPort(port);
-        return Driver(pid, exe, port);
+        case DriverType.Chrome:
+            candidates = ["chromedriver"];
+            break;
+        case DriverType.Firefox:
+            candidates = ["geckodriver"];
+            break;
+        case DriverType.Edge:
+            candidates = ["msedgedriver"];
+            break;
+        case DriverType.Safari:
+            candidates = ["safaridriver"];
+            break;
+        default:
+            candidates = [
+                "chromedriver",
+                "msedgedriver",
+                "safaridriver",
+                "geckodriver"
+            ];
+            break;
     }
 
-    void stop()
+    foreach (candidate; candidates)
     {
-        if (process !is Pid.init)
+        Tuple!(int, "status", string, "output") result =
+            std.process.execute(["which", candidate]);
+        if (result.status == 0)
+            return result.output.strip;
+    }
+
+    throw new WebDriverConnectionError(
+        "Could not auto-detect executable for "~type.to!string
+    );
+}</code></pre>
+
+            <p>
+                The <code>Driver</code> class spawns the child process, waits for the HTTP port to become ready, and shuts it down cleanly on <code>quit()</code> or <code>stop()</code>:
+            </p>
+
+<pre><code class="language-d">void launch(ushort requestedPort = 0)
+{
+    if (running)
+        return;
+
+    port = requestedPort == 0 ? findFreePort() : requestedPort;
+    pid = spawnProcess([executablePath, "--port="~port.to!string]);
+    serverUrl = "http://127.0.0.1:"~port.to!string;
+    waitForServer(5000);
+    running = true;
+}
+
+void stop()
+{
+    if (!running || pid is Pid.init)
+        return;
+
+    tryKill(pid);
+    running = false;
+    pid = Pid.init;
+}</code></pre>
+
+            <h3>Error handling for both protocols</h3>
+            <p>
+                Because the library may still encounter legacy drivers in the wild, the error mapper handles both W3C <code>error</code> strings and legacy JsonWire <code>status</code> codes:
+            </p>
+
+<pre><code class="language-d">static WebDriverError mapError(ushort status, JSONValue json)
+{
+    string message = extractMessage(json);
+
+    if ("value" in json && json["value"].type == JSONType.object)
+    {
+        JSONValue value = json["value"];
+        if ("error" in value && value["error"].type == JSONType.string)
         {
-            kill(process, SIGTERM);
-            wait(process);
+            switch (value["error"].str)
+            {
+                case "no such element":
+                    return new NoSuchElementError(message);
+                case "stale element reference":
+                    return new StaleElementReferenceError(message);
+                case "invalid element state":
+                    return new InvalidElementStateError(message);
+                case "timeout":
+                    return new WebDriverTimeoutError(message);
+                case "session not created":
+                    return new WebDriverConnectionError(message);
+                default:
+                    return new WebDriverError(message);
+            }
         }
     }
+
+    if ("status" in json)
+    {
+        switch (json["status"].type == JSONType.integer
+            ? json["status"].get!long : 0)
+        {
+            case 7:
+                return new NoSuchElementError(message);
+            case 10:
+                return new StaleElementReferenceError(message);
+            case 12:
+                return new InvalidElementStateError(message);
+            case 21:
+                return new WebDriverTimeoutError(message);
+            case 33:
+                return new WebDriverConnectionError(message);
+            default:
+                return new WebDriverError(message);
+        }
+    }
+
+    return new WebDriverError(message);
 }</code></pre>
 
             <h3>Implicit waits and synchronization</h3>
             <p>
-                A raw Selenium script without waits breaks immediately on slow-loading pages. The library exposes implicit-wait configuration on the session and wraps common patterns in retry loops with configurable timeouts:
+                A raw Selenium script without waits breaks immediately on slow-loading pages. The library exposes implicit-wait configuration on the bridge and syncs it lazily before element lookups:
             </p>
 
-<pre><code class="language-d">void setImplicitWait(Duration timeout)
+<pre><code class="language-d">void ensureImplicitWaitSynced()
 {
-    JSONValue payload;
-    payload["ms"] = timeout.total!"msecs";
-    request("/timeouts", RequestMethod.POST, payload);
-}
+    if (implicitWait == syncedImplicitWait)
+        return;
 
-WebElement findElement(By by, Duration timeout = 10.seconds)
-{
-    auto start = MonoTime.currTime;
-    while (MonoTime.currTime - start < timeout)
+    JSONValue body_ = JSONValue.emptyObject;
+    body_["implicit"] = JSONValue(implicitWait.total!"msecs");
+    try
     {
-        try
-            return findElementImpl(by);
-        catch (Exception e)
-            sleep(100.msecs);
+        request(HTTP.Method.post, "/timeouts", body_);
+        syncedImplicitWait = implicitWait;
     }
-    throw new Exception("Element not found: " ~ by.value);
+    catch (Exception) { }
 }</code></pre>
 
             <h3>JavaScript execution and screenshot capture</h3>
             <p>
-                Two features that Insurgent needed heavily were script injection and screenshot capture for debugging. Both map cleanly to W3C endpoints. <code>executeScript</code> takes a raw string and a variadic argument list, serializing each argument into the W3C element-reference format when needed:
+                Two features that Insurgent needed heavily were script injection and screenshot capture for debugging. Both map cleanly to W3C endpoints. <code>execute</code> is generic over the return type and handles serialization automatically:
             </p>
 
-<pre><code class="language-d">JSONValue executeScript(string script, JSONValue[] args ...)
+<pre><code class="language-d">T execute(T = string)(string script, JSONValue args = JSONValue.emptyArray)
 {
-    JSONValue payload;
-    payload["script"] = script;
-    payload["args"] = args;
-    auto response = request(
-        "/execute/sync", RequestMethod.POST, payload);
-    return response["value"];
+    return bridge.request!T(HTTP.Method.post, "/execute/sync", [
+        "script": JSONValue(script),
+        "args": args,
+    ]);
 }
 
-ubyte[] screenshot()
-{
-    auto response = request(
-        "/screenshot", RequestMethod.GET);
-    return Base64.decode(response["value"].str);
-}</code></pre>
+string screenshot()
+    => bridge.request!string(HTTP.Method.get, "/screenshot");</code></pre>
 
             <h3>What is still missing</h3>
             <p>
-                The library covers the core WebDriver surface that Insurgent needed: navigation, element interaction, form input, script execution, screenshots, and session management. It does not yet implement the Actions API for low-level mouse and keyboard input, nor does it support BiDi (WebDriver Bidi) for network interception or console log streaming. Remote Grid support and mobile WebDriverApp endpoints are also absent.
+                The library covers the core WebDriver surface that Insurgent needed: navigation, element interaction, form input, script execution, screenshots, and session management. It does not yet implement the Actions API for low-level mouse and keyboard input, nor does it support BiDi (WebDriver Bidi) for network interception or console log streaming. Remote Grid support and mobile WebDriver endpoints are also absent.
             </p>
             <p>
-                Those gaps are acceptable for now. The goal was not parity with the Java or Python bindings. The goal was a working W3C foundation in a language that had none.
+                Those gaps are acceptable for now. The goal was not parity with the Java or Python bindings. The goal was a working W3C foundation in a language that had none, and one that is easy to write unittests for.
             </p>
 
-            <h3>What this project proved</h3>
-            <ul>
-                <li>A language without ecosystem coverage for "obvious" tools like browser automation becomes a hard sell for real-world projects the moment you need cross-platform UI interaction.</li>
-                <li>Protocol migration is tedious but mechanical. The hard part is deciding which legacy behavior to preserve and which to drop.</li>
-                <li>API ergonomics matter more than endpoint coverage. A clean <code>findElement(By.css("..."))</code> surface is worth more than every obscure WebDriver endpoint exposed raw.</li>
-                <li>D's compile-time metaprogramming and RAII patterns make for a very pleasant binding: zero-cost abstractions, deterministic cleanup, and no garbage-collection surprises during long-lived browser sessions.</li>
-                <li>One working library can unblock an entire category of projects. Insurgent could not have shipped on Windows without this.</li>
-            </ul>
+            <h3>Where it stands now</h3>
+            <p>
+                The library is working and I am continually expanding its functionality. It is forked from <a href="https://github.com/gedaiu/selenium.d">gedaiu/selenium.d</a> and lives at <a href="https://github.com/cetio/selenium-sdk">github.com/cetio/selenium-sdk</a>. It is not complete, but it is enough to drive a browser from D and support the majority of basic Selenium functionality, and a month ago that was not possible at all.
+            </p>
+            <p>
+                I will absolutely continue to make changes and things will continue to stray from the source at the time of this article, but bringing modern Selenium to D is massive for the ecosystem and I look forward to what others could do with it.
+            </p>
         </article>
     </main>
 
