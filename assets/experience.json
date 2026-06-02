@@ -29,7 +29,7 @@
             "date": "July 2021 – Present",
             "logo": "",
             "bullets": [
-                "Built SDKs and tooling for device I/O and web API integration, enabling real-time control and data synchronization across hardware and web interfaces in a team of 6.",
+                "Built SDKs and tooling for device I/O and web API integration for individual clients, enabling real-time control and data synchronization across hardware and web interfaces.",
                 "Designed an AI-assisted grading platform with LMS OAuth integration, achieving ~95% accuracy in real-world classroom use."
             ]
         }

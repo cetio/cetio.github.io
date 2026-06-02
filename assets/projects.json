@@ -429,7 +429,7 @@
         "Full-stack companion client for a real-time strategy game using Selenium Chrome integration, featuring authentication, live dashboards, and WebSocket data feeds.",
         "Quick-lookup dashboard for unit stacks and a full catalog with in-depth data on units, research, and buildings for competitive gameplay.",
         "Live match tracking with minimal overhead using WebSocket connections to collect real-time data on all visible nations and map positions.",
-        "Developed under the purview of Twin Harbor (company owns the game.)"
+        "Solo-developed client operating under Twin Harbor's ecosystem terms."
       ],
       "starred": true,
       "demoVideo": {
