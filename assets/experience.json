@@ -7,9 +7,9 @@
             "date": "November 2025 – Present",
             "logo": "assets/logos/team_handshake_logo.jpg",
             "bullets": [
-                "Train and evaluate multimodal AI agents using generalist data to improve response quality, reasoning, and understanding across domains.",
-                "Developed AutoHandshake!, a Selenium automation suite that streamlined contractor workflows and significantly reduced manual overhead.",
-                "Assisted fellows in clarifying guidelines and platform operations."
+                "Evaluate multimodal AI agents against structured rubrics to assess response quality, reasoning accuracy, and domain understanding across generalist tasks.",
+                "Built AutoHandshake!, a Selenium-based RPA suite that eliminated 95% of manual annotation and triage effort across 400+ contractor hours with unattended execution, failure recovery, and full audit trails.",
+                "Mentored contractors on platform operations, rubric interpretation, and efficient evaluation workflows."
             ]
         },
         {
@@ -19,7 +19,7 @@
             "date": "April 2025 – August 2025",
             "logo": "assets/logos/rws_group_logo.jpg",
             "bullets": [
-                "Evaluated search relevance and LLM responses to improve result quality and UX across Google query simulations and third-party models."
+                "Assessed search relevance and LLM output quality against detailed rubrics across Google query simulations and third-party models, identifying failure patterns that informed ranking and UX improvements."
             ]
         },
         {
@@ -29,8 +29,8 @@
             "date": "July 2021 – Present",
             "logo": "",
             "bullets": [
-                "Built SDKs and tooling for device I/O and web API integration for individual clients, enabling real-time control and data synchronization across hardware and web interfaces.",
-                "Designed an AI-assisted grading platform with LMS OAuth integration, achieving ~95% accuracy in real-world classroom use."
+                "Developed workflow automation tools and SDKs for web API integration and device I/O, eliminating repetitive manual processes for individual clients.",
+                "Built an AI-assisted grading platform with LMS OAuth integration and automated rubric application, achieving ~95% accuracy in real-world classroom use and cutting instructor grading time by half."
             ]
         }
     ],

@@ -88,7 +88,7 @@
         "d"
       ],
       "starred": true,
-      "sortOrder": 2,
+      "sortOrder": 7,
       "description": [
         "D library for language and embedding model endpoints that replaces fragile JSON shims with strongly typed native structures.",
         "Chat completions with streaming, batch embeddings, tool usage, and persistent per-model configuration for production inference workflows.",
@@ -102,8 +102,7 @@
       "languages": [
         "d"
       ],
-      "starred": true,
-      "sortOrder": 7,
+      "sortOrder": 10,
       "description": [
         "Chemistry-aware data retrieval library in D that unifies PubChem, Wikipedia, Psychonaut Wiki, PubMed, and PMC into a single queryable interface.",
         "Lazy content fetching with structured text parsing from wikitext and XML into compact ASTs for rendering and extraction.",
@@ -117,8 +116,7 @@
       "languages": [
         "d"
       ],
-      "starred": true,
-      "sortOrder": 3,
+      "sortOrder": 9,
       "description": [
         "GTK-based desktop application for exploring chemical compounds with interactive 3D molecular visualization, property tracking, and standard identifier lookup.",
         "Automated dosage aggregation and similarity matching using structural scoring to identify analogous compounds and fill knowledge gaps.",
@@ -197,7 +195,8 @@
       "languages": [
         "ruby"
       ],
-      "sortOrder": 18,
+      "starred": true,
+      "sortOrder": 2,
       "description": [
         "Ruby CLI tool and pseudo-library that fetches LinkedIn Learning completed history and extracts course and learning path metadata into cacheable JSON aggregates.",
         "Uses Selenium for browser automation with rate-limit tolerance and responsible throttling, supporting Chromium profile reuse and credential-based login.",
@@ -253,8 +252,7 @@
       "languages": [
         "csharp"
       ],
-      "starred": true,
-      "sortOrder": 8,
+      "sortOrder": 11,
       "description": "Managed C# library for deep runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code. No longer actively maintained; succeeded by Godwit.",
       "github": "https://github.com/cetio/Cassowary",
       "year": 2024
@@ -277,7 +275,8 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 9,
+      "starred": true,
+      "sortOrder": 8,
       "description": [
         "High-performance D standard library extension providing compile-time vectorized algorithms, automated memory management primitives, and type introspection utilities.",
         "Includes compile-time accessor generation, smart pointers (Unique, Scoped, RefCounted, Tracked), and serialization frameworks for JSON and flat formats.",
@@ -469,7 +468,7 @@
         "d"
       ],
       "starred": true,
-      "sortOrder": 2,
+      "sortOrder": 6,
       "description": [
         "D library for Google Drive integration with OAuth authentication, full file system operations, and metadata management.",
         "Unified file interface covering login, identity, folder and file listing, upload, download, save, delete, and text extraction.",
@@ -483,7 +482,8 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 10,
+      "starred": true,
+      "sortOrder": 5,
       "description": [
         "HTTP, OAuth, and network orchestration utilities in D that eliminate boilerplate when connecting applications to external services.",
         "Typed request building, automatic token refresh, JSON and form serialization, connection pooling, and resilience patterns including retry and circuit breaking."
@@ -506,7 +506,7 @@
         "d"
       ],
       "starred": true,
-      "sortOrder": 6,
+      "sortOrder": 3,
       "description": [
         "D Selenium library overhauled from selenium.d with W3C WebDriver compliance and Ruby-inspired API conventions.",
         "Strongly typed interface for browser automation with auto-detection of major browser drivers, implicit wait synchronization, and full session lifecycle management.",
