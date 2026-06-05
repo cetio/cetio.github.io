@@ -72,7 +72,7 @@
             closeNavMenu();
     });
 
-    document.querySelectorAll('.skill-badge, .quick-link-btn').forEach(button => {
+    document.querySelectorAll('.quick-link-btn').forEach(button => {
         button.addEventListener('click', () => {
             const target = button.dataset.tabTarget;
             activateTab(target);

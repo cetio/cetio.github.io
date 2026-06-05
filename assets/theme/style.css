@@ -707,8 +707,7 @@ main {
 
 /* ── Badges ── */
 .skill-chip,
-.article-tag,
-.skill-badge {
+.article-tag {
     display: inline-block;
     border: 1px solid var(--border);
     background: rgba(255, 255, 255, 0.02);
@@ -719,35 +718,10 @@ main {
     transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 
-.skill-badge {
-    background: var(--bg-surface);
-    border-color: var(--link);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1;
-    padding: 8px 16px;
-    box-shadow: 0 4px 16px rgba(102, 179, 255, 0.08);
-}
-
-.article-tag:hover,
-.skill-badge:hover {
+.article-tag:hover {
     border-color: var(--border-light);
     background: rgba(255, 255, 255, 0.05);
     color: var(--fg);
-}
-
-.skill-badge:hover {
-    background: rgba(102, 179, 255, 0.06);
-    border-color: #99ccff;
-    box-shadow: 0 4px 20px rgba(102, 179, 255, 0.14);
-}
-
-.skill-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
 }
 
 .quick-links {
