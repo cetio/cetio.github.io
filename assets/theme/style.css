@@ -1305,3 +1305,28 @@ code {
     }
 
 }
+
+@media print {
+    body {
+        background: #fff;
+        color: #000;
+    }
+
+    .top-nav,
+    .watermark,
+    .copyright,
+    .nav-watermark,
+    .nav-toggle {
+        display: none;
+    }
+
+    .panel {
+        background: #fff;
+        border: 1px solid #ccc;
+    }
+
+    a {
+        color: #000;
+        text-decoration: underline;
+    }
+}
