@@ -293,7 +293,7 @@
                 } else if (project.demoVideo && project.demoVideo.url) {
                     const video = document.createElement('video');
                     video.controls = true;
-                    video.preload = 'none';
+                    video.preload = 'metadata';
                     video.src = project.demoVideo.url;
                     demo.appendChild(video);
                 }
