@@ -49,6 +49,21 @@ a:focus {
     outline-offset: 2px;
 }
 
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--link);
+    color: var(--bg);
+    padding: 8px 16px;
+    z-index: 200;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
 /* ── Navigation ── */
 .top-nav {
     position: sticky;
