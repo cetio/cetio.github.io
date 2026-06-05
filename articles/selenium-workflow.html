@@ -51,7 +51,7 @@
 
             <hr>
 
-            <h2>The problem</h2>
+            <h3>The problem</h3>
             <p>
                 I had a repetitive, time-sensitive workflow that required switching between two browser pages, waiting for specific signals, and triggering actions at precise moments. Doing it manually meant context-switching constantly, missing timing windows, and making data entry errors. A linear Selenium script was the obvious first step, but linear scripts break the first time a page loads 500ms slower than expected.
             </p>
@@ -59,7 +59,7 @@
                 This article covers the first iteration: a ~700-line Ruby script that hardened the workflow with explicit waits, DOM-driven state detection, layered retry logic, and modular page objects.
             </p>
 
-            <h2>Entry point: a tight claim-submit loop</h2>
+            <h3>Entry point: a tight claim-submit loop</h3>
             <p>
                 The script is a continuous loop. Each iteration claims a task from the primary dashboard, drives it through its state transitions, and submits it. There is no batching; every task is handled end-to-end before the next one is claimed.
             </p>
@@ -95,7 +95,7 @@ loop do
   tracker.await_submission()
 end</code></pre>
 
-            <h2>Explicit waits with scroll-and-retry</h2>
+            <h3>Explicit waits with scroll-and-retry</h3>
             <p>
                 The core interaction primitive is an <code>oriented_click</code>: scroll the element into view, check it is displayed and enabled, try a native click, and fall back to a JS click if the native one fails. It returns a boolean so the caller can decide whether to retry or abort. <code>oriented_send_keys</code> follows the same pattern for text input.
             </p>
@@ -152,7 +152,7 @@ end</code></pre>
   false
 end</code></pre>
 
-            <h2>Detect state from the DOM, not from memory</h2>
+            <h3>Detect state from the DOM, not from memory</h3>
             <p>
                 A task page has a small set of observable states. Instead of tracking state in variables, the script re-reads the DOM every time it needs to decide what to do. This makes it resilient to race conditions, refreshes, and unexpected dialogs.
             </p>
@@ -200,7 +200,7 @@ end</code></pre>
                 The <code>state!</code> method loops until it can definitively categorize the page. Each state maps to a concrete DOM indicator: a button with specific text, an error heading, a visible dialog. There is no guessing.
             </p>
 
-            <h2>Drive through transient states with <code>begin_task!</code></h2>
+            <h3>Drive through transient states with <code>begin_task!</code></h3>
             <p>
                 Before the actual work starts, the page often bounces through a sequence of dialogs, timers, and continue buttons. <code>begin_task!</code> drives through all of them in order, returning only when the task is truly ready for input.
             </p>
@@ -245,7 +245,7 @@ end</code></pre>
   end
 end</code></pre>
 
-            <h2>Dialog handling as a shared primitive</h2>
+            <h3>Dialog handling as a shared primitive</h3>
             <p>
                 Dialogs appear on both the primary and secondary pages. A shared controller module detects them, tries an acknowledge button first (if auto-acknowledge is enabled), and falls back to a close button.
             </p>
@@ -272,7 +272,7 @@ end</code></pre>
   end
 end</code></pre>
 
-            <h2>Claim tasks from a dashboard</h2>
+            <h3>Claim tasks from a dashboard</h3>
             <p>
                 The <code>Project</code> class manages the primary dashboard window. It navigates to the task list, waits for the task page to load, and retries through transient errors and dialogs.
             </p>
@@ -358,7 +358,7 @@ end</code></pre>
   end
 end</code></pre>
 
-            <h2>Defensive error handling and retries</h2>
+            <h3>Defensive error handling and retries</h3>
             <p>
                 Network flakiness, stale element references, and transient UI states are not edge cases; they are the norm. <code>with_retry</code> wraps every Selenium call with exponential backoff so a brief disconnect does not kill the session.
             </p>
@@ -404,7 +404,7 @@ def safe_window_handles
   Array(handles)
 end</code></pre>
 
-            <h2>Structured logging with optional sound</h2>
+            <h3>Structured logging with optional sound</h3>
             <p>
                 Every significant action is logged with a UTC timestamp, location tag, and status symbol. Logs go to both stdout and a persisted file. Sound notifications help when the script is running in the background.
             </p>
@@ -447,7 +447,7 @@ end</code></pre>
   end
 end</code></pre>
 
-            <h2>What this iteration proved</h2>
+            <h3>What this iteration proved</h3>
             <ul>
                 <li>End-to-end automation is roughly 30% happy-path code and 70% handling edge cases, timing, and observability.</li>
                 <li>Re-reading the DOM for state on every decision loop eliminates an entire class of race-condition bugs that fixed sleeps can only mask.</li>

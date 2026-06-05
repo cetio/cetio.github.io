@@ -51,7 +51,7 @@
 
             <hr>
 
-            <h2>The problem: five schemas that disagree about "a compound"</h2>
+            <h3>The problem: five schemas that disagree about "a compound"</h3>
             <p>
                 Each scientific source models the world differently. PubChem keys on a numeric <code>CID</code> and a sprawling REST dialect. MediaWiki-family sources (Wikipedia, PsychonautWiki) speak Wikitext plus their own templates. PubMed and PMC live in NCBI&rsquo;s Entrez ecosystem and return JATS XML. None of them agree on what counts as a compound, what its canonical name is, or whether it even deserves its own page.
             </p>
@@ -59,7 +59,7 @@
                 The job of the library is to make the caller never have to learn any of that.
             </p>
 
-            <h2>Identity is the load-bearing wall</h2>
+            <h3>Identity is the load-bearing wall</h3>
             <p>
                 The single decision that collapsed most of the complexity was picking <em>one</em> source of truth for identity and treating every other integration as a resolution problem layered on top of it. PubChem got that role because PubChem is the only source that is both deterministic and exhaustive for small molecules.
             </p>
@@ -100,7 +100,7 @@
                 PsychonautWiki follows the same pattern with a graceful fallback through parent compounds. Most psychoactives do not have their own PsychonautWiki page; they redirect to a parent (LSD instead of ALD-52, for example). The resolution pipeline handles this by querying for structurally similar compounds from PubChem, filtering by XLogP and molecular weight, and then matching exact synonyms against PsychonautWiki page titles.
             </p>
 
-            <h2>The <code>Compound</code> registry: flyweight by necessity</h2>
+            <h3>The <code>Compound</code> registry: flyweight by necessity</h3>
             <p>
                 PubChem compounds are referenced everywhere: properties, assays, proteins, conformers, dosage lookups, similarity searches. Creating a new object every time the same CID appears would mean fetching the same title and synonyms repeatedly. Instead, <code>Compound</code> uses a static registry with <code>getOrCreate</code>:
             </p>
@@ -135,7 +135,7 @@
                 Every property is lazy. <code>name()</code> triggers a fetch. <code>smiles()</code>, <code>iupac()</code>, <code>inchi()</code> do the same. <code>synonyms()</code>, <code>description()</code>, and <code>conformer3D</code> are cached on first access. The caller gets a rich object that looks like it was fully hydrated, but nothing happens until it is actually needed.
             </p>
 
-            <h2>One <code>Page</code> type, five source formats</h2>
+            <h3>One <code>Page</code> type, five source formats</h3>
             <p>
                 Wikipedia and PsychonautWiki emit Wikitext. PubMed and PMC emit JATS XML. The frontend does not care. Every text source materializes as the same object with the same interface:
             </p>
@@ -171,7 +171,7 @@
                 Each source module defines its own fetch delegate. Wikipedia uses the MediaWiki <code>action=parse</code> API. PsychonautWiki does the same. PubMed uses NCBI EUtils <code>efetch</code> with a regex-based article splitter because the returned XML contains multiple <code>PubmedArticle</code> records. The caller never sees any of this.
             </p>
 
-            <h2>A zero-copy AST for both Wikitext and XML</h2>
+            <h3>A zero-copy AST for both Wikitext and XML</h3>
             <p>
                 Existing D Wikitext options either lost formatting, choked on templates, or pulled in dependencies I did not want. So Akashi has its own parser. The AST is a flat array of nodes with child index ranges, not a tree of pointers. Every node&rsquo;s <code>text</code> field is a slice into the original source string. No copies during parsing.
             </p>
@@ -218,7 +218,7 @@ struct Document
     return _doc;
 }</code></pre>
 
-            <h2>Parsing dosage from Wikitext templates</h2>
+            <h3>Parsing dosage from Wikitext templates</h3>
             <p>
                 PsychonautWiki stores dosage data in <code>Template:SubstanceBox/&lt;compound&gt;</code> pages, not in the article text. The template parameters look like this:
             </p>
@@ -246,7 +246,7 @@ foreach (m; matchAll(raw, roaRe))
     routes[m[1]][m[2]] = range;
 }</code></pre>
 
-            <h2>PsychonautWiki resolution: similarity, not names</h2>
+            <h3>PsychonautWiki resolution: similarity, not names</h3>
             <p>
                 When a compound lacks its own PsychonautWiki page, Akashi falls back to structural similarity. The process is deliberately conservative:
             </p>
@@ -278,7 +278,7 @@ foreach (sim; withProps)
                 Only exact synonym matches are accepted. A close structural analog with a different name will not silently pass as the target compound. Every inferred dosage is flagged with the source compound&rsquo;s name so the caller knows where it came from.
             </p>
 
-            <h2>PubMed and PMC: XML into the same AST</h2>
+            <h3>PubMed and PMC: XML into the same AST</h3>
             <p>
                 NCBI EUtils returns JATS XML, which is verbose, deeply nested, and full of metadata tags the renderer does not care about. Akashi has a second parser that reads this XML into the <em>same</em> AST structure as the Wikitext parser. <code>article-title</code> becomes a <code>Section</code> node. <code>abstract</code> and <code>sec</code> become sections with headings. <code>p</code> becomes <code>Paragraph</code>. <code>bold</code> and <code>italic</code> become <code>Styled</code> nodes with bitflags. Tables, figures, and reference lists are skipped entirely.
             </p>
@@ -298,7 +298,7 @@ if (matchTag("p"))             { parseParagraphElement(); }
 if (matchTag("bold") || matchTag("b"))
     { parseInlineElement("bold", NodeType.Styled, NodeFlags.Bold); }</code></pre>
 
-            <h2>Network hygiene: per-source rate limiting</h2>
+            <h3>Network hygiene: per-source rate limiting</h3>
             <p>
                 Every adapter uses the <code>conductor</code> HTTP library, but each source carries its own rate-limiting state. PubChem PUG REST is generous. NCBI EUtils demands 333ms between requests. MediaWiki asks for 200ms. These are not global locks; they are per-module clocks. Two modules hitting two different providers never share a bottleneck.
             </p>
@@ -326,12 +326,12 @@ JSONValue query(string[string] params)
                 The PubMed adapter also switches from GET to POST automatically when the ID list exceeds 200 items or 2000 characters, because NCBI EUtils rejects oversized GET requests without a helpful error.
             </p>
 
-            <h2>The extension test</h2>
+            <h3>The extension test</h3>
             <p>
                 After Chemica shipped I added a <code>pubchem/bio</code> module (genes, proteins, orthologs, pathways, disease associations) hydrated from PubChem&rsquo;s PUG REST and PUG View gene endpoints. Chemica does not use any of it yet. But it took an afternoon, not a refactor. That is the test I care about. Not &ldquo;does it work today,&rdquo; but &ldquo;how much does it cost me to extend.&rdquo;
             </p>
 
-            <h2>What I&rsquo;d carry into the next one</h2>
+            <h3>What I&rsquo;d carry into the next one</h3>
             <ul>
                 <li>Pick the identity anchor early. A bad identity model will cost more than a bad parser ever will.</li>
                 <li>Zero-copy ASTs with flat arrays are faster to build, easier to filter, and simpler to traverse than pointer trees.</li>
