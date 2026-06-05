@@ -51,7 +51,7 @@
 
             <hr>
 
-            <h2>The stack</h2>
+            <h3>The stack</h3>
             <p>
                 Chemica is a GTK4 desktop application written in D using <a href="https://github.com/gtkd-developers/GtkD" target="_blank" rel="noopener noreferrer">GtkD</a>. It searches PubChem by compound name, renders a 3D molecular model, surfaces chemical properties and identifiers, and pulls structured articles from Wikipedia, PsychonautWiki, PubMed, and PMC. Dosage data comes from PsychonautWiki with strict similarity-matching fallbacks. A local AI layer (Intuit) can synthesize conflicting sources into a single coherent article.
             </p>
@@ -59,7 +59,7 @@
                 This article covers the frontend: GTK architecture, the 3D conformer viewer, article rendering, and dosage matching.
             </p>
 
-            <h2>GTK4 application shell</h2>
+            <h3>GTK4 application shell</h3>
             <p>
                 The entry point is a standard <code>Gtk.Application</code> with a CSS provider for custom styling. The window uses a <code>Gtk.Stack</code> to switch between three views: home (search), article (compound details), and settings.
             </p>
@@ -104,7 +104,7 @@ void main(string[] args)
     app.run(args);
 }</code></pre>
 
-            <h2>Search and compound resolution</h2>
+            <h3>Search and compound resolution</h3>
             <p>
                 The home view is a <code>SearchEntry</code> plus a <code>ListBox</code> of results. When the user types a compound name, the app queries PubChem through Akashi and populates rows with the compound name, CID, and source label. Every search returns a primary match plus up to four structurally similar compounds so the user can pivot when a query is ambiguous.
             </p>
@@ -136,7 +136,7 @@ void main(string[] args)
     return row;
 }</code></pre>
 
-            <h2>The 3D molecular viewer</h2>
+            <h3>The 3D molecular viewer</h3>
             <p>
                 The viewer is a custom <code>DrawingArea</code> that renders a PubChem 3D conformer with Cairo. It supports mouse drag to rotate, scroll to zoom, and hover tooltips that identify the atom under the cursor. The camera is a simple orbit model.
             </p>
@@ -221,7 +221,7 @@ void drawMolecule(MoleculeView view, CairoContext ctx,
     }
 }</code></pre>
 
-            <h2>Article rendering with collapsible panels</h2>
+            <h3>Article rendering with collapsible panels</h3>
             <p>
                 Below the viewer, the article view renders fetched text with full Wikitext parsing. Headings are sorted into collapsible panels so the user can navigate dense articles without scrolling through walls of text. The parser is built on Akashi&rsquo;s <code>Page</code> type, which lazily fetches and exposes structured sections:
             </p>
@@ -248,7 +248,7 @@ void drawMolecule(MoleculeView view, CairoContext ctx,
     articleBox.prepend(preamble);
 }</code></pre>
 
-            <h2>Dosage similarity matching</h2>
+            <h3>Dosage similarity matching</h3>
             <p>
                 For psychoactive compounds, dosage data comes from PsychonautWiki. When a compound lacks its own dosage page, Chemica falls back to structural similarity scoring. The match must satisfy all three criteria:
             </p>
@@ -289,7 +289,7 @@ SimilarityResult scoreSimilarity(Compound target, Compound candidate)
                 The similarity layer is intentionally conservative. Every inferred dosage value is flagged in the UI with the source compound&rsquo;s name so the user knows where it came from.
             </div>
 
-            <h2>Local AI synthesis</h2>
+            <h3>Local AI synthesis</h3>
             <p>
                 When multiple sources overlap partially or contradict, Chemica can route the text through a local LLM via Intuit. The prompt is deterministic and structured: it receives the overlapping excerpts, their sources, and instructions to produce a single coherent paragraph with inline citations. This runs entirely on-device, so no data leaves the machine.
             </p>
@@ -308,7 +308,7 @@ SimilarityResult scoreSimilarity(Compound target, Compound candidate)
     return response.text;
 }</code></pre>
 
-            <h2>What the frontend proved</h2>
+            <h3>What the frontend proved</h3>
             <ul>
                 <li>GTK4 in D is viable for complex desktop apps if you keep the widget layer thin and push state into plain D classes.</li>
                 <li>A custom Cairo renderer is enough for molecular visualization; you do not need WebGL for simple 3D.</li>

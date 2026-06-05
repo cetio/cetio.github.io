@@ -35,7 +35,7 @@
 
             <hr>
 
-            <h2>WebKit GTK on Windows: it doesn't exist</h2>
+            <h3>WebKit GTK on Windows: it doesn't exist</h3>
             <p>
                 I spent about a month building <a href="/">Insurgent</a>, a companion app for a real-time strategy game that provides active monitoring of matches and an in-depth catalog of game data. The frontend was built around WebKit GTK because it ships with D's GtkD bindings and was the obvious choice on Linux and macOS. It allowed the game to run in a separate window where I could hook WebSockets and inject JavaScript. Then I tried to build on Windows.
             </p>
@@ -43,7 +43,7 @@
                 The Windows port was abandoned years ago. Not buggy. Abandoned. There is no path forward. I needed a cross-platform browser engine, and I needed it without rewriting the project in another language.
             </p>
 
-            <h2>Selenium was the replacement candidate</h2>
+            <h3>Selenium was the replacement candidate</h3>
             <p>
                 ChromeDriver is maintained by Google and runs everywhere the project needs to ship. I also have experience with Selenium from my work on LinkedIn Learning scraping and workflow automation, so the protocol and API patterns were already familiar.
             </p>
@@ -51,7 +51,7 @@
                 The obstacle was that D had no working Selenium bindings at all.
             </p>
 
-            <h2>The only option was from 2018</h2>
+            <h3>The only option was from 2018</h3>
             <p>
                 The existing library, <code>selenium.d</code>, targeted the old JsonWire protocol. Selenium deprecated JsonWire in favor of W3C WebDriver years ago, and modern ChromeDriver simply rejects JsonWire session requests outright. Every endpoint path, every payload shape, and every error response format had changed.
             </p>
@@ -63,7 +63,7 @@
                 The protocol gap was not a version mismatch. It was a different wire format, different capability negotiation, and different error handling. Every request path and every payload shape had to be revisited.
             </div>
 
-            <h2>This is not my first time with WebDriver</h2>
+            <h3>This is not my first time with WebDriver</h3>
             <p>
                 The Ruby automation I wrote for AutoHandshake was a dispatch-oriented runtime with tab queuing, JavaScript-level request interception, and companion browser extensions. That experience mattered here because I did not have to learn what good bindings feel like while also learning the W3C protocol. I already knew what the surface should look like.
             </p>
@@ -71,7 +71,7 @@
                 Ruby's metaprogramming also excellently complements D's metaprogramming. Both languages reward building small, composable abstractions, and that shaped how I structured the API.
             </p>
 
-            <h2>Session negotiation</h2>
+            <h3>Session negotiation</h3>
             <p>
                 Session creation was the big one. The fix started at the entry point. The <code>Bridge</code> now builds a W3C-compliant capabilities payload and parses the standardized response shape:
             </p>
@@ -114,7 +114,7 @@
     return null;
 }</code></pre>
 
-            <h2>Modeling the API after Ruby</h2>
+            <h3>Modeling the API after Ruby</h3>
             <p>
                 The D version follows the same conventions as Ruby's Selenium bindings: a <code>Driver</code> owns the session, <code>Element</code> wraps node references, and locators are strongly typed instead of raw strings.
             </p>
@@ -184,7 +184,7 @@ driver.navigate("https://example.com");
 auto element = driver.find(Locator.CssSelector, "input[name='q']");
 element.sendKeys("query");</code></pre>
 
-            <h2>Driver auto-detection and lifecycle</h2>
+            <h3>Driver auto-detection and lifecycle</h3>
             <p>
                 One quality-of-life feature from the Ruby ecosystem is that the bindings often find the driver executable for you. The D port replicates that with a path search and executable inference from the filename:
             </p>
@@ -255,7 +255,7 @@ void stop()
     pid = Pid.init;
 }</code></pre>
 
-            <h2>Error handling for both protocols</h2>
+            <h3>Error handling for both protocols</h3>
             <p>
                 Because the library may still encounter legacy drivers in the wild, the error mapper handles both W3C <code>error</code> strings and legacy JsonWire <code>status</code> codes:
             </p>
@@ -310,7 +310,7 @@ void stop()
     return new WebDriverError(message);
 }</code></pre>
 
-            <h2>Implicit waits and synchronization</h2>
+            <h3>Implicit waits and synchronization</h3>
             <p>
                 A raw Selenium script without waits breaks immediately on slow-loading pages. The library exposes implicit-wait configuration on the bridge and syncs it lazily before element lookups:
             </p>
@@ -330,7 +330,7 @@ void stop()
     catch (Exception) { }
 }</code></pre>
 
-            <h2>JavaScript execution and screenshot capture</h2>
+            <h3>JavaScript execution and screenshot capture</h3>
             <p>
                 Two features that Insurgent needed heavily were script injection and screenshot capture for debugging. Both map cleanly to W3C endpoints. <code>execute</code> is generic over the return type and handles serialization automatically:
             </p>
@@ -346,7 +346,7 @@ void stop()
 string screenshot()
     => bridge.request!string(HTTP.Method.get, "/screenshot");</code></pre>
 
-            <h2>What is still missing</h2>
+            <h3>What is still missing</h3>
             <p>
                 The library covers the core WebDriver surface that Insurgent needed: navigation, element interaction, form input, script execution, screenshots, and session management. It does not yet implement the Actions API for low-level mouse and keyboard input, nor does it support BiDi (WebDriver Bidi) for network interception or console log streaming. Remote Grid support and mobile WebDriver endpoints are also absent.
             </p>
@@ -354,7 +354,7 @@ string screenshot()
                 Those gaps are acceptable for now. The goal was not parity with the Java or Python bindings. The goal was a working W3C foundation in a language that had none, and one that is easy to write unittests for.
             </p>
 
-            <h2>Where it stands now</h2>
+            <h3>Where it stands now</h3>
             <p>
                 The library is working and I am continually expanding its functionality. It is forked from <a href="https://github.com/gedaiu/selenium.d">gedaiu/selenium.d</a> and lives at <a href="https://github.com/cetio/selenium-sdk">github.com/cetio/selenium-sdk</a>. It is not complete, but it is enough to drive a browser from D and support the majority of basic Selenium functionality, and a month ago that was not possible at all.
             </p>
