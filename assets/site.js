@@ -72,9 +72,10 @@
             closeNavMenu();
     });
 
-    document.querySelectorAll('.quick-link-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const target = button.dataset.tabTarget;
+    document.querySelectorAll('.quick-link').forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const target = link.dataset.tabTarget;
             activateTab(target);
             window.location.hash = target;
             window.scrollTo({ top: 0, behavior: 'smooth' });

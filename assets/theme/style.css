@@ -726,58 +726,58 @@ main {
 
 .quick-links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    align-items: center;
+    gap: 16px;
     margin-top: 14px;
 }
 
-.quick-link-btn {
+.quick-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: transparent;
-    color: var(--fg);
+    color: var(--link);
     border: none;
-    padding: 10px 22px;
+    padding: 0;
     cursor: pointer;
     font-family: inherit;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 13px;
-    text-shadow: 0 0 6px rgba(221, 221, 221, 0.35);
-    transition: text-shadow 0.12s ease;
+    font-size: 15px;
+    transition: color 0.12s ease, text-shadow 0.12s ease;
+    text-shadow: 0 0 6px rgba(102, 179, 255, 0.35);
 }
 
-.quick-link-btn svg {
+.quick-link svg {
     width: 16px;
     height: 16px;
     fill: currentColor;
     flex-shrink: 0;
-    filter: drop-shadow(0 0 4px rgba(221, 221, 221, 0.4));
+    filter: drop-shadow(0 0 4px rgba(102, 179, 255, 0.4));
 }
 
-.quick-link-btn:hover {
-    text-shadow: 0 0 10px rgba(221, 221, 221, 0.55);
+.quick-link:hover {
+    color: #99ccff;
+    text-shadow: 0 0 10px rgba(102, 179, 255, 0.55);
 }
 
-.quick-link-btn:hover svg {
-    filter: drop-shadow(0 0 6px rgba(221, 221, 221, 0.6));
+.quick-link:hover svg {
+    filter: drop-shadow(0 0 6px rgba(102, 179, 255, 0.6));
 }
 
-.quick-link-btn.is-featured {
+.quick-link.is-featured {
     color: #e5c158;
     text-shadow: 0 0 6px rgba(229, 193, 88, 0.35);
 }
 
-.quick-link-btn.is-featured svg {
+.quick-link.is-featured svg {
     filter: drop-shadow(0 0 4px rgba(229, 193, 88, 0.4));
 }
 
-.quick-link-btn.is-featured:hover {
+.quick-link.is-featured:hover {
+    color: #f0d878;
     text-shadow: 0 0 10px rgba(229, 193, 88, 0.55);
 }
 
-.quick-link-btn.is-featured:hover svg {
+.quick-link.is-featured:hover svg {
     filter: drop-shadow(0 0 6px rgba(229, 193, 88, 0.6));
 }
 
@@ -874,8 +874,8 @@ main {
 /* ── Contact Links ── */
 .contact-links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px 16px;
+    align-items: center;
+    gap: 16px;
     color: var(--fg-dim);
     font-size: 14px;
     margin: 12px 0 0 0;
@@ -898,15 +898,19 @@ main {
     fill: currentColor;
 }
 
-.contact-links .email {
-    display: inline-flex;
-    margin-top: 8px;
-}
+.contact-links a.github,
+.contact-links a.email { color: #cccccc; }
 
-.github,
-.email { color: #FFFFFF !important; }
+.contact-links a.github:hover,
+.contact-links a.email:hover { color: #ffffff; }
 
-.linkedin { color: #0A66C2 !important; }
+.contact-links a.linkedin { color: #0A66C2; }
+
+.contact-links a.linkedin:hover { color: #4d9ef5; }
+
+.contact-links a.discord { color: #5865F2; }
+
+.contact-links a.discord:hover { color: #8b93f5; }
 
 /* ── Copyright ── */
 .copyright {
