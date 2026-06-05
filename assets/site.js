@@ -3,16 +3,11 @@
     const tabPanels = document.querySelectorAll('.tab-panel');
 
     const activateTab = (target) => {
-        tabButtons.forEach(button => {
-            button.classList.remove('active');
-            button.setAttribute('aria-selected', 'false');
-        });
+        tabButtons.forEach(button => button.classList.remove('active'));
         tabPanels.forEach(panel => panel.classList.remove('active'));
         const btn = document.querySelector(`.tab-btn[data-tab="${target}"]`);
-        if (btn) {
+        if (btn)
             btn.classList.add('active');
-            btn.setAttribute('aria-selected', 'true');
-        }
         const panel = document.getElementById('tab-' + target);
         if (panel)
             panel.classList.add('active');

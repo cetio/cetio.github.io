@@ -45,12 +45,6 @@ html {
     font-size: 16px;
 }
 
-/* Force all text elements to inherit size from parent */
-body, body * {
-    font-size: inherit;
-    line-height: inherit;
-}
-
 /* Explicitly override headers and common text elements */
 h1 {
     font-size: 64px;
