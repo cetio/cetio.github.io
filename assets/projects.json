@@ -116,7 +116,8 @@
       "languages": [
         "d"
       ],
-      "sortOrder": 9,
+      "starred": true,
+      "sortOrder": 6,
       "description": [
         "GTK-based desktop application for exploring chemical compounds with interactive 3D molecular visualization, property tracking, and standard identifier lookup.",
         "Automated dosage aggregation and similarity matching using structural scoring to identify analogous compounds and fill knowledge gaps.",
@@ -252,8 +253,9 @@
       "languages": [
         "csharp"
       ],
-      "sortOrder": 11,
-      "description": "Managed C# library for deep runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code. No longer actively maintained; succeeded by Godwit.",
+      "starred": true,
+      "sortOrder": 3,
+      "description": "Managed C# library for .NET runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code.",
       "github": "https://github.com/cetio/Cassowary",
       "year": 2024
     },
@@ -275,7 +277,6 @@
       "languages": [
         "d"
       ],
-      "starred": true,
       "sortOrder": 8,
       "description": [
         "High-performance D standard library extension providing compile-time vectorized algorithms, automated memory management primitives, and type introspection utilities.",
@@ -482,7 +483,6 @@
       "languages": [
         "d"
       ],
-      "starred": true,
       "sortOrder": 5,
       "description": [
         "HTTP, OAuth, and network orchestration utilities in D that eliminate boilerplate when connecting applications to external services.",
