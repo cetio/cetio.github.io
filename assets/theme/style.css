@@ -206,12 +206,17 @@ main {
 
 .tab-panel.active {
     display: block;
-    animation: slideIn 0.25s ease;
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to   { opacity: 1; transform: translateX(0); }
+@media (prefers-reduced-motion: no-preference) {
+    .tab-panel.active {
+        animation: slideIn 0.25s ease;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
 }
 
 /* ── Panels ── */
