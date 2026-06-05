@@ -4,10 +4,10 @@
             "title": "AI Trainer",
             "company": "Handshake",
             "type": "Contract",
-            "date": "November 2025 – Present",
+            "date": "November 2025 – July 2026",
             "logo": "assets/logos/team_handshake_logo.jpg",
             "bullets": [
-                "Evaluate multimodal AI agents against structured rubrics to assess response quality, reasoning accuracy, and domain understanding across generalist tasks.",
+                "Evaluated multimodal AI agents against structured rubrics to assess response quality, reasoning accuracy, and domain understanding across generalist tasks.",
                 "Built AutoHandshake!, a Selenium-based RPA suite that eliminated 95% of manual annotation and triage effort across 400+ contractor hours with unattended execution, failure recovery, and full audit trails.",
                 "Mentored contractors on platform operations, rubric interpretation, and efficient evaluation workflows."
             ]
