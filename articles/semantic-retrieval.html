@@ -45,7 +45,7 @@
 
             <hr>
 
-            <h3>Embeddings as a geometric substrate</h3>
+            <h2>Embeddings as a geometric substrate</h2>
             <p>
                 An embedding maps a span of text into a fixed-length vector in &real;<sup>d</sup>. Similar text ends up near each other under some distance metric, usually cosine similarity or L2. Once text is a point, retrieval is just geometry: nearest-neighbor search, k-means clustering, centroid summarization, reranking by reweighted distance.
             </p>
@@ -54,7 +54,7 @@
                 On a laptop, the real costs are memory bandwidth and SIMD lane utilization, not raw FLOPs. Good retrieval on local hardware is mostly a data-layout problem.
             </div>
 
-            <h3>Coarse centroids, fine-grained local search</h3>
+            <h2>Coarse centroids, fine-grained local search</h2>
             <p>
                 Scanning every vector for every query is O(N&middot;d). At millions of chunks that is already too slow on a laptop. The standard fix is a two-stage index: cluster the corpus once, keep a centroid per cluster, and at query time restrict the fine-grained search to the top-<em>k</em> nearest clusters.
             </p>
@@ -73,7 +73,7 @@ return rerank(hits, query);</code></pre>
                 With ~&radic;N clusters, a typical query touches a small constant fraction of the corpus instead of all of it. Recall loss is bounded by how well the centroids separate the data, and is usually recoverable with a slightly wider shortlist.
             </p>
 
-            <h3>Data layout beats algorithm</h3>
+            <h2>Data layout beats algorithm</h2>
             <p>
                 Cosine similarity between two <code>float[d]</code> vectors is the inner-product kernel from any linear algebra library. The wins on laptop hardware are not algorithmic; they come from how the vectors are stored:
             </p>
@@ -89,7 +89,7 @@ return rerank(hits, query);</code></pre>
                 Intuit&rsquo;s <code>intuit.space</code> module exposes <code>cosineSimilarity</code>, <code>dotProduct</code>, <code>euclideanDistance</code>, <code>l2Norm</code>, <code>normalize</code>, and <code>normMean</code> as SIMD-specialized primitives so downstream code can stay algorithmic without losing the low-level speed.
             </p>
 
-            <h3>Quantization for memory, not accuracy</h3>
+            <h2>Quantization for memory, not accuracy</h2>
             <p>
                 Full <code>float32</code> embeddings at d=1024 cost 4&nbsp;KB per chunk. At a million chunks that is 4&nbsp;GB just for the index. <code>float16</code> halves it with no meaningful recall change on most retrieval workloads; int8 scalar quantization with per-vector scale halves it again.
             </p>
@@ -97,17 +97,17 @@ return rerank(hits, query);</code></pre>
                 The useful insight on a laptop is that quantization is about <em>staying in cache</em>. Int8 vectors let a much larger working set live in L2/L3, which in practice dominates any precision loss.
             </p>
 
-            <h3>Determinism and pure functions make this testable</h3>
+            <h2>Determinism and pure functions make this testable</h2>
             <p>
                 Every transform in the pipeline (chunking, embedding, normalization, centroid computation, shortlist selection, reranking) is a pure function of its inputs. That makes clusters reproducible across runs, makes it possible to check centroid stability across corpus updates, and makes it possible to golden-test retrieval on a fixed corpus snapshot without spinning up any infrastructure.
             </p>
 
-            <h3>Models that fit the laptop envelope</h3>
+            <h2>Models that fit the laptop envelope</h2>
             <p>
                 The pair that has worked best for me is Qwen 0.6B for embeddings and Qwen 4B for language. The embedding model is small enough to re-embed hundreds of thousands of chunks in an afternoon on CPU; the language model is small enough to stream tokens interactively while still producing useful extractive summaries when given retrieved context.
             </p>
 
-            <h3>Takeaways</h3>
+            <h2>Takeaways</h2>
             <ul>
                 <li>Treat retrieval as geometry, not string matching.</li>
                 <li>Use coarse centroids to prune, then do full-precision search inside a small shortlist.</li>

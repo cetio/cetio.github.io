@@ -50,7 +50,7 @@
 
             <hr>
 
-            <h3>The failure mode of linear scripts</h3>
+            <h2>The failure mode of linear scripts</h2>
             <p>
                 Part I gave us a reliable way to claim tasks, detect page states, and click elements safely. But the workflow still had a critical gap: the actual submission happens on a secondary page, and the primary page needs to know <em>exactly</em> when that submission is done. A naive approach would poll the secondary page&rsquo;s DOM, but the submit button disappears before the server has actually accepted the request. Waiting for the button to vanish means you think you are done when the network request is still in flight.
             </p>
@@ -58,7 +58,7 @@
                 This article covers the second iteration: treating Selenium like a runtime. The script owns a tab queue, injects request-tracking JavaScript into every new page, intercepts click events at the browser level, and coordinates between two pages through a shared event loop rather than a linear script.
             </p>
 
-            <h3>Tab queuing for the secondary page</h3>
+            <h2>Tab queuing for the secondary page</h2>
             <p>
                 The secondary page (a partner portal) opens in its own tab. Instead of managing one tab, the script maintains a queue of handles. When a new task needs a fresh portal tab, it is queued; when the task is done, the tab is popped and closed. This prevents the &ldquo;stale window handle&rdquo; errors that happen when you reuse a tab whose page has navigated away.
             </p>
@@ -132,7 +132,7 @@
   end
 end</code></pre>
 
-            <h3>Track submissions at the network layer</h3>
+            <h2>Track submissions at the network layer</h2>
             <p>
                 The portal page submits via both <code>XMLHttpRequest</code> and <code>fetch</code>. The script cannot reliably observe completion from the DOM alone because the submit button is hidden optimistically. Instead, the script injects a small JavaScript tracker that instruments <code>XHR</code> and <code>fetch</code> to count pending requests and mark them complete when the response arrives.
             </p>
@@ -277,7 +277,7 @@ end</code></pre>
                 The tracker instruments both <code>XMLHttpRequest</code> and <code>fetch</code>, counts pending requests, and records timestamps. It also listens for click and submit events on the page to detect <em>intent</em> (the user clicked a submit-like button) independently of whether the network request has actually fired yet.
             </p>
 
-            <h3>Dual-channel finalization check</h3>
+            <h2>Dual-channel finalization check</h2>
             <p>
                 With the JS tracker in place, the script can now ask two independent questions: is the UI showing a finalized state, and has the network layer finished all its requests? Only when <em>both</em> agree can the script safely switch back to the primary page and continue.
             </p>
@@ -313,7 +313,7 @@ def submission_elements!
   $driver.find_elements(xpath: "//button[.//svg[contains(@class, 'check')]]")
 end</code></pre>
 
-            <h3>The companion extension</h3>
+            <h2>The companion extension</h2>
             <p>
                 The script coordinates with a small companion browser extension that exposes modes (auto-submit, auto-skip, audio notifications, etc.) through <code>dataset</code> attributes on the <code>documentElement</code>. The Ruby side polls these attributes and reacts to queue requests and pop commands without ever touching the extension&rsquo;s internal DOM.
             </p>
@@ -381,7 +381,7 @@ end</code></pre>
   end
 end</code></pre>
 
-            <h3>The dispatch loop: <code>await_submission</code></h3>
+            <h2>The dispatch loop: <code>await_submission</code></h2>
             <p>
                 The heart of the system is a single event loop on the portal tab. Every 100ms it checks: is the extension ready? Does the companion want a new tab queued or an old one popped? Has a new contribution appeared? Is the contribution finalized? Should we auto-submit after the handling time expires?
             </p>
@@ -459,7 +459,7 @@ end</code></pre>
   await_finalize(Extension.auto_skip?)
 end</code></pre>
 
-            <h3>Intercepting navigation clicks with JavaScript</h3>
+            <h2>Intercepting navigation clicks with JavaScript</h2>
             <p>
                 When the user (or script) clicks a navigation button on the primary page, the default behavior immediately navigates away. The script needs to know <em>which</em> button was clicked so it can decide whether to continue to the next task or exit. Instead of racing the browser, it overrides the click handlers on both buttons and writes a signal to a global variable that Ruby can poll.
             </p>
@@ -495,7 +495,7 @@ end</code></pre>
   end
 end</code></pre>
 
-            <h3>Putting it together: the Tracker</h3>
+            <h2>Putting it together: the Tracker</h2>
             <p>
                 The <code>Tracker</code> class ties everything together. It owns the portal queue, runs the dispatch loop, reads the elapsed time from the primary page, and submits the completed task back to the dashboard.
             </p>
@@ -569,7 +569,7 @@ end</code></pre>
   end
 end</code></pre>
 
-            <h3>What this iteration proved</h3>
+            <h2>What this iteration proved</h2>
             <ul>
                 <li>DOM-only observation is insufficient for pages that hide UI optimistically. Instrumenting <code>XHR</code> and <code>fetch</code> from the inside gives you ground truth.</li>
                 <li>A tab queue prevents stale-handle errors and makes cleanup deterministic.</li>
