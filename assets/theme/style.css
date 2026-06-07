@@ -1278,6 +1278,16 @@ code {
         grid-template-columns: 1fr;
     }
 
+    .contact-links {
+        flex-wrap: wrap;
+        gap: 10px 16px;
+    }
+
+    .quick-links {
+        flex-wrap: wrap;
+        gap: 10px 16px;
+    }
+
 }
 
 @media print {
