@@ -15,4 +15,3 @@ server-test-*
 *.obj
 *.lst
 server
-output*
