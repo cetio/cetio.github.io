@@ -90,9 +90,9 @@
       "starred": true,
       "sortOrder": 7,
       "description": [
-        "D library for language and embedding model endpoints that replaces fragile JSON shims with strongly typed native structures.",
-        "Chat completions with streaming, batch embeddings, tool usage, and persistent per-model configuration for production inference workflows.",
-        "Supports most model vendors, with a focus on OpenAI and Qwen endpoints."
+        "D SDK for connecting to LLM and embedding models, with a focus on local models and an extensible, interface-driven design that makes adding new endpoints straightforward.",
+        "Text completions parsed directly into native D types, JSON-schema structured output, system/user/assistant context management, and real-time SSE streaming.",
+        "Embeddings with configurable precision and SIMD-accelerated math, plus native D functions exposed as model tools with automatic JSON schema generation."
       ],
       "github": "https://github.com/cetio/intuit",
       "year": 2026
@@ -104,9 +104,9 @@
       ],
       "sortOrder": 10,
       "description": [
-        "Chemistry-aware data retrieval library in D that unifies PubChem, Wikipedia, Psychonaut Wiki, PubMed, and PMC into a single queryable interface.",
-        "Lazy content fetching with structured text parsing from wikitext and XML into compact ASTs for rendering and extraction.",
-        "Cross-source resolution between scientific databases, similarity search on compound identifiers, and reusable HTTP rate-limiting primitives for building new adapters."
+        "D library for chemistry-aware data retrieval, source resolution, and text parsing across public scientific and knowledge sources, including PubChem compounds, assays, proteins, and 3D conformers, Wikipedia, PsychonautWiki, Erowid, PubMed, and PubMed Central.",
+        "Parses wikitext, XML, articles, and medical and chemical texts into structured data, with sophisticated rate limiting and request batching for reliable large-scale access.",
+        "Designed to pair with the Intuit AI library for deterministic model connectors while remaining fully functional on its own."
       ],
       "github": "https://github.com/cetio/akashi",
       "year": 2026
@@ -137,9 +137,9 @@
       ],
       "sortOrder": 12,
       "description": [
-        "Multi-target compile-time assembler in D generating CIL, MIPS IV, x86, and x86_64 machine code from a fluent instruction API with zero runtime overhead.",
-        "Uses D templates for compile-time instruction encoding, label resolution, and bytecode finalization via Block containers per architecture.",
-        "Covers SSE2 through SSE4.2, SSSE3, and core integer instructions for AMD64 with planned AVX-512, ARM, and z80 backends."
+        "High-performance compile-time assembler in D targeting CIL, x86, x86_64, and MIPS with minimal overhead and maximal throughput.",
+        "Each backend exposes a fluent instruction API through a Block type with optional labels and a finalize() step that emits assembled machine code bytes.",
+        "AMD64 support spans MMX, SSE, AVX, and AVX2, with runtime assembling planned for the future."
       ],
       "github": "https://github.com/cetio/multidasm",
       "year": 2026
@@ -150,7 +150,11 @@
         "d"
       ],
       "sortOrder": 15,
-      "description": "Finance SDK in D with strongly typed market data and multi-market account access across equities, options, crypto, and futures. HMAC-SHA1 request signing, MFA token flows, and automatic session refresh for autonomous authentication.",
+      "description": [
+        "D SDK for the Webull OpenAPI providing authenticated access to live market data, account management, and trading across securities.",
+        "Handles HMAC-SHA1 request signing, token lifecycle with MFA support, runtime permission detection, and switchable production, UAT, or local endpoints.",
+        "Exposes OHLCV bars, real-time snapshots, Level-2 order books, tick records, and footprint delta analysis, alongside typed account lists, balances, profiles, and positions."
+      ],
       "github": "https://github.com/cetio/webull-sdk",
       "demoImage": {
         "url": "/assets/demos/webull-sdk.png",
@@ -471,9 +475,9 @@
       "starred": true,
       "sortOrder": 6,
       "description": [
-        "D library for Google Drive integration with OAuth authentication, full file system operations, and metadata management.",
-        "Unified file interface covering login, identity, folder and file listing, upload, download, save, delete, and text extraction.",
-        "Focused modules for Google Docs and Sheets MIME detection and lightweight plain-text or CSV export, built on a reusable OAuth and HTTP foundation."
+        "D library for Google APIs covering Drive, Docs, Sheets, and Gmail, with OAuth session and identity management and no heavy wrapper layers.",
+        "Drive support for authentication, folder and file browsing, byte-level read and write, and export of Google Workspace-native files; Gmail support for sending, reading, organizing, and labeling messages and threads.",
+        "Detects MIME types and exports Google Docs as plain text and Sheets as CSV, with typed exceptions for auth, permission, not-found, rate-limit, and protocol errors."
       ],
       "github": "https://github.com/cetio/google-sdk",
       "year": 2026
@@ -485,8 +489,9 @@
       ],
       "sortOrder": 5,
       "description": [
-        "HTTP, OAuth, and network orchestration utilities in D that eliminate boilerplate when connecting applications to external services.",
-        "Typed request building, automatic token refresh, JSON and form serialization, connection pooling, and resilience patterns including retry and circuit breaking."
+        "D library providing HTTP, OAuth, serialization, and network orchestration utilities for API integrations without pulling in a large framework.",
+        "Wraps std.net.curl with JSON-aware request helpers, full OAuth 2.0 authorization with token caching and revocation, and a local loopback server for capturing OAuth redirects.",
+        "Includes reflection-driven JSON serialization and UDA-based struct-to-byte serialization, plus rate-limited request dispatch with reusable HTTP client state."
       ],
       "github": "https://github.com/cetio/conductor",
       "year": 2026
@@ -508,9 +513,9 @@
       "starred": true,
       "sortOrder": 3,
       "description": [
-        "D Selenium library overhauled from selenium.d with W3C WebDriver compliance and Ruby-inspired API conventions.",
-        "Strongly typed interface for browser automation with auto-detection of major browser drivers, implicit wait synchronization, and full session lifecycle management.",
-        "Element querying via CSS selector, XPath, and ID locators with click, form input, screenshot, and attribute inspection, plus JavaScript execution and structured logging."
+        "D library for browser automation over the WebDriver protocol, managing driver lifecycle, element interaction, and JavaScript execution without external language bindings.",
+        "Auto-detects and controls WebDriver executables for Chrome, Firefox, Edge, and Safari, with element search by CSS selector, XPath, tag name, or name, scoped globally or within an element.",
+        "Supports clicks, key input, form submission, text and attribute inspection, typed JavaScript return values, per-browser option classes, and full window management."
       ],
       "demoVideo": {
         "type": "video",
