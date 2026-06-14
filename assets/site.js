@@ -74,8 +74,10 @@
 
     document.querySelectorAll('.quick-link').forEach(link => {
         link.addEventListener('click', (event) => {
-            event.preventDefault();
             const target = link.dataset.tabTarget;
+            if (!target)
+                return;
+            event.preventDefault();
             activateTab(target);
             window.location.hash = target;
             window.scrollTo({ top: 0, behavior: 'smooth' });
