@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Benjamin Johnston">
+    <meta name="description" content="I've studied software architecture; taken the courses, drawn the diagrams, and read the books on modeling and design. A blocker in my AI SDK, and the W3C contract behind my Selenium SDK, taught me why design in advance matters even for personal work.">
+    <title>Design that matters: what a Selenium SDK taught me about my AI SDK &middot; cetio</title>
+    <meta property="og:title" content="Design that matters: what a Selenium SDK taught me about my AI SDK">
+    <meta property="og:description" content="I've studied software architecture; taken the courses, drawn the diagrams, and read the books on modeling and design. A blocker in my AI SDK, and the W3C contract behind my Selenium SDK, taught me why design in advance matters even for personal work.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://cetio.github.io/articles/designing-in-advance.html">
+    <meta property="og:image" content="https://cetio.github.io/assets/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://cetio.github.io/articles/designing-in-advance.html">
+    <link rel="stylesheet" href="/assets/fonts/style.css">
+    <link rel="stylesheet" href="/assets/theme/style.css">
+    <link rel="stylesheet" href="/assets/prism-theme.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <nav class="top-nav article-back" role="navigation" aria-label="Article">
+        <a href="/#articles" class="article-back-link">&larr; Back</a>
+    </nav>
+
+    <main id="main">
+        <article>
+            <header class="article-header">
+                <h1>Design that matters: what a Selenium SDK taught me about my AI SDK</h1>
+                <div class="article-meta">
+                    <time>June 2026</time>
+                </div>
+            </header>
+
+            <hr>
+
+            <p>
+                I've studied software architecture; taken the courses, drawn the diagrams, and read the books on modeling and design. None of that is new to me. What is new is that I only recently really applied it to my own projects.
+            </p>
+
+            <p>
+                I maintain a set of ecosystem libraries for the D programming language. There are around seven of them now, each fairly large and technical, and I keep filling them out. The one that forced this lesson on me is <strong>Intuit</strong>, my AI SDK. It is something like LangChain for D: completions, structured output, context management, streaming, embeddings, and native D functions as tools, all behind a small set of provider endpoints.
+            </p>
+
+            <p>
+                More than six months of total development have gone into it, with a lot of genuine thought about the design. But it was designed <em>bottom-up</em>, and that is the part that quietly cost me.
+            </p>
+
+            <h3>The blocker</h3>
+
+            <p>
+                I was building toward a v2. The goals were concrete: new providers, an overhauled test suite, better context management, and, most importantly, routers. A <code>LocalRouter</code> for people running models locally, and an <code>OpenRouter</code> integration. Routers matter because most users do not want to hand-wire endpoints and models. They want model details, a single centralized and compactable context, and an active model they can select and swap. A router was supposed to be the friendly front door.
+            </p>
+
+            <p>
+                That is where I hit the wall, and the wall was a design flaw, not a bug.
+            </p>
+
+            <h3>Issue 1: models that floated between layers</h3>
+
+            <p>
+                I had built the entire library around an endpoint-and-model system, and over time it became ambiguous what each one was actually <em>for</em>. If you knew the codebase, you knew that a model primarily served as a <strong>configuration interface</strong>: temperature, max tokens, response schema, tool choice. But the moment I started adding layers, an implicit low-level and high-level split appeared, and the model concept did not belong cleanly to either. It started being a weird layer that isn't clearly low or high level and makes designing everything else significantly harder.
+            </p>
+
+            <p>
+                The biggest point of contention was <code>IModel</code>. Every provider implemented it: <code>OpenAIModel</code>, <code>ClaudeModel</code>, <code>QwenModel</code>. Each of those classes carried the configuration fields <em>and</em> the protocol logic, building request payloads and parsing responses:
+            </p>
+
+<pre><code class="language-d">interface IModel
+{
+    ref string name();
+    ref string owner();
+    JSONValue completionsJSON(JSONValue input, ToolRegistry tools = ToolRegistry.init);
+    JSONValue embeddingsJSON(JSONValue input);
+    Completion parseCompletions(JSONValue response);
+    JSONValue parseEmbeddings(JSONValue response);
+}</code></pre>
+
+            <p>
+                Two problems fell out of this. First, it was horrible for reuse: the message parsing, the finish-reason mapping, the payload assembly were nearly identical across providers and got copied into each model. Second, and worse, <code>IModel</code> mirrored <code>IEndpoint</code>'s convention so closely, both interfaces, both with <code>ref string name()</code>, both stringly similar, that it was genuinely confusing which one owned what. A model held configuration, but it also did the wire work an endpoint should own. The two interface hierarchies looked like peers when they were not.
+            </p>
+
+            <h3>Issue 2: no defined way to manage endpoints and models</h3>
+
+            <p>
+                The second flaw was a direct consequence of the first. Because the model concept was ambiguous, I had never well-defined <em>how</em> a user is supposed to manage their endpoints and models together. The provider classes for OpenAI and Claude were good, genuinely good, but the low-level interface they exposed did not lend itself to extension. Any change I wanted to make as scope grew was likely to be breaking, because the contract users leaned on was the accidental shape of the implementation rather than a deliberate boundary.
+            </p>
+
+            <p>
+                This is the bottom-up tax. When you build upward from working pieces, every piece is locally correct, but the seams between them are never designed. The issues only surface when the project expands in scope, exactly when they are most expensive to fix.
+            </p>
+
+            <h3>The contrast: a Selenium SDK and W3C</h3>
+
+            <p>
+                Around the same time I was reworking another library, <strong>Selenium-SDK</strong>, a D library for browser automation over the WebDriver protocol. Implementing real browsers, Chrome, Firefox, Edge, Safari, and staying compliant with <strong>W3C WebDriver</strong> while keeping the API idiomatic for D turned out to be the thing that fixed my thinking.
+            </p>
+
+            <p>
+                The difference is that Selenium-SDK has a <em>contract handed to it from the outside</em>. The W3C specification already decides what the layers are. It tells you what the wire protocol is, what a session is, what a command is, and what a capability is. You cannot blur those layers even if you want to, because the spec defines them. That external authority did for Selenium-SDK exactly what I had failed to do for Intuit: it forced clean separation.
+            </p>
+
+            <p>
+                When you look at the result, the layering is obvious:
+            </p>
+
+            <ul>
+                <li><code>Bridge</code> owns transport: process lifecycle, session creation, HTTP plumbing, error mapping. Low level.</li>
+                <li><code>Driver</code> owns session commands: navigate, find elements, execute scripts, manage windows and frames.</li>
+                <li><code>Browser</code> owns configuration: capabilities, timeouts, and the per-browser subclasses for provider-specific options.</li>
+            </ul>
+
+            <p>
+                <code>Browser</code> is a single, honest configuration type. It never builds a request or parses a response. <code>Bridge</code> never decides what a timeout means. Each layer has one job because the contract refused to let them share.
+            </p>
+
+            <h3>Carrying it back to Intuit</h3>
+
+            <p>
+                Once I saw it that way, the Intuit rework wrote itself. I mapped Selenium's layers onto it:
+            </p>
+
+            <ul>
+                <li><code>IEndpoint</code> becomes the transport-and-provider layer, the analog of <code>Bridge</code>. It owns the quirks of talking to OpenAI or Claude.</li>
+                <li><code>ModelConfig</code>, a single concrete class, becomes the configuration layer, the analog of <code>Browser</code>. I deleted <code>IModel</code> entirely and made it way easier to reuse parsing. One type, one place. <code>ModelConfig</code> still handles parsing for payloads and responses, but is significantly easier to understand.</li>
+                <li>Routers and the request functions become the orchestration layer, the analog of <code>Driver</code>, operating over a maintained context and an active model.</li>
+            </ul>
+
+            <p>
+                The endpoint now simply hands you a config:
+            </p>
+
+<pre><code class="language-d">ModelConfig config(string modelName);</code></pre>
+
+            <p>
+                The model stopped floating. It is unambiguously the configuration layer now, and the duplication is gone with it.
+            </p>
+
+            <p>
+                The part that genuinely surprised me is how <em>non-breaking</em> this was. The path I had been recommending all along was calling by model name, <code>completions(ep, "gpt-4o", ctx)</code>, and that call site did not change at all. Swapping <code>IModel</code> for <code>ModelConfig</code> happened underneath it, and the routers layered cleanly on top of the now-clear boundary. A rework that I expected to be invasive turned out to be mostly internal, precisely because the new design had real layers to hang things on.
+            </p>
+
+            <h3>The actual lesson</h3>
+
+            <p>
+                I did not learn anything I had not already been taught. I learned to <em>use</em> it. Design in advance matters even for personal projects, and especially for libraries that other people will build on.
+            </p>
+
+            <p>
+                You do not always need a specification up front, but you do need to decide your layers and your contracts <em>before</em> scope expands, because bottom-up code never designs its own seams. And when a proven external contract already exists, like W3C WebDriver, borrow it. It will impose the discipline you would otherwise have to invent, and it will quietly stop you from building the exact ambiguity I built into Intuit's first design.
+            </p>
+
+            <p>
+                If you maintain your own projects, this is the part worth internalizing: the courses click when you finally let a real blocker force the issue. Better to design the seam now than to rediscover it the day your scope doubles.
+            </p>
+        </article>
+    </main>
+
+    <footer>
+        <p class="footer-name">Ben &middot; <span id="tz-label">EST</span></p>
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/cetio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg class="github" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                <span class="github">github.com/cetio</span>
+            </a>
+            <a class="footer-link" href="https://www.linkedin.com/in/bejaunst" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg class="linkedin" role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><title>LinkedIn</title><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+                <span class="linkedin">linkedin.com/in/bejaunst</span>
+            </a>
+            <a class="footer-link" href="mailto:bejaunst@gmail.com" aria-label="Email">
+                <svg class="email" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><title>Email</title><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/></svg>
+                <span class="email">bejaunst@gmail.com</span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="/assets/prism.min.js"></script>
+    <script src="/assets/prism-d.min.js"></script>
+    <script>
+        (function () {
+            const isEasternDst = (date) => {
+                const year = date.getFullYear();
+                const secondSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7 + 7;
+                };
+                const firstSunday = (m) => {
+                    const d = new Date(year, m, 1);
+                    return 1 + (7 - d.getDay()) % 7;
+                };
+                const start = new Date(year, 2, secondSunday(2), 2, 0, 0);
+                const end = new Date(year, 10, firstSunday(10), 2, 0, 0);
+                return date >= start && date < end;
+            };
+            const tzLabel = document.getElementById('tz-label');
+            if (tzLabel) tzLabel.textContent = isEasternDst(new Date()) ? 'EDT' : 'EST';
+        })();
+    </script>
+</body>
+</html>
