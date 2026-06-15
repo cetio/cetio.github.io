@@ -13,6 +13,18 @@
             ]
         },
         {
+            "title": "Fellow",
+            "company": "Snorkel AI",
+            "type": "Contract",
+            "date": "December 2025 – June 2026",
+            "logo": "assets/logos/snorkel_ai_logo.jpg",
+            "bullets": [
+                "Engineered constraint-based training workflows across 2 major contracted projects, training Claude and ChatGPT models on complex programming and logic tasks.",
+                "Executed comprehensive CI/CD testing and validation protocols, ensuring robust deployment stability and training set quality.",
+                "Designed rigorous evaluation frameworks to systematically assess model reasoning capabilities, driving continuous improvements in code generation and logical deduction accuracy."
+            ]
+        },
+        {
             "title": "Search Quality Evaluator",
             "company": "RWS Group",
             "type": "Contract",
