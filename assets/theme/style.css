@@ -243,11 +243,15 @@ main {
 .highlight-card {
     padding: 16px;
     margin-bottom: 0;
+    border-left: 2px solid var(--border-light);
+    border-right: 2px solid var(--border-light);
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .highlight-card:hover {
     border-color: var(--border-light);
+    border-left-color: var(--fg-muted);
+    border-right-color: var(--fg-muted);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
 }
 
@@ -753,7 +757,7 @@ main {
 .quick-link .ql-icon,
 .quick-link .ql-icon-filled {
     position: relative;
-    top: 1px;
+    top: 2px;
 }
 
 .quick-link .ql-icon-filled {
@@ -816,6 +820,7 @@ main {
 .highlights-page .highlight-card h3 {
     margin: 0;
     font-size: 14px;
+    text-transform: none;
 }
 
 .highlights-page .highlight-card p {
