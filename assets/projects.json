@@ -196,7 +196,7 @@
       "year": 2026
     },
     {
-      "title": "LinkedIn [Ruby]",
+      "title": "LinkedIn Learnt",
       "languages": [
         "ruby"
       ],
@@ -207,7 +207,7 @@
         "Uses Selenium for browser automation with rate-limit tolerance and responsible throttling, supporting Chromium profile reuse and credential-based login.",
         "Aggregates course details including duration, difficulty, ratings, CPE/PDU credits, and certification status with per-item JSON output."
       ],
-      "github": "https://github.com/cetio/linkedin",
+      "github": "https://github.com/cetio/linkedin-learnt",
       "year": 2026
     },
     {
