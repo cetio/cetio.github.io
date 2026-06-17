@@ -1,36 +1,4 @@
 (function () {
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabPanels = document.querySelectorAll('.tab-panel');
-
-    const activateTab = (target) => {
-        tabButtons.forEach(button => button.classList.remove('active'));
-        tabPanels.forEach(panel => panel.classList.remove('active'));
-        const btn = document.querySelector(`.tab-btn[data-tab="${target}"]`);
-        if (btn)
-            btn.classList.add('active');
-        const panel = document.getElementById('tab-' + target);
-        if (panel)
-            panel.classList.add('active');
-    };
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const target = button.dataset.tab;
-            activateTab(target);
-            window.location.hash = target;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            closeNavMenu();
-        });
-    });
-
-    const routeFromHash = () => {
-        const hashTab = window.location.hash.replace('#', '');
-        if (hashTab && document.getElementById('tab-' + hashTab))
-            activateTab(hashTab);
-    };
-    routeFromHash();
-    window.addEventListener('hashchange', routeFromHash);
-
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.getElementById('nav-menu');
 
@@ -70,17 +38,5 @@
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape')
             closeNavMenu();
-    });
-
-    document.querySelectorAll('.quick-link').forEach(link => {
-        link.addEventListener('click', (event) => {
-            const target = link.dataset.tabTarget;
-            if (!target)
-                return;
-            event.preventDefault();
-            activateTab(target);
-            window.location.hash = target;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
     });
 })();

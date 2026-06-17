@@ -423,7 +423,8 @@
       "year": 2024
     },
     {
-      "title": "Insurgent",
+      "title": "Insurgent Client",
+      "org": "Insurgent CON",
       "languages": [
         "d",
         "javascript"
@@ -440,6 +441,25 @@
         "type": "video",
         "url": "/assets/demos/insurgent.mp4"
       },
+      "year": 2026
+    },
+    {
+      "title": "Insurgent API",
+      "org": "Insurgent CON",
+      "languages": [
+        "d",
+        "javascript"
+      ],
+      "sortOrder": 4,
+      "year": 2026
+    },
+    {
+      "title": "Insurgent Image-Fetch",
+      "org": "Insurgent CON",
+      "languages": [
+        "python"
+      ],
+      "sortOrder": 4,
       "year": 2026
     },
     {
