@@ -35,19 +35,6 @@
     gap: 8px;
 }
 
-.badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    background: var(--border-light);
-    border-radius: 50%;
-    font-size: 11px;
-    color: var(--fg-muted);
-    flex-shrink: 0;
-}
-
 .card h3 {
     margin: 0;
 }
@@ -68,15 +55,52 @@
     padding-top: 8px;
 }
 
-.icon-ph {
+.icon-round-small,
+.icon-round-large,
+.icon-square-small,
+.icon-square-large {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
     background: var(--bg-inset);
     border: 1px solid var(--border);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.icon-round-small svg,
+.icon-round-small img,
+.icon-round-large svg,
+.icon-round-large img,
+.icon-square-small svg,
+.icon-square-small img,
+.icon-square-large svg,
+.icon-square-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.icon-round-small {
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    font-size: 10px;
-    color: var(--fg-muted);
+}
+
+.icon-round-large {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.icon-square-small {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius);
+}
+
+.icon-square-large {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius);
 }
