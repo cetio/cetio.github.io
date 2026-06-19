@@ -87,7 +87,6 @@
       "languages": [
         "d"
       ],
-      "starred": true,
       "sortOrder": 7,
       "description": [
         "D SDK for connecting to LLM and embedding models, with a focus on local models and an extensible, interface-driven design that makes adding new endpoints straightforward.",
@@ -116,7 +115,6 @@
       "languages": [
         "d"
       ],
-      "starred": true,
       "sortOrder": 6,
       "description": [
         "GTK-based desktop application for exploring chemical compounds with interactive 3D molecular visualization, property tracking, and standard identifier lookup.",
@@ -124,11 +122,8 @@
         "Multi-source data pipelines from scientific and knowledge databases, with a local AI synthesis layer that resolves and merges overlapping content into unified entries."
       ],
       "github": "https://github.com/cetio/chemica",
-      "demoVideo": {
-        "type": "video",
-        "url": "/assets/demos/chemica.mp4"
-      },
-      "year": 2026
+      "year": 2026,
+      "demo": "/assets/demos/chemica.mp4"
     },
     {
       "title": "Multidasm",
@@ -156,11 +151,8 @@
         "Exposes OHLCV bars, real-time snapshots, Level-2 order books, tick records, and footprint delta analysis, alongside typed account lists, balances, profiles, and positions."
       ],
       "github": "https://github.com/cetio/webull-sdk",
-      "demoImage": {
-        "url": "/assets/demos/webull-sdk.png",
-        "alt": "Webull-SDK terminal dashboard demo"
-      },
-      "year": 2026
+      "year": 2026,
+      "demo": "/assets/demos/webull-sdk.png"
     },
     {
       "title": "Jitsort",
@@ -174,11 +166,8 @@
         "Supports custom element-size callbacks for variable-length data with a minimal C API suitable for embedding."
       ],
       "github": "https://github.com/cetio/jitsort",
-      "demoVideo": {
-        "type": "video",
-        "url": "/assets/demos/jitsort.mp4"
-      },
-      "year": 2025
+      "year": 2025,
+      "demo": "/assets/demos/jitsort.mp4"
     },
     {
       "title": "AutoHandshake!",
@@ -186,7 +175,6 @@
         "ruby",
         "javascript"
       ],
-      "starred": true,
       "sortOrder": 1,
       "description": [
         "Ruby and JavaScript workflow automation suite for Handshake AI that reduced manual annotation and triage effort by 95% across 400+ contractor hours of proven runtime.",
@@ -200,7 +188,6 @@
       "languages": [
         "ruby"
       ],
-      "starred": true,
       "sortOrder": 2,
       "description": [
         "Ruby CLI tool and pseudo-library that fetches LinkedIn Learning completed history and extracts course and learning path metadata into cacheable JSON aggregates.",
@@ -218,11 +205,8 @@
       "sortOrder": 16,
       "description": "Lightweight Linux CLI for unified display configuration controlling brightness, contrast, gamma, color temperature, and monitor-specific VCP features. Human-friendly command labels alongside raw hardware codes with auto-detection and intelligent backlight preference.",
       "github": "https://github.com/cetio/nimbus",
-      "demoVideo": {
-        "type": "video",
-        "url": "/assets/demos/nimbus.mp4"
-      },
-      "year": 2025
+      "year": 2025,
+      "demo": "/assets/demos/nimbus.mp4"
     },
     {
       "title": "Mobster",
@@ -257,7 +241,6 @@
       "languages": [
         "csharp"
       ],
-      "starred": true,
       "sortOrder": 3,
       "description": "Managed C# library for .NET runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code.",
       "github": "https://github.com/cetio/Cassowary",
@@ -432,16 +415,11 @@
       "sortOrder": 4,
       "description": [
         "Full-stack companion client for a real-time strategy game using Selenium Chrome integration, featuring authentication, live dashboards, and WebSocket data feeds.",
-        "Quick-lookup dashboard for unit stacks and a full catalog with in-depth data on units, research, and buildings for competitive gameplay.",
-        "Live match tracking with minimal overhead using WebSocket connections to collect real-time data on all visible nations and map positions.",
+        "Renders interfaces for 10,000+ tiles, 5,000+ units and buildings, and 8,000+ images in under a second.",
         "Solo-developed client operating under Twin Harbor's ecosystem terms."
       ],
-      "starred": true,
-      "demoVideo": {
-        "type": "video",
-        "url": "/assets/demos/insurgent.mp4"
-      },
-      "year": 2026
+      "year": 2026,
+      "demo": "/assets/demos/insurgent.mp4"
     },
     {
       "title": "Insurgent API",
@@ -451,7 +429,13 @@
         "javascript"
       ],
       "sortOrder": 4,
-      "year": 2026
+      "year": 2026,
+      "description": [
+        "Core CON API for comprehensive static and real-time (match) data parsing.",
+        "Parses 10,000+ tiles, 5,000+ units and buildings, 2,000+ research trees, and more via WebSockets.",
+        "Backend for the Insurgent Client."
+      ],
+      "github": "https://github.com/insurgent-con/api"
     },
     {
       "title": "Insurgent Image-Fetch",
@@ -460,7 +444,12 @@
         "python"
       ],
       "sortOrder": 4,
-      "year": 2026
+      "year": 2026,
+      "description": [
+        "Tool to automatically collect images from CON spritesheets and CSS.",
+        "Handles 8,000+ images and organizes them for use in the Insurgent Client."
+      ],
+      "github": "https://github.com/insurgent-con/image-fetch"
     },
     {
       "title": "Nosferatu",
@@ -492,7 +481,6 @@
       "languages": [
         "d"
       ],
-      "starred": true,
       "sortOrder": 6,
       "description": [
         "D library for Google APIs covering Drive, Docs, Sheets, and Gmail, with OAuth session and identity management and no heavy wrapper layers.",
@@ -517,46 +505,20 @@
       "year": 2026
     },
     {
-      "title": "Warbler",
-      "languages": [
-        "d"
-      ],
-      "sortOrder": 24,
-      "description": "D CLI backend for academic institutions with a git-inspired command structure for grading, rubric generation, and classroom organization. Institutional plugin model mapping domain commands to arbitrary LMS backends with per-school configuration and OAuth authentication.",
-      "year": 2026
-    },
-    {
       "title": "Selenium-SDK",
       "languages": [
         "d"
       ],
-      "starred": true,
       "sortOrder": 3,
       "description": [
         "D library for browser automation over the WebDriver protocol, managing driver lifecycle, element interaction, and JavaScript execution without external language bindings.",
         "Auto-detects and controls WebDriver executables for Chrome, Firefox, Edge, and Safari, with element search by CSS selector, XPath, tag name, or name, scoped globally or within an element.",
         "Supports clicks, key input, form submission, text and attribute inspection, typed JavaScript return values, per-browser option classes, and full window management."
       ],
-      "demoVideo": {
-        "type": "video",
-        "url": "/assets/demos/selenium-sdk.mp4"
-      },
       "forked": true,
       "github": "https://github.com/cetio/selenium-sdk",
-      "year": 2026
-    },
-    {
-      "title": "Regex",
-      "languages": [
-        "d"
-      ],
-      "sortOrder": 21,
-      "description": [
-        "D regex library providing alternative matching engines with compile-time pattern compilation for zero-runtime-overhead text scanning.",
-        "Designed to allow for the entire engine, rather than just the constructor, to run at compile-time, allowing for matching at compile-time."
-      ],
-      "github": "https://github.com/cetio/regex",
-      "year": 2024
+      "year": 2026,
+      "demo": "/assets/demos/selenium-sdk.mp4"
     },
     {
       "title": "Soundcore A3954 Dump",
@@ -577,11 +539,8 @@
       "description": "Cross-platform application for controlling Soundcore audio device settings across desktop and Android. Liberty 4 Pro configuration protocol, exposing EQ profiles, ANC modes, and firmware metadata through a unified interface.",
       "forked": true,
       "github": "https://github.com/cetio/OpenSCQ30",
-      "demoImage": {
-        "url": "/assets/demos/openscq30.png",
-        "alt": "OpenSCQ30 desktop application controlling Soundcore earbuds"
-      },
-      "year": 2026
+      "year": 2026,
+      "demo": "/assets/demos/openscq30.png"
     }
   ]
 }
