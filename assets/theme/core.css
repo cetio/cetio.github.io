@@ -46,6 +46,38 @@ a:focus {
     color: #99ccff;
 }
 
+button,
+select,
+input {
+    background: var(--bg-surface);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    border-top: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font: inherit;
+    cursor: pointer;
+}
+
+button:hover,
+select:hover,
+input:hover {
+    border-color: var(--border-light);
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
 :focus-visible {
     outline: 2px solid var(--link);
     outline-offset: 2px;
@@ -67,48 +99,6 @@ a:focus {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-}
-
-.split {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-        "side head"
-        "side body";
-    gap: 16px;
-}
-
-.left-pane {
-    grid-area: side;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-top: 1px solid var(--border-light);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-raised);
-    padding: 16px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.top-pane {
-    grid-area: head;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-top: 1px solid var(--border-light);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-raised);
-    padding: 16px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.split-body {
-    grid-area: body;
 }
 
 .skip-link {
@@ -136,8 +126,8 @@ main {
 
 hr {
     border: none;
-    border-top: 1px solid var(--border);
-    margin: 12px 0;
+    border-top: 1px solid var(--border-light);
+    margin: 16px 0 16px 0;
     width: 100%;
 }
 
@@ -283,15 +273,6 @@ code {
 
     main {
         padding: 20px 12px 48px;
-    }
-
-    .split {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        grid-template-areas:
-            "head"
-            "side"
-            "body";
     }
 
     .tri-grid,
