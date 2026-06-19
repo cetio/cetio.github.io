@@ -69,6 +69,48 @@ a:focus {
     gap: 16px;
 }
 
+.split {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "side head"
+        "side body";
+    gap: 16px;
+}
+
+.left-pane {
+    grid-area: side;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-top: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-raised);
+    padding: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.top-pane {
+    grid-area: head;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-top: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-raised);
+    padding: 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.split-body {
+    grid-area: body;
+}
+
 .skip-link {
     position: absolute;
     top: -40px;
@@ -92,6 +134,13 @@ main {
     padding: 32px 40px 64px;
 }
 
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 12px 0;
+    width: 100%;
+}
+
 p {
     color: var(--fg-muted);
 }
@@ -106,7 +155,7 @@ p.bright {
 .cert-table td.cert-handshake { color: #d3fb52; } */
 
 /* ── Contact Links ── */
-.contact-links {
+.social-link {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -115,36 +164,36 @@ p.bright {
     margin: 12px 0 0 0;
 }
 
-.contact-links a {
+.social-link a {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     transition: color 0.12s ease;
 }
 
-.contact-links a:hover {
+.social-link a:hover {
     text-decoration: none;
 }
 
-.contact-links svg {
+.social-link svg {
     width: 16px;
     height: 16px;
     fill: currentColor;
 }
 
-.contact-links a.github,
-.contact-links a.email { color: #cccccc; }
+.social-link a.github,
+.social-link a.email { color: #cccccc; }
 
-.contact-links a.github:hover,
-.contact-links a.email:hover { color: #ffffff; }
+.social-link a.github:hover,
+.social-link a.email:hover { color: #ffffff; }
 
-.contact-links a.linkedin { color: #0A66C2; }
+.social-link a.linkedin { color: #0A66C2; }
 
-.contact-links a.linkedin:hover { color: #4d9ef5; }
+.social-link a.linkedin:hover { color: #4d9ef5; }
 
-.contact-links a.discord { color: #5865F2; }
+.social-link a.discord { color: #5865F2; }
 
-.contact-links a.discord:hover { color: #8b93f5; }
+.social-link a.discord:hover { color: #8b93f5; }
 
 article {
     max-width: 760px;
@@ -236,12 +285,21 @@ code {
         padding: 20px 12px 48px;
     }
 
+    .split {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "head"
+            "side"
+            "body";
+    }
+
     .tri-grid,
     .bi-grid {
         grid-template-columns: 1fr;
     }
 
-    .contact-links {
+    .social-link {
         flex-wrap: wrap;
         gap: 10px 16px;
     }
