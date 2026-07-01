@@ -72,126 +72,123 @@
         </a>
     </nav>
     <main id="main">
-        <div class="timeline">
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <span class="meta-label">Chemica</span>
-                    <div class="card accent-left">
-                        <h3><a href="/articles/chemica-api.html">Chemica II: identity, integration, and one shared Page type</a></h3>
-                        <time>April 21, 2026</time>
-                        <p>How Akashi unifies five disparate scientific data sources behind one lazy-fetching <code>Page</code> type in D, and why picking a single identity anchor early matters more than any clever parser.</p>
-                        <div class="chips">
-                            <span class="chip">D</span>
-                            <span class="chip">API Design</span>
-                            <span class="chip">Data Integration</span>
+        <div class="stack">
+            <div>
+                <span class="meta-label">Chemica</span>
+                <div class="timeline">
+                    <div class="timeline-entry">
+                        <div class="timeline-dash"></div>
+                        <div class="timeline-content">
+                            <div class="card accent-left">
+                                <h3><a href="/articles/chemica-api.html">Chemica II: identity, integration, and one shared Page type</a></h3>
+                                <time>April 21, 2026</time>
+                                <p>How Akashi unifies five disparate scientific data sources behind one lazy-fetching <code>Page</code> type in D, and why picking a single identity anchor early matters more than any clever parser.</p>
+                                <div class="chips">
+                                    <span class="chip">D</span>
+                                    <span class="chip">API Design</span>
+                                    <span class="chip">Data Integration</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-entry">
+                        <div class="timeline-dash"></div>
+                        <div class="timeline-content">
+                            <div class="card accent-left">
+                                <h3><a href="/articles/chemica-gtk.html">Chemica I: a GTK-based PubChem wiki app with 3D molecular viewing</a></h3>
+                                <time>February 26, 2026</time>
+                                <p>GTK4 application architecture in D, a custom Cairo-based 3D molecular viewer, PubChem compound search, article rendering with collapsible panels, and dosage aggregation with multi-dimensional similarity matching.</p>
+                                <div class="chips">
+                                    <span class="chip">D</span>
+                                    <span class="chip">GTK</span>
+                                    <span class="chip">Cairo</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <div class="card accent-left">
-                        <h3><a href="/articles/chemica-gtk.html">Chemica I: a GTK-based PubChem wiki app with 3D molecular viewing</a></h3>
-                        <time>February 26, 2026</time>
-                        <p>GTK4 application architecture in D, a custom Cairo-based 3D molecular viewer, PubChem compound search, article rendering with collapsible panels, and dosage aggregation with multi-dimensional similarity matching.</p>
-                        <div class="chips">
-                            <span class="chip">D</span>
-                            <span class="chip">GTK</span>
-                            <span class="chip">Cairo</span>
+
+            <div>
+                <span class="meta-label">Selenium</span>
+                <div class="timeline">
+                    <div class="timeline-entry">
+                        <div class="timeline-dash"></div>
+                        <div class="timeline-content">
+                            <div class="card accent-left">
+                                <h3><a href="/articles/selenium-sdk.html">Modernizing Selenium Support in D</a></h3>
+                                <time>May 2026</time>
+                                <p>WebKit GTK is abandoned on Windows, so I needed a cross-platform browser engine for Insurgent. D had no working Selenium bindings, so I forked a 2018 JsonWire library and brought it up to W3C WebDriver.</p>
+                                <div class="chips">
+                                    <span class="chip">D</span>
+                                    <span class="chip">Selenium</span>
+                                    <span class="chip">WebDriver</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-entry">
+                        <div class="timeline-dash"></div>
+                        <div class="timeline-content">
+                            <div class="card accent-left">
+                                <h3><a href="/articles/dispatch-automation.html">Selenium II: dispatch-oriented browser automation</a></h3>
+                                <time>December 9, 2025</time>
+                                <p>Replacing fragile linear click-and-sleep scripts with an observable state machine and event dispatch queue. Stale-element errors went from constant to almost never.</p>
+                                <div class="chips">
+                                    <span class="chip">Ruby</span>
+                                    <span class="chip">Selenium</span>
+                                    <span class="chip">Automation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-entry">
+                        <div class="timeline-dash"></div>
+                        <div class="timeline-content">
+                            <div class="card accent-left">
+                                <h3><a href="/articles/selenium-workflow.html">Selenium I: automating multi-page workflows with Ruby and Selenium</a></h3>
+                                <time>December 2, 2025</time>
+                                <p>Building a robust Ruby automation from 500 to 700 lines with explicit waits, DOM-driven state machines, CDP hooks, layered retry logic, and modular page objects.</p>
+                                <div class="chips">
+                                    <span class="chip">Ruby</span>
+                                    <span class="chip">Selenium</span>
+                                    <span class="chip">Automation</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <span class="meta-label">Selenium</span>
-                    <div class="card accent-left">
-                        <h3><a href="/articles/selenium-sdk.html">Modernizing Selenium Support in D</a></h3>
-                        <time>May 2026</time>
-                        <p>WebKit GTK is abandoned on Windows, so I needed a cross-platform browser engine for Insurgent. D had no working Selenium bindings, so I forked a 2018 JsonWire library and brought it up to W3C WebDriver.</p>
-                        <div class="chips">
-                            <span class="chip">D</span>
-                            <span class="chip">Selenium</span>
-                            <span class="chip">WebDriver</span>
-                        </div>
-                    </div>
+
+            <div class="card accent-left">
+                <h3><a href="/articles/designing-in-advance.html">Design that matters: what a Selenium SDK taught me about my AI SDK</a></h3>
+                <time>June 2026</time>
+                <p>Carrying the same layered-contract thinking from the Selenium SDK into an AI SDK rework, and what changed when the layers had to share nothing but a contract.</p>
+                <div class="chips">
+                    <span class="chip">D</span>
+                    <span class="chip">SDK Design</span>
                 </div>
             </div>
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <div class="card accent-left">
-                        <h3><a href="/articles/dispatch-automation.html">Selenium II: dispatch-oriented browser automation</a></h3>
-                        <time>December 9, 2025</time>
-                        <p>Replacing fragile linear click-and-sleep scripts with an observable state machine and event dispatch queue. Stale-element errors went from constant to almost never.</p>
-                        <div class="chips">
-                            <span class="chip">Ruby</span>
-                            <span class="chip">Selenium</span>
-                            <span class="chip">Automation</span>
-                        </div>
-                    </div>
+
+            <div class="card accent-left">
+                <h3><a href="/articles/semantic-retrieval.html">Semantic retrieval on laptops: embeddings, centroids, and SIMD</a></h3>
+                <time>December 3, 2025</time>
+                <p>Running embedding-based search on consumer hardware with two-stage centroid pruning, AVX-optimized dot products, and int8 quantization to keep the working set in cache instead of on disk.</p>
+                <div class="chips">
+                    <span class="chip">SIMD</span>
+                    <span class="chip">Embeddings</span>
+                    <span class="chip">Performance</span>
                 </div>
             </div>
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <div class="card accent-left">
-                        <h3><a href="/articles/selenium-workflow.html">Selenium I: automating multi-page workflows with Ruby and Selenium</a></h3>
-                        <time>December 2, 2025</time>
-                        <p>Building a robust Ruby automation from 500 to 700 lines with explicit waits, DOM-driven state machines, CDP hooks, layered retry logic, and modular page objects.</p>
-                        <div class="chips">
-                            <span class="chip">Ruby</span>
-                            <span class="chip">Selenium</span>
-                            <span class="chip">Automation</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <div class="card accent-left">
-                        <h3><a href="/articles/designing-in-advance.html">Design that matters: what a Selenium SDK taught me about my AI SDK</a></h3>
-                        <time>June 2026</time>
-                        <p>Carrying the same layered-contract thinking from the Selenium SDK into an AI SDK rework, and what changed when the layers had to share nothing but a contract.</p>
-                        <div class="chips">
-                            <span class="chip">D</span>
-                            <span class="chip">SDK Design</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <div class="card accent-left">
-                        <h3><a href="/articles/semantic-retrieval.html">Semantic retrieval on laptops: embeddings, centroids, and SIMD</a></h3>
-                        <time>December 3, 2025</time>
-                        <p>Running embedding-based search on consumer hardware with two-stage centroid pruning, AVX-optimized dot products, and int8 quantization to keep the working set in cache instead of on disk.</p>
-                        <div class="chips">
-                            <span class="chip">SIMD</span>
-                            <span class="chip">Embeddings</span>
-                            <span class="chip">Performance</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="timeline-entry">
-                <div class="timeline-dash"></div>
-                <div class="timeline-content">
-                    <div class="card accent-left">
-                        <h3><a href="/articles/syscall-hooks.html">Hacking C#: dynamic syscall stubs and user-mode hook detection</a></h3>
-                        <time>August 7, 2025</time>
-                        <p>An educational walkthrough of syscall-ID extraction, shellcode stub generation, and hook taxonomy in C# on Windows, built on top of CoreCLR internal structures.</p>
-                        <div class="chips">
-                            <span class="chip">C#</span>
-                            <span class="chip">Windows Internals</span>
-                            <span class="chip">Security Research</span>
-                        </div>
-                    </div>
+
+            <div class="card accent-left">
+                <h3><a href="/articles/syscall-hooks.html">Hacking C#: dynamic syscall stubs and user-mode hook detection</a></h3>
+                <time>August 7, 2025</time>
+                <p>An educational walkthrough of syscall-ID extraction, shellcode stub generation, and hook taxonomy in C# on Windows, built on top of CoreCLR internal structures.</p>
+                <div class="chips">
+                    <span class="chip">C#</span>
+                    <span class="chip">Windows Internals</span>
+                    <span class="chip">Security Research</span>
                 </div>
             </div>
         </div>
