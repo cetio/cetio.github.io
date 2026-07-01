@@ -1,0 +1,16 @@
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    border-radius: var(--radius);
+    padding: 4px 10px;
+    font-size: 13px;
+}
