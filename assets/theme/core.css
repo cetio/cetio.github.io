@@ -139,6 +139,13 @@ p.bright {
     color: var(--fg);
 }
 
+.meta-label {
+    color: var(--fg-dim);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* ── Contact Links ── */
 .social-link {
     display: flex;

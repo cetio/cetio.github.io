@@ -73,36 +73,6 @@
     color: var(--fg-muted);
 }
 
-.series-label {
-    margin: 0 0 6px 4px;
-    color: var(--fg-dim);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 4px;
-}
-
-.tag {
-    display: inline-flex;
-    align-items: center;
-    background: var(--bg-inset);
-    border: 1px solid var(--border);
-    color: var(--fg-muted);
-    border-radius: var(--radius);
-    padding: 2px 8px;
-    font-size: 12px;
-}
-
-.standalone {
-    margin-top: 16px;
-}
-
 @media (max-width: 640px) {
     .timeline {
         padding-left: 16px;
