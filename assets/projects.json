@@ -81,6 +81,23 @@
       }
     }
   ],
+  "states": [
+    {
+      "id": "active",
+      "label": "Active (maintained)",
+      "path": "M.102 2.223A3.004 3.004 0 0 0 3.78 5.897l6.341 6.252A3.003 3.003 0 0 0 13 16a3 3 0 1 0-.851-5.878L5.897 3.781A3.004 3.004 0 0 0 2.223.1l2.141 2.142L4 4l-1.757.364zm13.37 9.019.528.026.287.445.445.287.026.529L15 13l-.242.471-.026.529-.445.287-.287.445-.529.026L13 15l-.471-.242-.529-.026-.287-.445-.445-.287-.026-.529L11 13l.242-.471.026-.529.445-.287.287-.445.529-.026L13 11z"
+    },
+    {
+      "id": "inactive",
+      "label": "Inactive (paused)",
+      "path": "M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"
+    },
+    {
+      "id": "archived",
+      "label": "Archived",
+      "path": "M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1M.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8z"
+    }
+  ],
   "projects": [
     {
       "title": "Intuit",
@@ -95,7 +112,7 @@
       ],
       "github": "https://github.com/cetio/intuit",
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Akashi",
@@ -110,7 +127,7 @@
       ],
       "github": "https://github.com/cetio/akashi",
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Chemica",
@@ -126,7 +143,7 @@
       "github": "https://github.com/cetio/chemica",
       "year": 2026,
       "demo": "/assets/demos/chemica.mp4",
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Multidasm",
@@ -141,7 +158,7 @@
       ],
       "github": "https://github.com/cetio/multidasm",
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Webull-SDK",
@@ -157,7 +174,7 @@
       "github": "https://github.com/cetio/webull-sdk",
       "year": 2026,
       "demo": "/assets/demos/webull-sdk.png",
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Jitsort",
@@ -173,7 +190,7 @@
       "github": "https://github.com/cetio/jitsort",
       "year": 2025,
       "demo": "/assets/demos/jitsort.mp4",
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "AutoHandshake!",
@@ -188,7 +205,7 @@
         "HTML parsing and context-aware quality-of-life tooling that gives workers fine-grained control while maintaining full auditability."
       ],
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "LinkedIn Learnt",
@@ -215,7 +232,7 @@
       "github": "https://github.com/cetio/nimbus",
       "year": 2025,
       "demo": "/assets/demos/nimbus.mp4",
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "Mobster",
@@ -245,7 +262,7 @@
       "forked": true,
       "github": "https://github.com/cetio/intel-intrinsics",
       "year": 2024,
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "Cassowary",
@@ -256,7 +273,7 @@
       "description": "Managed C# library for .NET runtime introspection, exposing CoreCLR internals as first-class types for reflection, allocation, and layout inspection without native code.",
       "github": "https://github.com/cetio/Cassowary",
       "year": 2024,
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "Godwit",
@@ -270,7 +287,7 @@
       ],
       "github": "https://github.com/cetio/godwit",
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Tern",
@@ -299,7 +316,7 @@
       ],
       "github": "https://github.com/cetio/pipit",
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Depcat",
@@ -324,7 +341,7 @@
       ],
       "github": "https://github.com/cetio/swaypaper",
       "year": 2025,
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "GarbageCorruptor",
@@ -349,7 +366,7 @@
       ],
       "github": "https://github.com/cetio/UndeadInterop",
       "year": 2023,
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "Rio",
@@ -386,7 +403,7 @@
       ],
       "github": "https://github.com/cetio/VEXAPI",
       "year": 2024,
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "Mutagen",
@@ -400,7 +417,7 @@
       ],
       "github": "https://github.com/cetio/mutagen",
       "year": 2026,
-      "state": "paused"
+      "state": "inactive"
     },
     {
       "title": "Git-Around",
@@ -445,7 +462,7 @@
       ],
       "year": 2026,
       "demo": "/assets/demos/insurgent.mp4",
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Insurgent: API",
@@ -462,7 +479,7 @@
         "Backend for the Insurgent Client."
       ],
       "github": "https://github.com/insurgent-con/api",
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Insurgent: Image-Fetch",
@@ -477,7 +494,7 @@
         "Handles 8,000+ images and organizes them for use in the Insurgent Client."
       ],
       "github": "https://github.com/insurgent-con/image-fetch",
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Nosferatu",
@@ -519,7 +536,7 @@
       ],
       "github": "https://github.com/cetio/google-sdk",
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Conductor",
@@ -534,7 +551,7 @@
       ],
       "github": "https://github.com/cetio/conductor",
       "year": 2026,
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Selenium-SDK",
@@ -551,7 +568,7 @@
       "github": "https://github.com/cetio/selenium-sdk",
       "year": 2026,
       "demo": "/assets/demos/selenium-sdk.mp4",
-      "state": "maintained"
+      "state": "active"
     },
     {
       "title": "Soundcore A3954 Dump",
@@ -575,7 +592,7 @@
       "github": "https://github.com/cetio/OpenSCQ30",
       "year": 2026,
       "demo": "/assets/demos/openscq30.png",
-      "state": "maintained"
+      "state": "active"
     }
   ]
 }
