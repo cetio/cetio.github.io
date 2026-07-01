@@ -17,9 +17,9 @@ BRAND_COLORS = {
 }
 
 STATE_COLORS = {
-    "active": "var(--accent)",
+    "active": "#8ec07c",
     "inactive": "var(--fg-muted)",
-    "archived": "#e8772e",
+    "archived": "#a89984",
 }
 
 GITHUB_PATH = (
@@ -70,7 +70,7 @@ def makeGithubLink(url):
         f'style="display:inline-flex;align-items:center;" '
         f'title="View on GitHub">'
         f'<span class="icon-square-small">'
-        f'<svg viewBox="0 0 16 16" fill="currentColor">'
+        f'<svg viewBox="0 0 16 16" fill="var(--fg)">'
         f'<path d="{GITHUB_PATH}"/>'
         f'</svg></span></a>'
     )
