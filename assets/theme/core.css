@@ -139,11 +139,6 @@ p.bright {
     color: var(--fg);
 }
 
-/* .cert-table td.cert-nasba { color: #019d78; }
-.cert-table td.cert-pmi { color: #007ba7; }
-.cert-table td.cert-comptia { color: #C80F2E; }
-.cert-table td.cert-handshake { color: #d3fb52; } */
-
 /* ── Contact Links ── */
 .social-link {
     display: flex;
