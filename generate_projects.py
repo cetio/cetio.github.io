@@ -46,7 +46,7 @@ def makeLangIcon(langId, size="small"):
     lang = langMap[langId]
     color = BRAND_COLORS.get(langId, "currentColor")
     return (
-        f'<span class="icon-round-{size}" title="{lang["label"]}">'
+        f'<span class="icon-square-{size}" title="{lang["label"]}">'
         f'<svg viewBox="{lang["icon"]["viewBox"]}" fill="{color}">'
         f'<path d="{lang["icon"]["path"]}"/>'
         f'</svg></span>'
@@ -57,7 +57,7 @@ def makeStateIcon(stateId):
     state = stateMap[stateId]
     color = STATE_COLORS.get(stateId, "currentColor")
     return (
-        f'<span class="icon-round-small" title="{state["label"]}">'
+        f'<span class="icon-square-small" title="{state["label"]}">'
         f'<svg viewBox="0 0 16 16" fill="{color}">'
         f'<path d="{state["path"]}"/>'
         f'</svg></span>'
@@ -69,7 +69,7 @@ def makeGithubLink(url):
         f'<a href="{url}" target="_blank" rel="noopener" '
         f'style="display:inline-flex;align-items:center;" '
         f'title="View on GitHub">'
-        f'<span class="icon-round-small">'
+        f'<span class="icon-square-small">'
         f'<svg viewBox="0 0 16 16" fill="currentColor">'
         f'<path d="{GITHUB_PATH}"/>'
         f'</svg></span></a>'
@@ -115,11 +115,13 @@ def makeCard(project, highlighted):
             lines.append(f'<img src="{demo}" alt="{project["title"]} demo" />')
 
     lines.append('<div class="card-footer">')
-    for langId in project["languages"]:
+    for langId in project["languages"][1:]:
         lines.append(makeLangIcon(langId, "small"))
+    lines.append('<div class="card-footer-end">')
     lines.append(makeStateIcon(project["state"]))
     if "github" in project:
         lines.append(makeGithubLink(project["github"]))
+    lines.append('</div>')
     lines.append('</div>')
 
     lines.append('</div>')
