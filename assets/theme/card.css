@@ -127,21 +127,20 @@
     gap: 6px;
 }
 
-.proficiency-label,
-.category-label {
+.meta-label {
     color: var(--fg-dim);
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.skill-chips {
+.chips {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
 
-.skill-chip {
+.chip {
     display: inline-flex;
     align-items: center;
     background: var(--bg-inset);
@@ -150,15 +149,6 @@
     border-radius: var(--radius);
     padding: 4px 10px;
     font-size: 13px;
-}
-
-.skill-chip.skill-fluent {
-    border-color: var(--accent-muted);
-    color: var(--fg);
-}
-
-.skill-chip.skill-novice {
-    color: var(--fg-dim);
 }
 
 .cert-table {
