@@ -2,6 +2,7 @@
 # for the Experience tab page from assets/experience.json.
 import json
 import os
+import re
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
@@ -15,7 +16,7 @@ def makeJobEntry(job):
     if job.get("logo"):
         lines.append('<div class="timeline-header">')
         lines.append(f'<h4 class="timeline-title">{job["title"]}</h4>')
-        lines.append(f'<img src="{job["logo"]}" alt="{job["company"]}" class="timeline-logo">')
+        lines.append(f'<img src="../{job["logo"]}" alt="{job["company"]}" class="timeline-logo">')
         lines.append('</div>')
     else:
         lines.append(f'<h4 class="timeline-title">{job["title"]}</h4>')
@@ -71,12 +72,26 @@ certsHtml = makeCertsPanel(data["certifications"])
 with open(os.path.join(BASE, "tabs/experience.html"), "r") as f:
     template = f.read()
 
-template = template.replace("../", "")
-template = template.replace("<!-- EXPERIENCE INSERTION POINT -->", timelineHtml)
-template = template.replace("<!-- EDUCATION INSERTION POINT -->", educationHtml)
-template = template.replace("<!-- CERTS INSERTION POINT -->", certsHtml)
+template = re.sub(
+    r'<!-- EXPERIENCE INSERTION POINT -->(?:.*?<!-- /EXPERIENCE -->)?',
+    f'<!-- EXPERIENCE INSERTION POINT -->\n                {timelineHtml}\n            <!-- /EXPERIENCE -->',
+    template,
+    flags=re.DOTALL,
+)
+template = re.sub(
+    r'<!-- EDUCATION INSERTION POINT -->(?:.*?<!-- /EDUCATION -->)?',
+    f'<!-- EDUCATION INSERTION POINT -->\n                {educationHtml}\n                <!-- /EDUCATION -->',
+    template,
+    flags=re.DOTALL,
+)
+template = re.sub(
+    r'<!-- CERTS INSERTION POINT -->(?:.*?<!-- /CERTS -->)?',
+    f'<!-- CERTS INSERTION POINT -->\n                {certsHtml}\n            <!-- /CERTS -->',
+    template,
+    flags=re.DOTALL,
+)
 
-with open(os.path.join(BASE, "gen_experience.html"), "w") as f:
+with open(os.path.join(BASE, "tabs/experience.html"), "w") as f:
     f.write(template)
 
-print(f"Generated {len(data['jobs'])} experience entries -> gen_experience.html")
+print(f"Generated {len(data['jobs'])} experience entries -> tabs/experience.html")
