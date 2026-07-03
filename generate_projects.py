@@ -108,7 +108,7 @@ def makeCard(project, highlighted):
         lines.append(f'<p>{paragraph}</p>')
 
     if "demo" in project:
-        demo = project["demo"].lstrip("/")
+        demo = "../" + project["demo"].lstrip("/")
         if demo.endswith(".mp4"):
             lines.append(f'<video src="{demo}" controls></video>')
         elif demo.endswith((".png", ".jpg", ".jpeg", ".gif", ".webp")):
@@ -133,17 +133,15 @@ cards = [makeCard(p, i < 8) for i, p in enumerate(projects)]
 with open(os.path.join(BASE, "tabs/projects.html"), "r") as f:
     template = f.read()
 
-template = template.replace("../", "")
-
-pattern = r'<!-- PROJECT INSERTION POINT -->.*?(?=\s*</div>\s*</main>)'
+pattern = r'<!-- PROJECT INSERTION POINT -->(?:.*?<!-- /PROJECT -->)?'
 replacement = (
     "<!-- PROJECT INSERTION POINT -->\n            "
     + "\n            ".join(cards)
-    + "\n        "
+    + "\n        <!-- /PROJECT -->"
 )
 result = re.sub(pattern, replacement, template, flags=re.DOTALL)
 
-with open(os.path.join(BASE, "gen_projects.html"), "w") as f:
+with open(os.path.join(BASE, "tabs/projects.html"), "w") as f:
     f.write(result)
 
-print(f"Generated {len(projects)} project cards -> gen_projects.html")
+print(f"Generated {len(projects)} project cards -> tabs/projects.html")
