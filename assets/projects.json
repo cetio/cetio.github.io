@@ -365,8 +365,8 @@
         "Includes hook detection for all hook variants both in both user-mode and kernel functions and syscall analysis."
       ],
       "github": "https://github.com/cetio/UndeadInterop",
-      "year": 2023,
-      "state": "inactive"
+      "year": 2026,
+      "state": "active"
     },
     {
       "title": "Rio",
@@ -554,7 +554,7 @@
       "state": "active"
     },
     {
-      "title": "Selenium-SDK",
+      "title": "Selenium",
       "languages": [
         "d"
       ],
@@ -565,7 +565,7 @@
         "Supports clicks, key input, form submission, text and attribute inspection, typed JavaScript return values, per-browser option classes, and full window management."
       ],
       "forked": true,
-      "github": "https://github.com/cetio/selenium-sdk",
+      "github": "https://github.com/cetio/selenium",
       "year": 2026,
       "demo": "/assets/demos/selenium-sdk.mp4",
       "state": "active"
