@@ -15,3 +15,22 @@ server-test-*
 *.obj
 *.lst
 server
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+*.toc
+*.lof
+*.lot
+*.missfont
+# Resume: old DOCX builds and template PDFs
+resume/*.docx
+resume/jake.pdf
+resume/syzfjbzwjncs.pdf
+resume/texmf/
