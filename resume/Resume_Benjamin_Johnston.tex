@@ -97,7 +97,7 @@
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
 \newcommand{\resumeItemListStart}{\begin{itemize}}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
 
 %-------------------------------------------
 %%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,7 +112,7 @@
     \href{https://linkedin.com/in/bejaunst}{\underline{linkedin.com/in/bejaunst}} $|$
     \href{https://github.com/cetio}{\underline{github.com/cetio}} $|$
     \href{https://cetio.github.io}{\underline{cetio.github.io}}
-\end{center}
+\end{center}\vspace{-6pt}
 
 %-----------EXPERIENCE-----------
 \section{Experience}
@@ -122,17 +122,17 @@
       {AI Operations Engineer (RPA \& Model Evaluation)}{Nov 2025 -- Jun 2026}
       {Handshake --- Contract}{Remote}
       \resumeItemListStart
-        \resumeItem{Cut manual annotation and triage effort by 95\% across 400+ contractor hours by building AutoHandshake!, a Selenium-driven automation suite with UI-stall recovery, multi-tab orchestration, and full audit trails.}
+        \resumeItem{Cut manual annotation and triage effort by 95\% across 400+ contractor hours by building AutoHandshake!, a Ruby/JavaScript Selenium automation suite with UI-stall recovery, multi-tab orchestration, and full audit trails.}
         \resumeItem{Evaluated 4,000+ multimodal AI responses against structured quality rubrics for correctness and reasoning, earning the Handshake Model Validation 2 --- Expert credential.}
-        \resumeItem{Trained contractors on platform workflows and rubric interpretation, raising evaluation consistency team-wide.}
+        \resumeItem{Mentored contractors on platform workflows and rubric interpretation, raising evaluation consistency team-wide.}
       \resumeItemListEnd
 
     \resumeSubheading
       {Expert Contributor}{Dec 2025 -- May 2026}
       {Snorkel AI --- Contract}{Remote}
       \resumeItemListStart
-        \resumeItem{Shaped constraint-based training pipelines for Claude and ChatGPT across two contracted projects targeting complex programming and logic reasoning.}
-        \resumeItem{Ran CI/CD validation in Docker to catch defects pre-release and protect training-set integrity.}
+        \resumeItem{Engineered constraint-based training workflows for Claude and ChatGPT across 2 contracted projects targeting complex programming and logic reasoning tasks.}
+        \resumeItem{Validated training-set integrity through Docker-based CI/CD, catching defects pre-release.}
       \resumeItemListEnd
 
     \resumeSubheading
@@ -140,7 +140,7 @@
       {Independent client engagements}{Remote}
       \resumeItemListStart
         \resumeItem{Delivered SDKs, automation tooling, and API integrations for individual clients, including an AI-assisted grading platform with LMS OAuth that reached \textasciitilde95\% grading accuracy and cut instructor workload in half.}
-        \resumeItem{Eliminated a user-mode virtual-input layer from a device-integration pipeline, removing its overhead from the execution path entirely.}
+        \resumeItem{Eliminated a user-mode virtual-input layer from a device-integration pipeline, reducing its overhead by 100\%.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
@@ -152,29 +152,29 @@
       \resumeProjectHeading
           {\textbf{Selenium} $|$ \emph{D} $|$ \href{https://www.github.com/cetio/selenium}{\underline{github.com/cetio/selenium}}}{2026 -- Present}
           \resumeItemListStart
-            \resumeItem{Authored the only Selenium WebDriver client for D: comprehensive, fully documented, and W3C-compliant, with typed APIs, driver auto-detection, and full session lifecycle management.}
-            \resumeItem{Powers real automation workloads, including AutoHandshake!, with production-grade coverage across clicks, input, forms, and JavaScript execution.}
+            \resumeItem{Authored the only maintained W3C-compliant Selenium WebDriver client for D (4,800+ lines), with typed APIs, driver auto-detection for 4 browsers, and full session lifecycle management.}
+            \resumeItem{Published on the DUB package registry with Selenium Grid support; powers live data capture in the Insurgent companion system.}
           \resumeItemListEnd
 
       \resumeProjectHeading
           {\textbf{Intuit} $|$ \emph{D} $|$ \href{https://github.com/cetio/intuit}{\underline{github.com/cetio/intuit}}}{2025 -- Present}
           \resumeItemListStart
-            \resumeItem{Designed a Pydantic-inspired LLM SDK mapping chat completions, structured output, streaming, and tool calls onto native D types, avoiding a new stack syntax to learn.}
-            \resumeItem{Supports OpenAI, Claude, Qwen, OpenRouter, and local models through one extensible routing layer.}
+            \resumeItem{Authored the first native LLM SDK for D (8,400+ lines), mapping chat completions, structured output, SSE streaming, and tool calls onto typed D structures.}
+            \resumeItem{Supports OpenAI, Claude, and Qwen with OpenAI-compatible routing for OpenRouter and local models, plus SIMD-accelerated embeddings.}
           \resumeItemListEnd
 
       \resumeProjectHeading
           {\textbf{Google-SDK} $|$ \emph{D} $|$ \href{https://github.com/cetio/google-sdk}{\underline{github.com/cetio/google-sdk}}}{2026 -- Present}
           \resumeItemListStart
-            \resumeItem{Unified Drive, Docs, Sheets, and Gmail access behind one client with OAuth session handling and typed errors for auth, permission, and rate-limit failures.}
-            \resumeItem{Automated MIME detection and native Docs/Sheets export, removing boilerplate from Google API integrations.}
+            \resumeItem{Authored a minimal-boilerplate Google SDK for D covering 4 services (Drive, Docs, Sheets, Gmail) across 4,100+ lines, with 2 OAuth identity layers and a 5-category typed error taxonomy.}
+            \resumeItem{Automated MIME detection and native Docs/Sheets export, built on a custom OAuth 2.0 library with PKCE, token caching, and revocation.}
           \resumeItemListEnd
 
       \resumeProjectHeading
           {\textbf{Insurgent: Client} $|$ \emph{D, JavaScript}}{2026 -- Present}
           \resumeItemListStart
-            \resumeItem{Built a real-time companion client rendering 10,000+ map tiles and 5,000+ units through live WebSocket feeds in under a second.}
-            \resumeItem{Combined Selenium-driven data capture with a responsive live dashboard as a solo-developed, full-stack system.}
+            \resumeItem{Solo-developed a 3-component companion system (8,400+ lines) rendering 10,000+ tiles, 5,000+ units, 2,000+ research trees, and 8,000+ images via WebSocket feeds in under a second.}
+            \resumeItem{Combined Selenium-driven data capture with filesystem-cached match state, live dashboards, and authentication across all three components.}
           \resumeItemListEnd
 
     \resumeSubHeadingListEnd
@@ -183,9 +183,9 @@
 \section{Technical Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-     \textbf{Languages}{: C\#, D, Python, Ruby, JavaScript, SQL, C, C++, x86 Assembly} \\
-     \textbf{Automation \& Quality}{: Selenium, WebDriver, browser automation, test design, CI/CD, Docker, structured evaluation, audit trails, failure recovery} \\
-     \textbf{Software Engineering}{: REST APIs, OAuth 2.0, SDK design, WebSockets, HTML parsing, JSON Schema, LLM integration, Git, CMake, Linux}
+     \textbf{Languages}{: Python, Ruby, JavaScript, D, C\#, C, C++, SQL, x86 Assembly} \\
+     \textbf{Automation \& Quality}{: Selenium, WebDriver, test architecture, CI/CD, Docker, structured evaluation, audit trails, failure recovery} \\
+     \textbf{Software Engineering}{: REST APIs, OAuth 2.0, SDK design, WebSockets, JSON Schema, LLM integration, Git, CMake, Linux}
     }}
  \end{itemize}
 
@@ -196,11 +196,5 @@
       {Columbus State Community College}{Expected Dec 2026}
       {AAS, Software Development}{Columbus, OH}
   \resumeSubHeadingListEnd
-
- \begin{itemize}[leftmargin=0.15in, label={}]
-    \small{\item{
-     \textbf{Certifications}{: Handshake Model Validation 2 --- Expert (AI response evaluation across 4,000+ multimodal samples)}
-    }}
- \end{itemize}
 
 \end{document}
