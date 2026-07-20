@@ -1,0 +1,244 @@
+%-------------------------
+% CV in Latex
+% A stylistic extension of Jake's Resume template
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{needspace}
+\usepackage{xcolor}
+\input{glyphtounicode}
+
+
+%----------COLOR----------
+\definecolor{accent}{RGB}{44, 54, 63}        % Dark slate — subtle, professional
+
+
+%----------HYPERLINK COLORS----------
+\hypersetup{
+    colorlinks=true,
+    urlcolor=accent,
+    linkcolor=accent
+}
+
+
+%----------PAGE SETUP----------
+\pagestyle{empty}  % No headers or footers on any page
+
+% Margins — slightly relaxed from Jake's aggressive 0.5in for CV breathing room
+\addtolength{\oddsidemargin}{-0.4375in}
+\addtolength{\evensidemargin}{-0.4375in}
+\addtolength{\textwidth}{0.875in}
+\addtolength{\topmargin}{-0.4375in}
+\addtolength{\textheight}{0.875in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+
+%----------SECTION FORMATTING----------
+\titleformat{\section}{
+  \vspace{6pt}\scshape\raggedright\Large\color{accent}
+}{}{0em}{}[{\color{accent}\titlerule[1.2pt]}\vspace{4pt}]
+
+\titlespacing{\section}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 2pt minus 2pt}
+
+
+%----------ATS COMPATIBILITY----------
+\pdfgentounicode=1
+
+
+%----------CUSTOM COMMANDS----------
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{0pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-2pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+
+%----------INTELLIGENT PAGE BREAKS----------
+\usepackage{xpatch}
+\xpretocmd{\section}{\needspace{4\baselineskip}}{}{}
+
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\fontsize{24}{28}\selectfont\bfseries\scshape\color{accent} Benjamin Johnston} \\[4pt]
+    {\large Systems Engineering \;$\cdot$\; Automation \;$\cdot$\; SDK Design} \\[6pt]
+    {\small
+    Columbus, OH \;$\cdot$\; (614) 843-3974 \;$\cdot$\;
+    \href{mailto:bejaunst@gmail.com}{\underline{bejaunst@gmail.com}} \;$\cdot$\;
+    \href{https://linkedin.com/in/bejaunst}{\underline{linkedin.com/in/bejaunst}} \\[2pt]
+    \href{https://github.com/cetio}{\underline{github.com/cetio}} \;$\cdot$\;
+    \href{https://cetio.github.io}{\underline{cetio.github.io}}
+    }
+\end{center}
+\vspace{1pt}
+{\color{accent}\hrule height 1.2pt}
+\vspace{2pt}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {AI Operations Engineer (RPA \& Model Evaluation)}{Nov 2025 -- Jun 2026}
+      {Handshake --- Contract}{Columbus, OH}
+      \resumeItemListStart
+        \resumeItem{Cut manual annotation and triage effort by 95\% across 400+ contractor hours by building AutoHandshake!, a Ruby/JavaScript Selenium automation suite with UI-stall recovery, multi-tab orchestration, and full audit trails.}
+        \resumeItem{Evaluated 4,000+ multimodal AI responses against structured quality rubrics for correctness, reasoning accuracy, and domain understanding, earning the Handshake Model Validation 2 --- Expert credential.}
+        \resumeItem{Mentored contractors on platform workflows and rubric interpretation, raising evaluation consistency team-wide and reducing rework from misaligned quality standards.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Expert Contributor}{Dec 2025 -- May 2026}
+      {Snorkel AI --- Contract}{Columbus, OH}
+      \resumeItemListStart
+        \resumeItem{Engineered constraint-based training workflows for Claude and ChatGPT across 2 contracted projects targeting complex programming and logic reasoning tasks.}
+        \resumeItem{Designed rigorous evaluation frameworks to systematically assess model reasoning capabilities, driving continuous improvements in code generation and logical deduction accuracy.}
+        \resumeItem{Validated training-set integrity through Docker-based CI/CD, catching defects pre-release and protecting downstream model quality.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Search Quality Evaluator}{Apr 2025 -- Aug 2025}
+      {RWS Group --- Contract}{Columbus, OH}
+      \resumeItemListStart
+        \resumeItem{Assessed search relevance and LLM output quality against detailed rubrics across Google query simulations and third-party models, identifying failure patterns that informed ranking and UX improvements.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Freelance Software Engineer}{Jul 2021 -- Present}
+      {Independent client engagements}{Columbus, OH}
+      \resumeItemListStart
+        \resumeItem{Architected and delivered SDKs, automation tooling, and API integrations for individual clients, including an AI-assisted grading platform with LMS OAuth that reached \textasciitilde95\% grading accuracy and cut instructor workload in half.}
+        \resumeItem{Designed and maintain 10+ public open-source libraries across C\#, C, C++, and D, spanning systems programming, protocol implementation, and developer tooling with \textasciitilde53,000 lines of code and 700+ commits.}
+        \resumeItem{Eliminated a user-mode virtual-input layer from a device-integration pipeline, reducing its overhead by 100\% and removing it from the execution path entirely.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Biochemistry Intern}{2022 -- 2024}
+      {Columbus Alternative High School}{Columbus, OH}
+      \resumeItemListStart
+        \resumeItem{Managed safety data sheets (SDS/MSDS) and lab compliance documentation across \textasciitilde12 science classes, ensuring all materials met district and state safety standards.}
+        \resumeItem{Prepared lab materials and set up experiments for chemistry and biology courses, supporting hands-on instruction for hundreds of students across multiple grade levels.}
+        \resumeItem{Graded assignments, lab reports, and exams using structured rubrics, applying consistent quality standards that paralleled later work in AI response evaluation.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Selected Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{UndeadInterop} $|$ \emph{C\#} $|$ \href{https://github.com/cetio/UndeadInterop}{\underline{github.com/cetio/UndeadInterop}}}{2024}
+          \resumeItemListStart
+            \resumeItem{Built a Windows syscall research library in C\# that resolves syscall IDs from PE export tables and invokes them directly via runtime-generated x86\_64 shellcode stubs, bypassing the ntdll usermode layer entirely.}
+            \resumeItem{Implemented 8 hook detection classifications (inline jumps/calls, stack pivots, debug interrupts, forwarded exports, tamper detection) by disassembling function prologues with the Iced x86 decoder; includes a complete NTSTATUS enum (339 values).}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{VEXAPI} $|$ \emph{C/C++} $|$ \href{https://github.com/cetio/VEXAPI}{\underline{github.com/cetio/VEXAPI}}}{2024}
+          \resumeItemListStart
+            \resumeItem{Reverse-engineered the VEX Robotics V5 private firmware API from ARM64 disassembly of VEXos using Ghidra, producing 8,650 lines of documented C/C++ headers across 39 files with 481 firmware memory offsets.}
+            \resumeItem{Documented 34 public API headers covering 20+ device types (motor, IMU, vision, optical, display) and 5 private headers with jump table and graphics signatures; includes PoC for autonomous mode override.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Cassowary} $|$ \emph{C\#} $|$ \href{https://github.com/cetio/Cassowary}{\underline{github.com/cetio/Cassowary}}}{2024}
+          \resumeItemListStart
+            \resumeItem{Authored a .NET runtime introspection library (7,400+ lines, 54 files) exposing CoreCLR internals as first-class managed types for reflection, allocation, and layout inspection without native code or P/Invoke.}
+            \resumeItem{Modeled 15 CLR internal structures (MethodTable, EEClass, MethodDesc, FieldDesc) and 15 generic type signature models, providing an alternative to Microsoft's SOS debugging extension.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Nimbus} $|$ \emph{C} $|$ \href{https://github.com/cetio/nimbus}{\underline{github.com/cetio/nimbus}}}{2025}
+          \resumeItemListStart
+            \resumeItem{Built a Linux CLI (2,500+ lines) for unified display configuration controlling brightness, contrast, gamma, and color temperature across both sysfs backlight and DDC/CI over I2C backends.}
+            \resumeItem{Implemented function-pointer-based polymorphic display abstraction with runtime capability detection, supporting 5 VCP feature labels plus arbitrary hex codes; includes Ruby integration test suite.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Selenium} $|$ \emph{D} $|$ \href{https://www.github.com/cetio/selenium}{\underline{github.com/cetio/selenium}}}{2026 -- Present}
+          \resumeItemListStart
+            \resumeItem{Authored the only maintained W3C-compliant Selenium WebDriver client for D (4,800+ lines, 28 modules), with typed APIs, driver auto-detection for 4 browsers, and full session lifecycle management.}
+            \resumeItem{Implemented a Bridge/Driver architecture with concurrent session support; published on the DUB package registry with Selenium Grid support.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Intuit} $|$ \emph{D} $|$ \href{https://github.com/cetio/intuit}{\underline{github.com/cetio/intuit}}}{2025 -- Present}
+          \resumeItemListStart
+            \resumeItem{Authored the first native LLM SDK for D (8,400+ lines, 67 modules), mapping chat completions, structured output, SSE streaming, and tool calls onto typed D structures.}
+            \resumeItem{Supports OpenAI, Claude, and Qwen with OpenAI-compatible routing, SIMD-accelerated embeddings, and automatic JSON schema generation for type-safe native tool use.}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+\begin{tabularx}{\textwidth}{@{}p{1.85in} X@{}}
+  \textbf{Systems Programming} & C, C++, C\#, x86 Assembly, D \\[3pt]
+  \textbf{Scripting \& Automation} & Python, Ruby, JavaScript, SQL \\[3pt]
+  \textbf{Protocols \& APIs} & W3C WebDriver, OAuth 2.0, REST, DDC/CI, SSE streaming, JSON Schema, LLM integration \\[3pt]
+  \textbf{Infrastructure \& Tools} & Linux, Git, CI/CD, Docker, CMake, Selenium, SIMD, HTML parsing \\
+\end{tabularx}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Columbus State Community College}{Expected Dec 2026}
+      {AAS, Software Development}{Columbus, OH}
+  \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+  \resumeSubHeadingListStart
+    \resumeSubItem{Handshake Model Validation 2 --- Expert}{AI response evaluation across 4,000+ multimodal samples}
+  \resumeSubHeadingListEnd
+
+\end{document}
