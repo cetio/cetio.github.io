@@ -1,18 +1,18 @@
 :root {
-    --bg: #090909;
-    --bg-surface: #111111;
-    --bg-inset: #070707;
-    --fg: #dddddd;
-    --fg-muted: #888888;
-    --fg-dim: #555555;
-    --border: #222222;
-    --border-light: #2a2a2a;
+    --bg: #09090b;
+    --bg-surface: #121215;
+    --bg-inset: #070709;
+    --fg: #dedede;
+    --fg-muted: #909096;
+    --fg-dim: #5a5a62;
+    --border: #232329;
+    --border-light: #2c2c35;
     --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.6);
     --shadow-inset: inset 0 2px 6px rgba(0, 0, 0, 0.7);
     --radius: 2px;
     --link: #66b3ff;
-    --accent: #fff066;
-    --accent-muted: #a366ffcc;
+    --accent: #66b3ff;
+    --accent-muted: #66b3ffcc;
 }
 
 *,
@@ -85,7 +85,7 @@ button {
 
 .flex-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     align-items: start;
     gap: 16px;
 }
@@ -275,6 +275,12 @@ code {
 }
 
 /* Responsiveness */
+@media (max-width: 900px) {
+    .flex-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 640px) {
     .watermark {
         display: none;
@@ -284,9 +290,21 @@ code {
         padding: 20px 12px 48px;
     }
 
+    .flex-grid,
     .tri-grid,
     .bi-grid {
         grid-template-columns: 1fr;
+    }
+
+    .card-body {
+        flex-direction: column;
+    }
+
+    .card-aside {
+        flex: 0 0 auto;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
     }
 
     .social-link {

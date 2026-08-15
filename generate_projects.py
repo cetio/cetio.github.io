@@ -82,25 +82,22 @@ def makeCard(project, highlighted):
         classes += " accent-left"
 
     lines = [f'<div class="{classes}">']
+    lines.append('<div class="card-body">')
+    lines.append('<div class="card-aside">')
 
     primaryLang = project["languages"][0]
-    lines.append('<div class="card-header">')
-    lines.append(makeLangIcon(primaryLang, "small"))
+    lines.append(makeLangIcon(primaryLang, "large"))
     titleText = project["title"]
     if "org" in project:
         titleText = f'{project["org"]} — {titleText}'
     lines.append(f'<h3>{titleText}</h3>')
     if project.get("forked"):
-        lines.append(
-            '<span style="color:var(--fg-dim);font-size:13px;">fork</span>'
-        )
+        lines.append('<span class="card-meta">fork</span>')
     if "year" in project:
-        lines.append(
-            f'<span style="color:var(--fg-dim);font-size:13px;'
-            f'margin-left:auto;">{project["year"]}</span>'
-        )
+        lines.append(f'<span class="card-meta">{project["year"]}</span>')
     lines.append('</div>')
 
+    lines.append('<div class="card-main">')
     desc = project["description"]
     if isinstance(desc, str):
         desc = [desc]
@@ -113,6 +110,9 @@ def makeCard(project, highlighted):
             lines.append(f'<video src="{demo}" controls></video>')
         elif demo.endswith((".png", ".jpg", ".jpeg", ".gif", ".webp")):
             lines.append(f'<img src="{demo}" alt="{project["title"]} demo" />')
+
+    lines.append('</div>')
+    lines.append('</div>')
 
     lines.append('<div class="card-footer">')
     for langId in project["languages"][1:]:
