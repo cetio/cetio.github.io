@@ -1,0 +1,183 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.6in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Benjamin Johnston} \\ \vspace{1pt}
+    \small (614) 843-3974 $|$
+    \href{mailto:bejaunst@gmail.com}{\underline{bejaunst@gmail.com}} $|$
+    \href{https://linkedin.com/in/bejaunst}{\underline{linkedin.com/in/bejaunst}} $|$
+    \href{https://github.com/cetio}{\underline{github.com/cetio}} $|$
+    \href{https://cetio.github.io}{\underline{cetio.github.io}}
+\end{center}\vspace{-8pt}
+
+%-----------PROGRAMMING SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: C\#, C, D, Python, JavaScript, TypeScript, Ruby, SQL} \\
+     \textbf{Test Automation}{: Selenium, WebDriver, W3C WebDriver, Regression Testing, Integration Testing, E2E Testing, Quality Gates, Unattended Execution} \\
+     \textbf{AI \& Evaluation}{: LLM Evaluation, RAG Validation, Prompt Engineering, AI Safety, Red Teaming, LLM-as-a-Judge} \\
+     \textbf{Infrastructure}{: Docker, CI/CD, GitHub Actions, REST APIs, OAuth 2.0, JSON Schema}
+    }}
+ \end{itemize}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Software Engineer}{Jul 2021 -- Present}
+      {Independent client engagements}{}
+      \resumeItemListStart
+        \resumeItem{Designed and maintain 10+ cross-platform open-source libraries (700+ commits), including the only maintained W3C-compliant Selenium WebDriver client for D, with typed APIs, driver auto-detection for 4 browsers, and Page Object Model patterns.}
+        \resumeItem{Engineered Warbler, an AI-assisted grading platform contracted for high-school use, with LLM subagent architecture, JSON schema enforcement, and hybrid deterministic + LLM grading ($\sim$95\% grading accuracy, halved instructor workload).}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Automation Engineer (RPA \& QA)}{Nov 2025 -- Present}
+      {Handshake}{}
+      \resumeItemListStart
+        \resumeItem{Eliminated 95\% of manual effort across 400+ runtime hours by building AutoHandshake!, a Ruby/JavaScript Selenium RPA suite with unattended execution, UI-stall recovery, multi-tab orchestration, and self-test validation.}
+        \resumeItem{Evaluated 4,000+ multimodal AI responses against structured rubrics (LLM-as-a-judge evaluation), earning the Handshake Model Validation 2 --- Expert credential.}
+        \resumeItem{Mentored contractors on test case interpretation and evaluation workflows, improving consistency and reducing rework from misaligned quality standards.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Test Engineer}{Dec 2025 -- Jun 2026}
+      {Snorkel AI}{}
+      \resumeItemListStart
+        \resumeItem{Established quality gates by building Docker-based reproducible validation sandboxes with CI/CD integration, catching defects pre-release and enforcing training-set integrity before pipeline ingestion.}
+        \resumeItem{Designed adversarial test cases and boundary tests for Claude and ChatGPT across 2 contracted projects, applying strict schema constraints to surface model blindspots and reasoning failure modes.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Selected Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{Akashi + Chemica} $|$ \emph{RAG Pipeline, D} $|$ \href{https://github.com/cetio/chemica}{\underline{github.com/cetio/chemica}}}{}
+          \resumeItemListStart
+            \resumeItem{Constructed a RAG pipeline aggregating compound data from 6 sources (PubChem, Wikipedia, PsychonautWiki, Erowid, PubMed, PMC) with 3D molecular visualization, structural similarity matching, and local embeddings.}
+            \resumeItem{Extended the pipeline with LLM-powered source synthesis across 5 providers, enabling cross-source conflict resolution via local embeddings.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Intuit} $|$ \emph{LLM SDK, D} $|$ \href{https://github.com/cetio/intuit}{\underline{github.com/cetio/intuit}}}{}
+          \resumeItemListStart
+            \resumeItem{Shipped the first native LLM SDK for D with 3 provider integrations (OpenAI, Claude, Qwen), OpenAI-compatible routing for OpenRouter and LiteLLM, and 23 example applications from RAG to multi-agent debates.}
+            \resumeItem{Exposed native D functions as model tools via automatic JSON schema generation for type-safe tool use, with configurable-precision embeddings.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Selenium} $|$ \emph{W3C WebDriver Client, D} $|$ \href{https://github.com/cetio/selenium}{\underline{github.com/cetio/selenium}}}{}
+          \resumeItemListStart
+            \resumeItem{Authored the only maintained W3C-compliant Selenium WebDriver client for D, published on DUB with 5 tagged releases, typed APIs, driver auto-detection for 4 browsers, and Page Object Model patterns.}
+            \resumeItem{Shipped Selenium Grid support for distributed test execution; documented across 3 technical articles on state-driven automation and modular page object design.}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+\vspace{-14pt}
+
+%-----------EDUCATION-----------
+\section{Education \& Certifications}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Columbus State Community College}{Expected Dec 2026}
+      {AAS, Software Development}{}
+    \resumeSubItem{Handshake Model Validation 2 --- Expert $|$ MS Career Essentials Generative AI (NASBA) $|$ SQL Programming (NASBA)}{}
+  \resumeSubHeadingListEnd
+
+\end{document}
