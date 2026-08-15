@@ -593,6 +593,17 @@
       "year": 2026,
       "demo": "/assets/demos/openscq30.png",
       "state": "active"
+    },
+    {
+      "title": "Warbler (Auto-Grader)",
+      "languages": [
+        "d"
+      ],
+      "sortOrder": 18,
+      "description": "Automatic grading application (CLI and GTK UI) for grading student assignments and organizing classrooms, specializing in high-school, diverse grading tasks using both remote and local model infrastructure. Achieves up to 95% accuracy with MoE (Mixture of Experts) models and clustering.",
+      "forked": false,
+      "year": 2026,
+      "state": "inactive"
     }
   ]
 }
