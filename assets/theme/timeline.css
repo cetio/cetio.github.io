@@ -2,10 +2,10 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 32px;
     margin: 0;
-    padding-left: 20px;
-    border-left: 2px solid var(--border-light);
+    padding-left: 28px;
+    border-left: 1px solid var(--border-light);
 }
 
 .timeline-entry {
@@ -14,9 +14,9 @@
 
 .timeline-dash {
     position: absolute;
-    top: 10px;
-    left: -26px;
-    width: 12px;
+    top: 11px;
+    left: -34px;
+    width: 14px;
     height: 2px;
     border-radius: 1px;
     background: var(--accent-muted);
@@ -28,59 +28,75 @@
 
 .timeline-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
 }
 
 .timeline-title {
+    flex: 1;
+    min-width: 0;
     margin: 0;
     color: var(--fg);
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 1.4;
 }
 
 .timeline-logo {
-    width: 24px;
-    height: 24px;
+    display: block;
+    width: 26px;
+    height: 26px;
     object-fit: contain;
     border-radius: var(--radius);
-    background: var(--bg-inset);
+    background: transparent;
     flex-shrink: 0;
 }
 
 .timeline-company {
-    margin: 2px 0;
+    margin: 4px 0 2px 0;
     color: var(--fg-muted);
     font-size: 14px;
+    line-height: 1.4;
 }
 
 .timeline-date {
-    margin: 0 0 8px 0;
+    margin: 0 0 12px 0;
     color: var(--fg-dim);
     font-size: 13px;
+    line-height: 1.4;
 }
 
 .timeline-bullets {
     margin: 0;
-    padding-left: 18px;
+    padding-left: 20px;
 }
 
 .timeline-bullets li {
-    margin-bottom: 6px;
-    line-height: 1.55;
+    margin-bottom: 10px;
+    line-height: 1.6;
     color: var(--fg-muted);
+}
+
+.timeline-bullets li:last-child {
+    margin-bottom: 0;
 }
 
 @media (max-width: 640px) {
     .timeline {
-        padding-left: 16px;
+        gap: 28px;
+        padding-left: 22px;
     }
 
     .timeline-dash {
-        left: -21px;
+        left: -28px;
     }
 
     .timeline-header {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+    }
+
+    .timeline-logo {
+        width: 24px;
+        height: 24px;
     }
 }
