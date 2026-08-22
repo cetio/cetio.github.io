@@ -12,21 +12,10 @@
     gap: 8px;
     height: 100%;
     margin-bottom: 16px;
-    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.card:hover {
-    border-color: var(--border-light);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
 }
 
 .accent-left {
     border-left: 2px solid var(--accent-muted);
-}
-
-.accent-left:hover {
-    border-left-color: var(--accent);
 }
 
 .card-body {
@@ -64,6 +53,14 @@
     min-width: 0;
 }
 
+.card-main img,
+.card-main video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+}
+
 .card-header {
     display: flex;
     align-items: center;
@@ -92,7 +89,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-inset);
+    background: transparent;
     flex-shrink: 0;
     overflow: hidden;
 }
@@ -181,17 +178,39 @@
 }
 
 .cert-table td:first-child {
-    color: var(--fg);
+    color: var(--accent);
     font-weight: 600;
     white-space: nowrap;
 }
 
-.cert-table td.cert-nasba { color: #019d78; }
-.cert-table td.cert-pmi { color: #007ba7; }
-.cert-table td.cert-comptia { color: #C80F2E; }
-.cert-table td.cert-handshake { color: #d3fb52; }
-
 .subtle {
     color: var(--fg-dim);
     font-size: 14px;
+}
+
+@media (max-width: 640px) {
+    .card,
+    .panel {
+        padding: 16px;
+    }
+
+    .card-body {
+        flex-direction: column;
+    }
+
+    .card-aside {
+        flex: 0 0 auto;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .card-aside h3 {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .card-aside .card-meta {
+        white-space: nowrap;
+    }
 }
