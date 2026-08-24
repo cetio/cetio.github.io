@@ -17,6 +17,9 @@ server-test-*
 *.lst
 server
 
+
+.playwright-mcp
+
 # LaTeX build artifacts
 *.aux
 *.log

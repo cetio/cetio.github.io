@@ -5,6 +5,8 @@ import re
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
+ICON_SIZES = {"small": 20, "large": 32}
+
 BRAND_COLORS = {
     "d": "#B03931",
     "c": "#A8B9CC",
@@ -45,9 +47,10 @@ projects = sorted(data["projects"], key=lambda p: p["sortOrder"])
 def makeLangIcon(langId, size="small"):
     lang = langMap[langId]
     color = BRAND_COLORS.get(langId, "currentColor")
+    px = ICON_SIZES[size]
     return (
         f'<span class="icon-square-{size}" title="{lang["label"]}">'
-        f'<svg viewBox="{lang["icon"]["viewBox"]}" fill="{color}">'
+        f'<svg width="{px}" height="{px}" viewBox="{lang["icon"]["viewBox"]}" fill="{color}">'
         f'<path d="{lang["icon"]["path"]}"/>'
         f'</svg></span>'
     )
@@ -58,7 +61,7 @@ def makeStateIcon(stateId):
     color = STATE_COLORS.get(stateId, "currentColor")
     return (
         f'<span class="icon-square-small" title="{state["label"]}">'
-        f'<svg viewBox="0 0 16 16" fill="{color}">'
+        f'<svg width="20" height="20" viewBox="0 0 16 16" fill="{color}">'
         f'<path d="{state["path"]}"/>'
         f'</svg></span>'
     )
@@ -70,7 +73,7 @@ def makeGithubLink(url):
         f'style="display:inline-flex;align-items:center;" '
         f'title="View on GitHub">'
         f'<span class="icon-square-small">'
-        f'<svg viewBox="0 0 16 16" fill="var(--fg)">'
+        f'<svg width="20" height="20" viewBox="0 0 16 16" fill="var(--fg)">'
         f'<path d="{GITHUB_PATH}"/>'
         f'</svg></span></a>'
     )

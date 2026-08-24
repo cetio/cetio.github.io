@@ -14,7 +14,9 @@
     font-family: 'Heraldic', serif;
     margin: 0;
     font-size: 32px;
-    color: var(--fg);
+    color: var(--bg);
+    -webkit-text-stroke: 4px var(--fg);
+    paint-order: stroke fill;
     user-select: none;
     pointer-events: none;
     line-height: 1;
@@ -32,6 +34,15 @@
     align-items: center;
     justify-content: center;
     margin-left: auto;
+    transition: border-color 0.15s ease;
+}
+
+.nav-toggle:hover {
+    border-color: var(--accent-muted);
+}
+
+.nav-toggle:hover .hamburger-line {
+    background: var(--accent);
 }
 
 .hamburger-line {
@@ -69,12 +80,24 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.tab-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent-muted);
+    text-decoration: none;
 }
 
 .tab-btn.active {
     background: var(--accent);
     color: var(--bg);
     border-color: var(--accent);
+}
+
+.tab-btn.active:hover {
+    color: var(--bg);
+    border-color: var(--fg);
 }
 
 .button-row {

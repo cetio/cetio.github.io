@@ -1,15 +1,15 @@
 :root {
-    --bg: #09090b;
-    --bg-surface: #121215;
-    --bg-inset: #070709;
-    --fg: #dedede;
-    --fg-muted: #909096;
-    --fg-dim: #5a5a62;
-    --border: #232329;
-    --border-light: #2c2c35;
+    --bg: #090909;
+    --bg-surface: #111111;
+    --bg-inset: #070707;
+    --fg: #dddddd;
+    --fg-muted: #888888;
+    --fg-dim: #7a7a7a;
+    --border: #222222;
+    --border-light: #2a2a2a;
     --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.6);
     --shadow-inset: inset 0 2px 6px rgba(0, 0, 0, 0.7);
-    --radius: 3px;
+    --radius: 2px;
     --link: #66b3ff;
     --accent: #66b3ff;
     --accent-muted: #66b3ffcc;
@@ -40,6 +40,13 @@ body {
 a {
     color: var(--link);
     text-decoration: none;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-muted);
 }
 
 button,
@@ -53,6 +60,14 @@ input {
     padding: 8px 12px;
     font: inherit;
     cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+button:hover,
+select:hover,
+input:hover {
+    border-color: var(--border-light);
+    border-top-color: var(--fg-dim);
 }
 
 button:focus-visible,
@@ -71,6 +86,19 @@ button {
 :focus-visible {
     outline: 2px solid var(--link);
     outline-offset: 2px;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
 }
 
 .flex-grid {
@@ -157,8 +185,14 @@ p.bright {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--link);
 }
+
+.social-link a.github,
+.social-link a.email { color: #ffffff; }
+
+.social-link a.linkedin { color: #0A7BE8; }
+
+.social-link a.discord { color: #7080FF; }
 
 .social-link svg {
     width: 16px;
@@ -231,6 +265,8 @@ article li {
 
 article pre {
     margin: 16px 0;
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 pre code {
@@ -239,6 +275,8 @@ pre code {
 
 code {
     font-family: inherit;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .callout {
