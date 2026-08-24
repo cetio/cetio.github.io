@@ -19,6 +19,7 @@ server
 
 
 .playwright-mcp
+.vscode
 
 # LaTeX build artifacts
 *.aux
