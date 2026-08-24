@@ -66,6 +66,22 @@
     padding: 12px 16px;
 }
 
+.nav-pane::before {
+    content: "c";
+    font-family: 'Heraldic', serif;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    line-height: 1;
+    color: var(--bg);
+    -webkit-text-stroke: 3px var(--fg);
+    paint-order: stroke fill;
+    user-select: none;
+    pointer-events: none;
+}
+
 .tab-btn {
     display: inline-flex;
     align-items: center;
@@ -133,6 +149,10 @@
 
     .nav-watermark {
         transform: translateY(3px);
+    }
+
+    .nav-pane::before {
+        display: none;
     }
 
     .nav-pane {
