@@ -2,18 +2,27 @@
     const navToggle = document.querySelector('.nav-toggle');
     const navPane = document.getElementById('nav-pane');
 
+    let lastFocused = null;
+
     const closeNavPane = () => {
         if (!navPane || !navToggle)
             return;
         navPane.classList.remove('is-open');
         navToggle.setAttribute('aria-expanded', 'false');
+        if (lastFocused && typeof lastFocused.focus === 'function')
+            lastFocused.focus();
+        lastFocused = null;
     };
 
     const openNavPane = () => {
         if (!navPane || !navToggle)
             return;
+        lastFocused = document.activeElement;
         navPane.classList.add('is-open');
         navToggle.setAttribute('aria-expanded', 'true');
+        const firstLink = navPane.querySelector('a, button');
+        if (firstLink)
+            firstLink.focus();
     };
 
     const toggleNavPane = () => {

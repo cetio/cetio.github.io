@@ -15,11 +15,11 @@ def makeJobEntry(job):
 
     if job.get("logo"):
         lines.append('<div class="timeline-header">')
-        lines.append(f'<h4 class="timeline-title">{job["title"]}</h4>')
+        lines.append(f'<h2 class="timeline-title">{job["title"]}</h2>')
         lines.append(f'<img src="../{job["logo"]}" alt="{job["company"]}" class="timeline-logo">')
         lines.append('</div>')
     else:
-        lines.append(f'<h4 class="timeline-title">{job["title"]}</h4>')
+        lines.append(f'<h2 class="timeline-title">{job["title"]}</h2>')
 
     if job.get("company"):
         companyText = f'{job["company"]} - {job["type"]}' if job.get("type") else job["company"]
@@ -55,7 +55,15 @@ def makeEducationPanel(education):
 
 
 def makeCertsPanel(certifications):
-    lines = ['<div class="panel">', '<table class="cert-table">', '<tbody>']
+    lines = [
+        '<div class="panel">',
+        '<table class="cert-table">',
+        '<caption class="visually-hidden">Certifications by issuer</caption>',
+        '<thead>',
+        '<tr><th scope="col">Issuer</th><th scope="col">Certification</th></tr>',
+        '</thead>',
+        '<tbody>',
+    ]
     for cert in certifications:
         issuerClass = f'cert-{cert["issuer"].lower()}'
         lines.append(f'<tr><td class="{issuerClass}">{cert["issuer"]}</td><td>{cert["name"]}</td></tr>')
