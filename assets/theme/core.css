@@ -342,9 +342,12 @@ code {
         padding: 0 16px;
     }
 
-    .social-link {
-        flex-wrap: wrap;
+    .site-footer .social-link {
+        display: grid;
+        grid-template-columns: repeat(2, max-content);
+        justify-content: center;
         gap: 10px 16px;
+        width: 100%;
     }
 }
 
