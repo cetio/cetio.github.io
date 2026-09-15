@@ -201,27 +201,48 @@
             });
         };
 
+        const normalizeIpwho = (geo) => ({
+            ip: geo.ip,
+            city: geo.city,
+            region: geo.region,
+            country: geo.country_code,
+            countryName: geo.country,
+            postal: geo.postal,
+            latitude: geo.latitude,
+            longitude: geo.longitude,
+            org: geo.connection && geo.connection.isp,
+            asn: geo.connection && geo.connection.asn ? "AS" + geo.connection.asn : null,
+            timezone: geo.timezone && geo.timezone.id
+        });
+
+        const normalizeIpapi = (geo) => ({
+            ip: geo.ip,
+            city: geo.city,
+            region: geo.region,
+            country: geo.country,
+            countryName: geo.country_name,
+            postal: geo.postal,
+            latitude: geo.latitude,
+            longitude: geo.longitude,
+            org: geo.org,
+            asn: geo.asn,
+            timezone: geo.timezone
+        });
+
+        const tryFetch = (url, normalize) => fetch(url, { headers: { "Accept": "application/json" } })
+            .then((res) => {
+                if (!res.ok)
+                    throw new Error("HTTP " + res.status);
+                return res.json();
+            })
+            .then(normalize);
+
         const enrichWithGeo = () => {
-            fetch("https://ipapi.co/json/")
-                .then((res) => res.json())
-                .then((geo) => {
-                    send({
-                        geo: {
-                            ip: geo.ip,
-                            city: geo.city,
-                            region: geo.region,
-                            country: geo.country,
-                            countryName: geo.country_name,
-                            postal: geo.postal,
-                            latitude: geo.latitude,
-                            longitude: geo.longitude,
-                            org: geo.org,
-                            asn: geo.asn,
-                            timezone: geo.timezone
-                        }
-                    });
-                })
-                .catch(() => send({ geo: "(lookup failed)" }));
+            tryFetch("https://ipwho.is/", normalizeIpwho)
+                .then((geo) => send({ geo: geo }))
+                .catch(() => tryFetch("https://ipapi.co/json/", normalizeIpapi)
+                    .then((geo) => send({ geo: geo }))
+                    .catch(() => send({ geo: "(lookup failed)" })));
         };
 
         try {
