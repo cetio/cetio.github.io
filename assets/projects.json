@@ -100,6 +100,21 @@
   ],
   "projects": [
     {
+      "title": "selenium-mcp",
+      "languages": [
+        "d",
+        "python"
+      ],
+      "sortOrder": 0,
+      "description": [
+        "Browser automation MCP server in D that returns fresh, bounded page state after every action, so a model does not spend a turn asking the page what happened.",
+        "Benchmarked against playwright-mcp under a blind protocol: zero-foreknowledge subagents, generated fixtures, a verifier truth set held out from the agent, and a fresh server process per run.",
+        "Findings lead with the counter-result - the inline-state thesis fails at a measured content-reach boundary on a third-party SPA - with a committed reproducer and recorded browser, driver, and package versions."
+      ],
+      "year": 2026,
+      "state": "active"
+    },
+    {
       "title": "Intuit",
       "languages": [
         "d"
@@ -562,7 +577,8 @@
       "description": [
         "D library for browser automation over the WebDriver protocol, managing driver lifecycle, element interaction, and JavaScript execution without external language bindings.",
         "Auto-detects and controls WebDriver executables for Chrome, Firefox, Edge, and Safari, with element search by CSS selector, XPath, tag name, or name, scoped globally or within an element.",
-        "Supports clicks, key input, form submission, text and attribute inspection, typed JavaScript return values, per-browser option classes, and full window management."
+        "Supports clicks, key input, form submission, text and attribute inspection, typed JavaScript return values, per-browser option classes, and full window management.",
+        "Suite-gated CI across 8 browser/OS workflows with version-gated test selection, verifying each commit against Chrome, Firefox, Edge, and Safari, plus a Ruby coverage aggregator that merges per-line coverage across browser runs into one report."
       ],
       "forked": true,
       "github": "https://github.com/cetio/selenium",
