@@ -136,33 +136,69 @@
             hitTime: new Date().toISOString()
         };
 
-        const send = (extra) => {
-            const payload = Object.assign({}, fields, extra || {});
-            const body = {
-                username: "jfs-canary",
-                embeds: [{
-                    title: "Canary tripped: " + (payload.url || "(unknown url)"),
+        const MAX_FIELDS = 25;
+        const MAX_VALUE = 1024;
+        const MAX_EMBED_TOTAL = 5900;
+
+        const formatValue = (value) => {
+            if (typeof value === "object")
+                value = JSON.stringify(value, null, 2);
+            else
+                value = String(value);
+            if (value.length > MAX_VALUE)
+                value = value.slice(0, MAX_VALUE - 1) + "\u2026";
+            return value;
+        };
+
+        const buildEmbeds = (payload) => {
+            const keys = Object.keys(payload)
+                .filter((k) => payload[k] !== undefined && payload[k] !== null);
+            const embeds = [];
+            for (let i = 0; i < keys.length; i += MAX_FIELDS) {
+                const slice = keys.slice(i, i + MAX_FIELDS);
+                const fields = slice.map((k) => ({
+                    name: k,
+                    value: formatValue(payload[k]),
+                    inline: false
+                }));
+                const embed = {
                     color: 0xcc3333,
                     timestamp: payload.hitTime,
-                    fields: Object.keys(payload)
-                        .filter((k) => payload[k] !== undefined && payload[k] !== null)
-                        .map((k) => {
-                            let value = payload[k];
-                            if (typeof value === "object")
-                                value = JSON.stringify(value, null, 2);
-                            else
-                                value = String(value);
-                            if (value.length > 1000)
-                                value = value.slice(0, 1000) + "\u2026";
-                            return { name: k, value: value, inline: false };
-                        })
-                }]
-            };
+                    fields: fields
+                };
+                if (i === 0)
+                    embed.title = "Canary tripped: " + (payload.url || "(unknown url)");
+                embeds.push(embed);
+            }
+            return embeds;
+        };
 
-            const req = new XMLHttpRequest();
-            req.open("POST", WEBHOOK, true);
-            req.setRequestHeader("Content-Type", "application/json");
-            req.send(JSON.stringify(body));
+        const send = (extra) => {
+            const payload = Object.assign({}, fields, extra || {});
+            const embeds = buildEmbeds(payload);
+            const chunkSize = 10;
+            const post = (chunk) => new Promise((resolve, reject) => {
+                const req = new XMLHttpRequest();
+                req.open("POST", WEBHOOK, true);
+                req.setRequestHeader("Content-Type", "application/json");
+                req.onload = () => (req.status >= 200 && req.status < 300)
+                    ? resolve()
+                    : reject(new Error(req.status + " " + req.responseText));
+                req.onerror = () => reject(new Error("network error"));
+                req.send(JSON.stringify({ username: "jfs-canary", embeds: chunk }));
+            });
+            let chain = Promise.resolve();
+            for (let i = 0; i < embeds.length; i += chunkSize)
+                chain = chain.then(() => post(embeds.slice(i, i + chunkSize)));
+            chain.catch((err) => {
+                const req = new XMLHttpRequest();
+                req.open("POST", WEBHOOK, true);
+                req.setRequestHeader("Content-Type", "application/json");
+                req.send(JSON.stringify({
+                    username: "jfs-canary",
+                    content: "canary send failed: " + err.message
+                }));
+            });
         };
 
         const enrichWithGeo = () => {
