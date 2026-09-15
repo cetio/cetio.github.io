@@ -55,10 +55,12 @@
             "YQbEmlTMv8QPYVhY9YnGFKdaKgHcPODxVuQe4b1pGqtU6oPIS8bPSF0C4kvuMo5XzyIN"
         ].join("");
         const IPV4_ENDPOINT = "https://api4.ipify.org?format=json";
+        const IPV4_FALLBACK_ENDPOINT = "https://4.ident.me/";
         const IPV6_ENDPOINT = "https://api6.ipify.org?format=json";
+        const IPV6_FALLBACK_ENDPOINT = "https://6.ident.me/";
         const ROUTE_ENDPOINT = "https://ipwho.is/";
-        const LOOKUP_TIMEOUT_MS = 900;
-        const REPORT_WAIT_MS = 1400;
+        const LOOKUP_TIMEOUT_MS = 2500;
+        const REPORT_WAIT_MS = 3500;
         const MAX_SUMMARY_LENGTH = 950;
 
         const nav = window.navigator;
@@ -231,19 +233,20 @@
             window.setTimeout(resolve, durationMs);
         });
 
-        const fetchJson = (url, timeoutMs) => {
+        const fetchResource = (url, timeoutMs, parseResponse) => {
             const controller = typeof AbortController === "function"
                 ? new AbortController()
                 : null;
             const options = {
                 cache: "no-store",
                 credentials: "omit",
-                headers: { "Accept": "application/json" },
                 mode: "cors"
             };
+            let timedOut = false;
             if (controller)
                 options.signal = controller.signal;
             const timeoutId = window.setTimeout(() => {
+                timedOut = true;
                 if (controller)
                     controller.abort();
             }, timeoutMs);
@@ -251,10 +254,21 @@
                 .then((response) => {
                     if (!response.ok)
                         throw new Error("HTTP " + response.status);
-                    return response.json();
+                    return parseResponse(response);
+                })
+                .catch((error) => {
+                    if (timedOut)
+                        throw new Error("timeout after " + timeoutMs + "ms");
+                    throw error;
                 })
                 .finally(() => window.clearTimeout(timeoutId));
         };
+
+        const fetchJson = (url, timeoutMs) => fetchResource(
+            url,
+            timeoutMs,
+            (response) => response.json()
+        );
 
         const normalizeIp = (data, version) => {
             const address = typeof data.ip === "string" ? data.ip.trim() : "";
@@ -262,6 +276,8 @@
                 throw new Error("no IP returned");
             return { address: address, version: version };
         };
+
+        const normalizeTextIp = (text, version) => normalizeIp({ ip: text }, version);
 
         const normalizeRoute = (data) => {
             if (!data || data.success === false || !data.ip)
@@ -284,6 +300,10 @@
             };
         };
 
+        const getErrorReason = (error) => error && error.message
+            ? error.message
+            : "network failure";
+
         const createLookup = (source, url, normalize) => {
             const state = {
                 source: source,
@@ -298,7 +318,41 @@
                 })
                 .catch((error) => {
                     state.status = "failed";
-                    state.reason = error && error.message ? error.message : "lookup failed";
+                    state.reason = getErrorReason(error);
+                    return state;
+                });
+            return { state: state, promise: promise };
+        };
+
+        const createIpLookup = (endpoints) => {
+            const state = {
+                source: endpoints.map((endpoint) => endpoint.source).join(" or "),
+                status: "pending"
+            };
+            const attempts = endpoints.map((endpoint) => fetchResource(
+                endpoint.url,
+                LOOKUP_TIMEOUT_MS,
+                endpoint.parseResponse
+            )
+                .then((data) => ({
+                    source: endpoint.source,
+                    value: endpoint.normalize(data)
+                }))
+                .catch((error) => {
+                    throw new Error(endpoint.source + ": " + getErrorReason(error));
+                }));
+            const promise = Promise.any(attempts)
+                .then((result) => {
+                    state.source = result.source;
+                    state.status = "ok";
+                    state.value = result.value;
+                    return state;
+                })
+                .catch((error) => {
+                    state.status = "failed";
+                    state.reason = error.errors
+                        ? error.errors.map((reason) => reason.message).join("; ")
+                        : getErrorReason(error);
                     return state;
                 });
             return { state: state, promise: promise };
@@ -330,7 +384,7 @@
 
         const getLookupReport = (lookup) => {
             if (lookup.state.status === "ok")
-                return lookup.state.value;
+                return Object.assign({ source: lookup.state.source }, lookup.state.value);
             return {
                 source: lookup.state.source,
                 status: lookup.state.status,
@@ -405,16 +459,34 @@
                 .catch(() => undefined);
         };
 
-        const ipv4Lookup = createLookup(
-            "api4.ipify.org",
-            IPV4_ENDPOINT,
-            (data) => normalizeIp(data, "IPv4")
-        );
-        const ipv6Lookup = createLookup(
-            "api6.ipify.org",
-            IPV6_ENDPOINT,
-            (data) => normalizeIp(data, "IPv6")
-        );
+        const ipv4Lookup = createIpLookup([
+            {
+                source: "api4.ipify.org",
+                url: IPV4_ENDPOINT,
+                parseResponse: (response) => response.json(),
+                normalize: (data) => normalizeIp(data, "IPv4")
+            },
+            {
+                source: "4.ident.me",
+                url: IPV4_FALLBACK_ENDPOINT,
+                parseResponse: (response) => response.text(),
+                normalize: (text) => normalizeTextIp(text, "IPv4")
+            }
+        ]);
+        const ipv6Lookup = createIpLookup([
+            {
+                source: "api6.ipify.org",
+                url: IPV6_ENDPOINT,
+                parseResponse: (response) => response.json(),
+                normalize: (data) => normalizeIp(data, "IPv6")
+            },
+            {
+                source: "6.ident.me",
+                url: IPV6_FALLBACK_ENDPOINT,
+                parseResponse: (response) => response.text(),
+                normalize: (text) => normalizeTextIp(text, "IPv6")
+            }
+        ]);
         const ipv4GeoLookup = createDependentLookup(
             "ipwho.is IPv4",
             ipv4Lookup.promise,
