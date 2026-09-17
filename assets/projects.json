@@ -100,7 +100,7 @@
   ],
   "projects": [
     {
-      "title": "selenium-mcp",
+      "title": "Selenium-MCP",
       "languages": [
         "d",
         "python"
@@ -108,7 +108,7 @@
       "sortOrder": 0,
       "description": [
         "Browser automation MCP server in D that returns fresh, bounded page state after every action, so a model does not spend a turn asking the page what happened.",
-        "Benchmarked against playwright-mcp under a blind protocol: zero-foreknowledge subagents, generated fixtures, a verifier truth set held out from the agent, and a fresh server process per run.",
+        "Benchmarked against Playwright-MCP under a blind protocol: zero-foreknowledge subagents, generated fixtures, a verifier truth set held out from the agent, and a fresh server process per run.",
         "Findings lead with the counter-result - the inline-state thesis fails at a measured content-reach boundary on a third-party SPA - with a committed reproducer and recorded browser, driver, and package versions."
       ],
       "year": 2026,
