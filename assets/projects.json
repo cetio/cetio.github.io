@@ -122,8 +122,8 @@
       "sortOrder": 7,
       "description": [
         "D SDK for connecting to LLM and embedding models, with a focus on local models and an extensible, interface-driven design that makes adding new endpoints straightforward.",
-        "Text completions parsed directly into native D types, JSON-schema structured output, system/user/assistant context management, and real-time SSE streaming.",
-        "Embeddings with configurable precision and SIMD-accelerated math, plus native D functions exposed as model tools with automatic JSON schema generation."
+        "Text completions parsed directly into native D types, JSON-schema structured output, and system/user/assistant context management.",
+        "Embeddings with configurable precision, plus native D functions exposed as model tools with automatic JSON schema generation."
       ],
       "github": "https://github.com/cetio/intuit",
       "year": 2026,
@@ -215,7 +215,7 @@
       ],
       "sortOrder": 1,
       "description": [
-        "Ruby and JavaScript workflow automation suite for Handshake AI that reduced manual annotation and triage effort by 95% across 400+ contractor hours of proven runtime.",
+        "Ruby and JavaScript workflow automation suite for Handshake AI that reduced manual annotation and triage effort by 95% across 400+ contractor hours.",
         "Selenium-based browser automation with injected monitoring hooks, multi-tab coordination, and automatic recovery from UI stalls for reliable long-running sessions across Windows, macOS, and Linux.",
         "HTML parsing and context-aware quality-of-life tooling that gives workers fine-grained control while maintaining full auditability."
       ],
