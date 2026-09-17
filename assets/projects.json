@@ -147,13 +147,14 @@
     {
       "title": "Chemica",
       "languages": [
-        "d"
+        "python",
+        "javascript"
       ],
       "sortOrder": 6,
       "description": [
-        "GTK-based desktop application for exploring chemical compounds with interactive 3D molecular visualization, property tracking, and standard identifier lookup.",
+        "FastAPI web application for exploring chemical compounds with interactive 3D molecular visualization (3dmol viewer), property tracking, and standard identifier lookup. Rewritten from the retired D/GTK desktop client.",
         "Automated dosage aggregation and similarity matching using structural scoring to identify analogous compounds and fill knowledge gaps.",
-        "Multi-source data pipelines from scientific and knowledge databases, with a local AI synthesis layer that resolves and merges overlapping content into unified entries."
+        "Multi-source data pipelines from scientific and knowledge databases (PubChem, Wikipedia, PsychonautWiki, PubMed/PMC), with a local AI synthesis layer that resolves and merges overlapping content into unified entries. Fixture-backed offline test suite."
       ],
       "github": "https://github.com/cetio/chemica",
       "year": 2026,
