@@ -56,7 +56,7 @@
             "logo": "",
             "bullets": [
                 "Developed workflow automation tools and SDKs for web API integration and device I/O, eliminating repetitive manual processes for individual clients.",
-                "Built an AI-assisted grading platform with LMS OAuth integration and automated rubric application, achieving ~95% accuracy in real-world classroom use and cutting instructor grading time by half."
+                "Built an AI-assisted grading platform with automated rubric application, achieving ~95% accuracy in real-world classroom use and cutting instructor grading time by half."
             ]
         }
     ],
