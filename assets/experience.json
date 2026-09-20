@@ -1,16 +1,25 @@
 {
     "jobs": [
         {
-            "title": "AI Operations Engineer (RPA & Model Evaluation)",
+            "title": "Model Evaluator",
             "company": "Handshake",
             "type": "Contract",
-            "date": "November 2025 – Present",
+            "date": "July 2026 – Present",
             "logo": "assets/logos/team_handshake_logo.jpg",
             "bullets": [
                 "Evaluated multimodal AI agents against structured rubrics to assess response quality, reasoning accuracy, and domain understanding across generalist tasks.",
-                "Built AutoHandshake!, a Selenium-based RPA suite that eliminated 95% of manual annotation and triage effort across 400+ contractor hours with unattended execution, failure recovery, and full audit trails.",
-                "Mentored contractors on platform operations, rubric interpretation, and efficient evaluation workflows.",
                 "Evaluate LLM quality on coding and knowledge-based tasks using head-to-head comparisons, benchmark evaluations, and structured quality criteria. Analyze correctness, reasoning, and failure modes to inform model-quality improvements."
+            ]
+        },
+        {
+            "title": "AI Operations Engineer",
+            "company": "Handshake",
+            "type": "Contract",
+            "date": "November 2025 – June 2026",
+            "logo": "assets/logos/team_handshake_logo.jpg",
+            "bullets": [
+                "Built AutoHandshake!, a Selenium-based RPA suite that eliminated 95% of manual annotation and triage effort across 400+ contractor hours with unattended execution, failure recovery, and full audit trails.",
+                "Mentored contractors on platform operations, rubric interpretation, and efficient evaluation workflows."
             ]
         },
         {
