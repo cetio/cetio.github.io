@@ -138,7 +138,7 @@
       {Software Engineer}{Jul 2021 -- Present}
       {Independent client engagements}{}
       \resumeItemListStart
-        \resumeItem{Developed Warbler, an AI-assisted grading platform contracted for high-school use, with deterministic grading for objective items, schema-validated LLM rubric grading for open response, and $\sim$95\% agreement with instructor-assigned grades.}
+        \resumeItem{Developed Warbler, an AI-assisted grading platform in real classroom use, with deterministic grading for objective items, schema-validated LLM rubric grading for open response, and $\sim$95\% agreement with instructor-assigned grades.}
         \resumeItem{Authored Intuit, a native LLM SDK for D with structured output, tool calling, and configurable-precision embeddings, used as Warbler's model layer.}
       \resumeItemListEnd
 
@@ -149,10 +149,11 @@
     \resumeSubHeadingListStart
 
       \resumeProjectHeading
-          {\textbf{selenium-mcp} $|$ \emph{Blind Benchmark Harness, D + Python}}{}
+          {\textbf{Selenium-MCP} $|$ \emph{Blind Benchmark Harness, D + Python}}{}
           \resumeItemListStart
             \resumeItem{Built a blind benchmark harness comparing browser-automation MCP servers, with zero-foreknowledge subagents, generated fixtures, a verifier truth set held out from the agent, and a fresh server process per run.}
-            \resumeItem{Measured round trips, state-recovery calls, wall clock, and bytes ingested per completed task across repeated runs, cutting round trips 39\% versus playwright-mcp.}
+            \resumeItem{Benchmarked head-to-head against the leading browser-automation MCP, measuring round trips, state-recovery calls, wall clock, and bytes ingested per completed task.}
+            \resumeItem{Cut model round trips by up to half versus Playwright-MCP on dynamic-page tasks, with every interaction returning fresh page state inline.}
             \resumeItem{Committed a reproducer importing the shipped capture path; it invalidated a previously cited profile table and located the content-reach boundary where inline state fails on a third-party SPA.}
           \resumeItemListEnd
 
