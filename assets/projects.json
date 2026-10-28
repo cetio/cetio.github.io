@@ -414,7 +414,7 @@
             "sortOrder": 23,
             "description": [
                 "Reverse-engineered headers and documentation for the VEX Robotics V5 private API covering firmware jump tables, device drawing functions, and competition mode overrides.",
-                "Based on ARM64 disassembly of VEXos system_0.elf with structured signature recovery for display rendering, sensor reading, and motor control.",
+                "Based on 32-bit ARM EABI disassembly of VEXos system_0.elf with structured signature recovery for display rendering, sensor reading, and motor control.",
                 "Documents apijump thunk functions, double-buffered graphics, and firmware offset tables enabling low-level robot programming beyond the official SDK."
             ],
             "github": "https://github.com/cetio/VEXAPI",
@@ -519,8 +519,7 @@
             ],
             "sortOrder": 29,
             "description": [
-                "C# HTML and JavaScript parser with an object-oriented DOM model and GDI-based rendering engine for lightweight document visualization.",
-                "Implements lexical analysis, token streaming, and visual layout computation enabling script interpretation and structured page rendering."
+                "C# HTML element model with attribute-driven tags, a string-based tag parser, and an object-oriented DOM representation."
             ],
             "year": 2022,
             "state": "archived"
@@ -618,22 +617,37 @@
                 "d"
             ],
             "sortOrder": 18,
-            "description": "Automatic grading application (CLI and GTK UI) for grading student assignments and organizing classrooms, specializing in high-school, diverse grading tasks using both remote and local model infrastructure. Achieves up to 95% accuracy with MoE (Mixture of Experts) models and clustering.",
+            "description": [
+                "Automatic grading application (CLI and GTK UI) for grading student assignments and organizing classrooms, specializing in high-school, diverse grading tasks using both remote and local model infrastructure.",
+                "Hybrid deterministic and LLM grading achieves up to 95% accuracy, with JSON-schema-constrained model outputs and a validator-retry loop."
+            ],
             "forked": false,
             "year": 2026,
             "state": "inactive"
         },
         {
-            "title": "agent-coord",
-            "languages": [
-                "javascript"
-            ],
+            "title": "Autonom",
+            "languages": ["d", "javascript"],
             "sortOrder": 1,
             "description": [
-                "Multi-agent coordination bus in Node.js that lets several agent sessions share a room, direct-message each other, and coordinate work in one repository.",
-                "Implements the MCP protocol per agent with per-agent identity binding, room semantics, and a hold/GO protocol that gates irreversible actions on fresh human approval."
+                "Multi-agent coordination daemon and CLI: agent sessions with durable identities, rooms and direct messages with per-stream cursors, durable schedules, and a loopback HTTP API.",
+                "Hosts coding-agent sessions over ACP and exposes an MCP coordination proxy with token-bound identity; an LLM-screened tool-use policy gates irreversible actions with fail-closed deadlines.",
+                "Started as the Node.js bus 'agent-coord' and rewritten in D with continuous integration; the legacy repository URL redirects to this project."
             ],
-            "github": "https://github.com/cetio/agent-coord",
+            "github": "https://github.com/autonom-ai/daemon",
+            "year": 2026,
+            "state": "active"
+        },
+        {
+            "title": "Devin Better ACP",
+            "languages": ["javascript", "python"],
+            "sortOrder": 1,
+            "description": [
+                "Devin Desktop extension that adds proper ACP support for Codex and Antigravity: an ACP translation shim, interactive form prompts routed through MCP, and a local token-authed integration server.",
+                "Includes model-ID translation between providers, usage meters in the status bar, and unit plus integration test suites.",
+                "MIT-licensed, published as a VSIX (v1.2.0)."
+            ],
+            "github": "https://github.com/cetio/devin-better-acp",
             "year": 2026,
             "state": "active"
         }
