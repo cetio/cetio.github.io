@@ -1,4 +1,4 @@
-# cetio.github.io
+# mortifying.si
 
 ## About
 
@@ -13,4 +13,4 @@ Theme is a derivative of Gruvbox Dark Hard, all fonts and colors are available o
 ## Hosting
 
 This site is automatically deployed via GitHub Pages from the main branch.
-You can visit the website at https://cetio.github.io/
+You can visit the website at https://mortifying.si/

@@ -414,7 +414,7 @@
             "sortOrder": 23,
             "description": [
                 "Reverse-engineered headers and documentation for the VEX Robotics V5 private API covering firmware jump tables, device drawing functions, and competition mode overrides.",
-                "Based on ARM64 disassembly of VEXos system_0.elf with structured signature recovery for display rendering, sensor reading, and motor control.",
+                "Based on 32-bit ARM EABI disassembly of VEXos system_0.elf with structured signature recovery for display rendering, sensor reading, and motor control.",
                 "Documents apijump thunk functions, double-buffered graphics, and firmware offset tables enabling low-level robot programming beyond the official SDK."
             ],
             "github": "https://github.com/cetio/VEXAPI",
